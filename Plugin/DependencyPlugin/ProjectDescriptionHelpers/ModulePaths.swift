@@ -11,6 +11,8 @@ public enum ModulePaths {
 public extension ModulePaths {
     enum Feature: String {
         case BaseFeature
+        case ApplyFeature
+        case ManageFeature
 
         func targetName(type: MicroTargetType) -> String {
             "\(self.rawValue)\(type.rawValue)"

@@ -13,6 +13,14 @@ public extension TargetDependency.Feature {
         target: ModulePaths.Feature.BaseFeature.targetName(type: .sources),
         path: .relativeToFeature(ModulePaths.Feature.BaseFeature.rawValue)
     )
+    static let ApplyFeature = TargetDependency.project(
+        target: ModulePaths.Feature.ApplyFeature.targetName(type: .sources),
+        path: .relativeToFeature(ModulePaths.Feature.ApplyFeature.rawValue)
+    )
+    static let ManageFeature = TargetDependency.project(
+        target: ModulePaths.Feature.ManageFeature.targetName(type: .sources),
+        path: .relativeToFeature(ModulePaths.Feature.ManageFeature.rawValue)
+    )
 }
 
 public extension TargetDependency.Domain {

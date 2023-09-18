@@ -33,6 +33,8 @@ let targets: [Target] = [
         scripts: scripts,
         dependencies: [
             .Feature.BaseFeature,
+            .Feature.ApplyFeature,
+            .Feature.ManageFeature,
             .Domain.LocalDomain,
             .SPM.Needle
         ],
