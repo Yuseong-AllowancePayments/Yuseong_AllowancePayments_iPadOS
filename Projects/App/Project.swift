@@ -17,7 +17,7 @@ let settings: Settings =
               configurations: configurations,
               defaultSettings: .recommended)
 
-let scripts: [TargetScript] = isCI ? [] : [.swiftLint, .needle]
+let scripts: [TargetScript] = isCI ? [] : [.swiftLint]
 
 let targets: [Target] = [
     .init(
@@ -36,7 +36,9 @@ let targets: [Target] = [
             .Feature.ApplyFeature,
             .Feature.ManageFeature,
             .Domain.LocalDomain,
-            .SPM.Needle
+            .SPM.Realm,
+            .SPM.SnapKit,
+            .SPM.Then
         ],
         settings: .settings(base: env.baseSetting)
     )

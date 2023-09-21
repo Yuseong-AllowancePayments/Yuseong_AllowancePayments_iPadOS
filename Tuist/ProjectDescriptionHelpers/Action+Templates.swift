@@ -6,10 +6,4 @@ public extension TargetScript {
         name: "SwiftLint",
         basedOnDependencyAnalysis: false
     )
-
-    static let needle = TargetScript.pre(
-        path: .relativeToRoot("Scripts/NeedleRunScript.sh"),
-        name: "Needle",
-        basedOnDependencyAnalysis: false
-    )
 }
