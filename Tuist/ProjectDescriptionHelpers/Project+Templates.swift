@@ -24,7 +24,7 @@ public extension Project {
         deploymentTarget: DeploymentTarget? = env.deploymentTarget,
         externalDependencies: [TargetDependency] = [],
         internalDependencies: [TargetDependency] = [],
-        unitTestDependencies: [TargetDependency] = [.SPM.Quick, .SPM.Nimble],
+        unitTestDependencies: [TargetDependency] = [],
         uiTestDependencies: [TargetDependency] = [],
         demoDependencies: [TargetDependency] = [],
         sources: SourceFilesList = .sources,

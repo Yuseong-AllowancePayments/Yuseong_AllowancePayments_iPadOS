@@ -36,7 +36,8 @@ let targets: [Target] = [
             .Feature.ApplyFeature,
             .Feature.ManageFeature,
             .Domain.LocalDomain,
-            .SPM.Realm,
+            .SPM.RxFlow,
+            .SPM.Swinject,
             .SPM.SnapKit,
             .SPM.Then
         ],
