@@ -5,7 +5,13 @@ let project = Project.makeModule(
     name: "BaseFeature",
     product: .framework,
     targets: [.unitTest],
-    internalDependencies: [
-        .Shared.DesignSystem
+    externalDependencies: [
+        .Shared.DesignSystem,
+        .SPM.RxSwift,
+        .SPM.RxCocoa,
+        .SPM.RxFlow,
+        .SPM.SnapKit,
+        .SPM.Then,
+        .SPM.Swinject
     ]
 )
