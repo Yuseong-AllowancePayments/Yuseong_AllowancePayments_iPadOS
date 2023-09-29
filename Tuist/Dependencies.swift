@@ -15,8 +15,8 @@ let dependencies = Dependencies(
                     requirement: .upToNextMajor(from: "2.13.0")
                 ),
                 .remote(
-                    url: "https://github.com/realm/realm-swift.git",
-                    requirement: .upToNextMajor(from: "10.42.3")
+                    url: "https://github.com/SnapKit/SnapKit.git",
+                    requirement: .upToNextMajor(from: "5.6.0")
                 ),
                 .remote(
                     url: "https://github.com/devxoul/Then.git",
@@ -25,10 +25,6 @@ let dependencies = Dependencies(
                 .remote(
                     url: "https://github.com/Swinject/Swinject.git",
                     requirement: .upToNextMajor(from: "2.8.3")
-                ),
-                .remote(
-                    url: "https://github.com/SnapKit/SnapKit.git",
-                    requirement: .upToNextMajor(from: "5.6.0")
                 )
             ],
             baseSettings: .settings(

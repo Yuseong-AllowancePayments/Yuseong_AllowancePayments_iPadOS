@@ -6,9 +6,9 @@ public extension TargetDependency {
 
 public extension TargetDependency.SPM {
     static let RxSwift = TargetDependency.external(name: "RxSwift")
-    static let RxFlow = TargetDependency.external(name: "RxFlow")
     static let RxCocoa = TargetDependency.external(name: "RxCocoa")
+    static let RxFlow = TargetDependency.external(name: "RxFlow")
+    static let SnapKit = TargetDependency.external(name: "SnapKit")
     static let Then = TargetDependency.external(name: "Then")
-    static let Swinject = TargetDependency.package(product: "Swinject")
-    static let SnapKit = TargetDependency.package(product: "SnapKit")
+    static let Swinject = TargetDependency.external(name: "Swinject")
 }

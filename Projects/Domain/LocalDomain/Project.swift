@@ -8,8 +8,5 @@ let project = Project.makeModule(
     targets: [.unitTest],
     internalDependencies: [
         .Core.Keychain
-    ],
-    additionalPlistRows: [
-        "BASE_URL": .string("$(BASE_URL)")
     ]
 )

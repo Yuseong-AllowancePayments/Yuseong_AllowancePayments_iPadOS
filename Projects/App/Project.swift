@@ -35,11 +35,7 @@ let targets: [Target] = [
             .Feature.BaseFeature,
             .Feature.ApplyFeature,
             .Feature.ManageFeature,
-            .Domain.LocalDomain,
-            .SPM.RxFlow,
-            .SPM.Swinject,
-            .SPM.SnapKit,
-            .SPM.Then
+            .Domain.LocalDomain
         ],
         settings: .settings(base: env.baseSetting)
     )
