@@ -21,7 +21,7 @@ public extension UIFont {
         case code
     }
 
-    static func dotori(_ style: FontSystem) -> UIFont {
+    static func pretendard(_ style: FontSystem) -> UIFont {
         return style.font
     }
 }

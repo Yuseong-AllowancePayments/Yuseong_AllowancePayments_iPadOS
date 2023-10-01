@@ -7,7 +7,7 @@ public extension UIColor {
         case system(System)
     }
 
-    static func setColors(_ style: Colors) -> UIColor {
+    static func color(_ style: Colors) -> UIColor {
         switch style {
         case let .grayScale(colorable as Colorable),
              let .primary(colorable as Colorable),
