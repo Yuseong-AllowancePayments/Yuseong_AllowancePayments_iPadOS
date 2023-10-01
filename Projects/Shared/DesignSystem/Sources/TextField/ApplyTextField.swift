@@ -4,10 +4,14 @@ public final class ApplyTextField: UITextField {
     override public var placeholder: String? {
         didSet { setNeedsDisplay() }
     }
+    public var imageName: String? {
+        didSet { setNeedsLayout() }
+    }
 
-    public init(placeholder: String? = "") {
+    public init(placeholder: String? = "", imageName: String? = "") {
         super.init(frame: .zero)
         self.placeholder = placeholder
+        self.imageName = imageName
         setupTextField()
     }
 
@@ -37,6 +41,9 @@ public final class ApplyTextField: UITextField {
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
         setPlaceholderTextColor()
+        if imageName != "" || imageName != nil {
+            setFieldButton()
+        }
     }
 
     override public func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -66,8 +73,6 @@ public final class ApplyTextField: UITextField {
 
 private extension ApplyTextField {
     func setupTextField() {
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
         self.backgroundColor = .color(.system(.white))
         self.font = .pretendard(.p2)
         self.clearButtonMode = .whileEditing
@@ -76,8 +81,8 @@ private extension ApplyTextField {
 
         self.isEnabled = true
         self.textColor = .color(.grayScale(.g80))
-        self.layer.borderWidth = 0
-        self.layer.borderColor = nil
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
     }
 
     func setPlaceholderTextColor() {
@@ -90,5 +95,15 @@ private extension ApplyTextField {
                 .foregroundColor: placeholderTextColor
             ]
         )
+    }
+
+    func setFieldButton() {
+        let button: UIButton = {
+            $0.setImage(UIImage(named: String(describing: imageName)), for: .normal)
+            $0.frame = CGRect(x: Int(self.frame.size.width)-36, y: 12, width: 24, height: 24)
+            return $0
+        }(UIButton())
+        self.rightView = button
+        self.rightViewMode = .always
     }
 }
