@@ -38,7 +38,7 @@ public final class ApplyFieldView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public static func ApplyTextFieldView(
+    public static func applyTextFieldView(
         title: String,
         placeholder: String,
         imageName: String

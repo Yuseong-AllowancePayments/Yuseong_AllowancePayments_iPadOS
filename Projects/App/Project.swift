@@ -32,10 +32,13 @@ let targets: [Target] = [
         resources: ["Resources/**"],
         scripts: scripts,
         dependencies: [
-            .Feature.BaseFeature,
-            .Feature.ApplyFeature,
-            .Feature.ManageFeature,
-            .Domain.LocalDomain
+            .Shared.DesignSystem,
+            .SPM.RxSwift,
+            .SPM.RxCocoa,
+            .SPM.RxFlow,
+            .SPM.SnapKit,
+            .SPM.Then,
+            .SPM.Swinject
         ],
         settings: .settings(base: env.baseSetting)
     )
