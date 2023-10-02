@@ -20,7 +20,10 @@ public final class ApplyFieldView: UIView {
         get { textField.placeholder ?? "" }
         set { textField.placeholder = newValue }
     }
-    public var imageName: String = ""
+    public var imageName: String {
+        get { textField.imageName ?? ""}
+        set { textField.imageName = newValue }
+    }
 
     public init(
         title: String,
