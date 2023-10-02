@@ -11,7 +11,6 @@ public final class ApplyFieldView: UIView {
 
     private let textField = ApplyTextField()
 
-
     public var title: String {
         get { label.text ?? "" }
         set { label.text = newValue }
@@ -36,7 +35,7 @@ public final class ApplyFieldView: UIView {
         self.imageName = imageName
         setUpView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

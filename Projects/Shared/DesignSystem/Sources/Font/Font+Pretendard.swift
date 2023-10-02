@@ -1,6 +1,7 @@
 import UIKit
 
 public extension UIFont {
+    // swiftlint:disable identifier_name
     enum FontSystem: Fontable {
         case d1
         case d2
