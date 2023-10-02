@@ -1,5 +1,4 @@
 import UIKit
-import ApplyFeature
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -11,11 +10,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)
-
-        let mainViewController = ApplyVC()
-        window?.rootViewController = mainViewController
-        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
