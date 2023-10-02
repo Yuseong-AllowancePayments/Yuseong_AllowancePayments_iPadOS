@@ -12,17 +12,17 @@ public final class ApplyFieldView: UIView {
     private let textField = ApplyTextField()
 
 
-    private var title: String {
+    public var title: String {
         get { label.text ?? "" }
         set { label.text = newValue }
     }
-    private var placeholder: String {
+    public var placeholder: String {
         get { textField.placeholder ?? "" }
         set { textField.placeholder = newValue }
     }
-    private var imageName: String = ""
+    public var imageName: String = ""
 
-    private init(
+    public init(
         title: String,
         placeholder: String,
         imageName: String
