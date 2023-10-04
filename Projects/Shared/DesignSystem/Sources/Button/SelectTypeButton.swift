@@ -23,15 +23,6 @@ private extension SelectTypeButton {
         self.layer.masksToBounds = true
         self.layer.cornerRadius = 16
         self.layer.borderWidth = 1
-//        if self.isSelected {
-//            self.layer.borderColor = UIColor.color(.primary(.primary)).cgColor
-//            self.setTitleColor(.color(.primary(.primary)), for: .normal)
-//            self.backgroundColor = .color(.primary(.background))
-//        } else {
-//            self.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
-//            self.setTitleColor(.color(.grayScale(.g60)), for: .normal)
-//            self.backgroundColor = .white
-//        }
     }
 }
 
