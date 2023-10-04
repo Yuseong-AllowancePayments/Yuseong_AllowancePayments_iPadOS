@@ -7,9 +7,6 @@ public final class SelectTypeButton: UIButton {
         self.title = title
         super.init(frame: .zero)
         setUpButton()
-        self.addAction {
-            self.isSelected.toggle()
-        }
     }
 
     required init?(coder: NSCoder) {
@@ -23,10 +20,5 @@ private extension SelectTypeButton {
         self.layer.masksToBounds = true
         self.layer.cornerRadius = 16
         self.layer.borderWidth = 1
-    }
-}
-
-public extension UIControl {
-    func addAction(for controlEvents: UIControl.Event = .touchUpInside, _ closure: @escaping () -> Void) {
     }
 }
