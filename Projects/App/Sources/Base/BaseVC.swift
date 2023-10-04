@@ -1,6 +1,9 @@
 import UIKit
+import RxSwift
+import RxCocoa
 
 open class BaseVC: UIViewController {
+    let disposeBag = DisposeBag()
     let bound = UIScreen.main.bounds
 
     open override func viewDidLoad() {
