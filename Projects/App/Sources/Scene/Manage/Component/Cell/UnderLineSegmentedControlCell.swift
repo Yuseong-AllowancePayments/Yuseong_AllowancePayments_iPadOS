@@ -2,6 +2,7 @@ import UIKit
 import Then
 import SnapKit
 import DesignSystem
+
 class UnderLineSegmentedControlCell: UICollectionViewCell {
 
     static let identifier = "UnderLineSegmentedControlCell"

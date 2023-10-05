@@ -2,6 +2,7 @@ import UIKit
 import Then
 import SnapKit
 import DesignSystem
+
 class DataTableViewCell: UITableViewCell {
 
     static let identifier = "DataTableViewCell"

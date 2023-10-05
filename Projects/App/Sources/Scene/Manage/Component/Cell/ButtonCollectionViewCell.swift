@@ -2,6 +2,7 @@ import UIKit
 import Then
 import SnapKit
 import DesignSystem
+
 class ButtonCollectionViewCell: UICollectionViewCell {
 
     static let identifier = "ButtonCollectionViewCell"

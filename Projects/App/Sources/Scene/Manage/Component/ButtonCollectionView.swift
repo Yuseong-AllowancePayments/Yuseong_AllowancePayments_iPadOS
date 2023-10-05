@@ -4,6 +4,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import DesignSystem
+
 final class ButtonCollectionView: UIView {
     private var categoryTitleList: [String]
 
