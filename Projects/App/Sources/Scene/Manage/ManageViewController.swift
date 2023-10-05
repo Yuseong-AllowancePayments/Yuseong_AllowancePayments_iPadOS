@@ -46,6 +46,10 @@ class ManageViewController: BaseVC {
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 24
     }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        buttonCollectionView.collectionView.collectionViewLayout.invalidateLayout()
+    }
     override func bind() {
         dataTableView.dataSource = self
     }
@@ -133,6 +137,7 @@ extension ManageViewController: UITableViewDataSource {
             residentNumber: "999999-9999999",
             address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
         )
+        cell.selectionStyle = .none
         return cell
     }
 }

@@ -77,7 +77,7 @@ extension ButtonCollectionView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width * 0.325, height: 76)
+        return CGSize(width: (UIScreen.main.bounds.width - 64) * 0.325, height: 76)
     }
 }
 
