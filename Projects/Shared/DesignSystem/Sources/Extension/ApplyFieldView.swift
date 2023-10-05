@@ -19,20 +19,20 @@ public final class ApplyFieldView: UIView {
         get { textField.placeholder ?? "" }
         set { textField.placeholder = newValue }
     }
-    private var imageName: String {
-        get { textField.imageName ?? ""}
-        set { textField.imageName = newValue }
+    private var image: String {
+        get { textField.image ?? "" }
+        set { textField.image = newValue }
     }
 
     public init(
         title: String,
         placeholder: String,
-        imageName: String
+        image: String
     ) {
         super.init(frame: .zero)
         self.title = title
         self.placeholder = placeholder
-        self.imageName = imageName
+        self.image = image
         setUpView()
     }
 
@@ -43,12 +43,12 @@ public final class ApplyFieldView: UIView {
     public static func applyTextFieldView(
         title: String,
         placeholder: String,
-        imageName: String
+        image: String
     ) {
         let fieldView = ApplyFieldView(
             title: title,
             placeholder: placeholder,
-            imageName: imageName
+            image: image
         )
 
         guard let window = UIApplication.currentWindow() else { return }
