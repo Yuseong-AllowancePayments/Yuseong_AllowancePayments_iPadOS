@@ -5,17 +5,17 @@ import Then
 import SnapKit
 import DesignSystem
 
-public class UnderLineSegmentedControl: UIView {
+final class UnderLineSegmentedControl: UIView {
 
     private var categoryTitleList: [String]
 
-    public let selectedIndex = PublishSubject<Int>()
+    let selectedIndex = PublishSubject<Int>()
 
-    public let itemSelected = PublishSubject<IndexPath>()
+    let itemSelected = PublishSubject<IndexPath>()
 
     private let disposeBag = DisposeBag()
 
-    public lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
 
@@ -52,7 +52,7 @@ public class UnderLineSegmentedControl: UIView {
         $0.backgroundColor = .color(.grayScale(.g20))
     }
 
-    public init(categoryTitleList: [String]) {
+    init(categoryTitleList: [String]) {
         self.categoryTitleList = categoryTitleList
         super.init(frame: .zero)
         collectionView.delegate = self
@@ -74,10 +74,10 @@ public class UnderLineSegmentedControl: UIView {
 }
 
 extension UnderLineSegmentedControl: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath

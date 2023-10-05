@@ -4,16 +4,16 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import DesignSystem
-class ButtonCollectionView: UIView {
+final class ButtonCollectionView: UIView {
     private var categoryTitleList: [String]
 
-    public let selectedIndex = PublishSubject<Int>()
+    let selectedIndex = PublishSubject<Int>()
 
-    public let itemSelected = PublishSubject<IndexPath>()
+    let itemSelected = PublishSubject<IndexPath>()
 
     private let disposeBag = DisposeBag()
 
-    public lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
 
@@ -46,7 +46,7 @@ class ButtonCollectionView: UIView {
         return collectionView
     }()
 
-    public init() {
+    init() {
         self.categoryTitleList = ["참전유공자 명예 수당", "참전유공자 배우자 수당", "보훈 예우 수당"]
         super.init(frame: .zero)
         collectionView.delegate = self
@@ -68,10 +68,10 @@ class ButtonCollectionView: UIView {
 }
 
 extension ButtonCollectionView: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath

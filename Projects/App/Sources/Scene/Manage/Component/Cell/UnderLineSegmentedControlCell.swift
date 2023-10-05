@@ -2,7 +2,7 @@ import UIKit
 import Then
 import SnapKit
 import DesignSystem
-public class UnderLineSegmentedControlCell: UICollectionViewCell {
+class UnderLineSegmentedControlCell: UICollectionViewCell {
 
     static let identifier = "UnderLineSegmentedControlCell"
 
@@ -17,7 +17,7 @@ public class UnderLineSegmentedControlCell: UICollectionViewCell {
         $0.alpha = 0.0
     }
 
-    public override var isSelected: Bool {
+    override var isSelected: Bool {
         didSet {
             UIView.animate(
                 withDuration: 0.2,

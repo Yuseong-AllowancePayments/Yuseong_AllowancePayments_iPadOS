@@ -2,7 +2,7 @@ import UIKit
 import Then
 import SnapKit
 import DesignSystem
-public class ButtonCollectionViewCell: UICollectionViewCell {
+class ButtonCollectionViewCell: UICollectionViewCell {
 
     static let identifier = "ButtonCollectionViewCell"
 
@@ -16,7 +16,7 @@ public class ButtonCollectionViewCell: UICollectionViewCell {
         $0.clipsToBounds = true
     }
 
-    public override var isSelected: Bool {
+    override var isSelected: Bool {
         didSet {
             UIView.animate(
                 withDuration: 0.1,
