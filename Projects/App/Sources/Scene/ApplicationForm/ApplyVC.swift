@@ -3,8 +3,6 @@ import SnapKit
 import Then
 import DesignSystem
 
-// swiftlint:disable type_body_length
-// swiftlint:disable function_body_length
 class ApplyVC: BaseVC {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -123,6 +121,7 @@ class ApplyVC: BaseVC {
                 self.navigationController?.popViewController(animated: true)
             }).disposed(by: disposeBag)
     }
+    // swiftlint:disable function_body_length
     override func setLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -219,4 +218,5 @@ class ApplyVC: BaseVC {
             $0.height.equalTo(60)
         }
     }
+    // swiftlint:enable function_body_length
 }

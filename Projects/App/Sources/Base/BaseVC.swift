@@ -14,9 +14,11 @@ open class BaseVC: UIViewController {
         configureVC()
         bind()
     }
+    // swiftlint:disable unneeded_override
     open override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
     }
+    // swiftlint:enable unneeded_override
 
     func addView() {}
     func setLayout() {}
