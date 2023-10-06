@@ -11,28 +11,28 @@ public final class ApplyFieldView: UIView {
 
     private let textField = ApplyTextField()
 
-    public var title: String {
+    private var title: String {
         get { label.text ?? "" }
         set { label.text = newValue }
     }
-    public var placeholder: String {
+    private var placeholder: String {
         get { textField.placeholder ?? "" }
         set { textField.placeholder = newValue }
     }
-    public var imageName: String {
-        get { textField.imageName ?? ""}
-        set { textField.imageName = newValue }
+    private var image: String {
+        get { textField.image ?? "" }
+        set { textField.image = newValue }
     }
 
     public init(
         title: String,
         placeholder: String,
-        imageName: String
+        image: String
     ) {
         super.init(frame: .zero)
         self.title = title
         self.placeholder = placeholder
-        self.imageName = imageName
+        self.image = image
         setUpView()
     }
 
@@ -43,12 +43,12 @@ public final class ApplyFieldView: UIView {
     public static func applyTextFieldView(
         title: String,
         placeholder: String,
-        imageName: String
+        image: String
     ) {
         let fieldView = ApplyFieldView(
             title: title,
             placeholder: placeholder,
-            imageName: imageName
+            image: image
         )
 
         guard let window = UIApplication.currentWindow() else { return }
@@ -59,7 +59,7 @@ public final class ApplyFieldView: UIView {
         [ label, textField ].forEach { self.addSubview($0) }
         setLayout()
         self.backgroundColor = .clear
-        self.alpha = 0
+        self.alpha = 1
     }
 
     func setLayout() {
@@ -69,10 +69,10 @@ public final class ApplyFieldView: UIView {
             label.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
             label.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
             label.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-            label.heightAnchor.constraint(equalTo: self.heightAnchor, constant: 21),
+            label.heightAnchor.constraint(equalToConstant: 21),
+            textField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
             textField.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
             textField.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-            textField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
             textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
         ])
     }

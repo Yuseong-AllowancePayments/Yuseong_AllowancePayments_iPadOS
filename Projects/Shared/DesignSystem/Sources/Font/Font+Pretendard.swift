@@ -21,6 +21,7 @@ public extension UIFont {
         case caption
         case code
     }
+    // swiftlint:enable identifier_name
 
     static func pretendard(_ style: FontSystem) -> UIFont {
         return style.font

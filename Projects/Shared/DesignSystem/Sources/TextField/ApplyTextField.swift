@@ -4,14 +4,14 @@ public final class ApplyTextField: UITextField {
     override public var placeholder: String? {
         didSet { setNeedsDisplay() }
     }
-    public var imageName: String? {
+    public var image: String? {
         didSet { setNeedsLayout() }
     }
 
-    public init(placeholder: String? = "", imageName: String? = "") {
+    public init(placeholder: String? = "", image: String? = nil) {
         super.init(frame: .zero)
         self.placeholder = placeholder
-        self.imageName = imageName
+        self.image = image
         setupTextField()
     }
 
@@ -41,7 +41,7 @@ public final class ApplyTextField: UITextField {
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
         setPlaceholderTextColor()
-        if imageName != "" || imageName != nil {
+        if image != "" {
             setFieldButton()
         }
     }
@@ -99,8 +99,7 @@ private extension ApplyTextField {
 
     func setFieldButton() {
         let button: UIButton = {
-            $0.setImage(UIImage(named: String(describing: imageName)), for: .normal)
-            $0.frame = CGRect(x: Int(self.frame.size.width)-36, y: 12, width: 24, height: 24)
+            $0.setImage(.Image.calendar, for: .normal)
             return $0
         }(UIButton())
         self.rightView = button

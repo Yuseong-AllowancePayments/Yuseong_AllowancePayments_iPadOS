@@ -25,7 +25,7 @@ class DataTableViewCell: UITableViewCell {
     private lazy var addressLabel = PaddingLabel().then {
         $0.setDataCellLabel()
     }
-
+    // swiftlint:disable function_parameter_count
     func setupView(
         number: String,
         administrativeBuilding: String,
@@ -42,6 +42,7 @@ class DataTableViewCell: UITableViewCell {
         residentNumberLabel.text = residentNumber
         addressLabel.text = address
     }
+    // swiftlint:enable function_parameter_count
 }
 
 private extension DataTableViewCell {
