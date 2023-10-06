@@ -166,6 +166,16 @@ class ApplyVC: BaseVC {
                 $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
                 $0.height.equalTo(77)
             }
+            etcField.snp.updateConstraints {
+                $0.top.equalTo(ownerNameField.snp.bottom).offset(40)
+                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+                $0.height.equalTo(179)
+            }
+            finishButton.snp.updateConstraints {
+                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+                $0.top.equalTo(etcField.snp.bottom).offset(48)
+                $0.height.equalTo(60)
+            }
         } else {
             backView.snp.updateConstraints {
                 $0.edges.equalTo(scrollView.contentLayoutGuide)
@@ -207,6 +217,16 @@ class ApplyVC: BaseVC {
                 $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
                 $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
                 $0.height.equalTo(77)
+            }
+            etcField.snp.updateConstraints {
+                $0.top.equalTo(ownerNameField.snp.bottom).offset(40)
+                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+                $0.height.equalTo(179)
+            }
+            finishButton.snp.updateConstraints {
+                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+                $0.top.equalTo(etcField.snp.bottom).offset(48)
+                $0.height.equalTo(60)
             }
         }
     }
