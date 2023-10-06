@@ -123,121 +123,14 @@ class ApplyVC: BaseVC {
                 self.navigationController?.popViewController(animated: true)
             }).disposed(by: disposeBag)
     }
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        if UIDevice.current.orientation.isPortrait {
-            backView.snp.updateConstraints {
-                $0.edges.equalTo(scrollView.contentLayoutGuide)
-                $0.width.equalTo(UIScreen.main.bounds.width)
-                $0.height.equalTo(UIScreen.main.bounds.height * 1.104)
-            }
-            nameField.snp.updateConstraints {
-                $0.top.equalTo(titleLabel.snp.bottom).offset(64)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            affairsNumField.snp.updateConstraints {
-                $0.top.equalTo(nameField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            acquisitionDateField.snp.updateConstraints {
-                $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            moveInDateField.snp.updateConstraints {
-                $0.top.equalTo(acquisitionDateField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            depositTypeField.snp.updateConstraints {
-                $0.top.equalTo(moveInDateField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            ownerNameField.snp.updateConstraints {
-                $0.top.equalTo(depositTypeField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            etcField.snp.updateConstraints {
-                $0.top.equalTo(ownerNameField.snp.bottom).offset(40)
-                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.height.equalTo(179)
-            }
-            finishButton.snp.updateConstraints {
-                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.top.equalTo(etcField.snp.bottom).offset(48)
-                $0.height.equalTo(60)
-            }
-        } else {
-            backView.snp.updateConstraints {
-                $0.edges.equalTo(scrollView.contentLayoutGuide)
-                $0.width.equalTo(UIScreen.main.bounds.width)
-                $0.height.equalTo(UIScreen.main.bounds.height * 1.562)
-            }
-            nameField.snp.updateConstraints {
-                $0.top.equalTo(titleLabel.snp.bottom).offset(64)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            affairsNumField.snp.updateConstraints {
-                $0.top.equalTo(nameField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            acquisitionDateField.snp.updateConstraints {
-                $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            moveInDateField.snp.updateConstraints {
-                $0.top.equalTo(acquisitionDateField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            depositTypeField.snp.updateConstraints {
-                $0.top.equalTo(moveInDateField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            ownerNameField.snp.updateConstraints {
-                $0.top.equalTo(depositTypeField.snp.bottom).offset(40)
-                $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
-                $0.height.equalTo(77)
-            }
-            etcField.snp.updateConstraints {
-                $0.top.equalTo(ownerNameField.snp.bottom).offset(40)
-                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.height.equalTo(179)
-            }
-            finishButton.snp.updateConstraints {
-                $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-                $0.top.equalTo(etcField.snp.bottom).offset(48)
-                $0.height.equalTo(60)
-            }
-        }
-    }
     override func setLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         backView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.width.equalTo(UIScreen.main.bounds.width)
-            $0.height.equalTo(UIScreen.main.bounds.height * 1.444)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.bounds.height * 1.18)
         }
         backButton.snp.makeConstraints {
             $0.width.height.equalTo(36)
@@ -252,66 +145,66 @@ class ApplyVC: BaseVC {
         nameField.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(64)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         sinField.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(64)
-            $0.left.equalTo(nameField.snp.right).offset(UIScreen.main.bounds.width * 0.029)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         affairsNumField.snp.makeConstraints {
             $0.top.equalTo(nameField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         acquisitionDateField.snp.makeConstraints {
             $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         applicationDateField.snp.makeConstraints {
             $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
-            $0.left.equalTo(acquisitionDateField.snp.right).offset(UIScreen.main.bounds.width * 0.029)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         moveInDateField.snp.makeConstraints {
             $0.top.equalTo(acquisitionDateField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         addressField.snp.makeConstraints {
             $0.top.equalTo(acquisitionDateField.snp.bottom).offset(40)
-            $0.left.equalTo(moveInDateField.snp.right).offset(UIScreen.main.bounds.width * 0.029)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         depositTypeField.snp.makeConstraints {
             $0.top.equalTo(moveInDateField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         bankField.snp.makeConstraints {
             $0.top.equalTo(addressField.snp.bottom).offset(40)
-            $0.left.equalTo(depositTypeField.snp.right).offset(UIScreen.main.bounds.width * 0.029)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         ownerNameField.snp.makeConstraints {
             $0.top.equalTo(depositTypeField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.423)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         accountField.snp.makeConstraints {
             $0.top.equalTo(bankField.snp.bottom).offset(40)
-            $0.left.equalTo(ownerNameField.snp.right).offset(UIScreen.main.bounds.width * 0.029)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
