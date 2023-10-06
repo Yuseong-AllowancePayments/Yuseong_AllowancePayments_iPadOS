@@ -82,23 +82,6 @@ class SelectTypeVC: BaseVC {
                 self.navigationController?.pushViewController(nextVC, animated: true)
             }).disposed(by: disposeBag)
     }
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        if UIDevice.current.orientation.isLandscape {
-            partnerButton.snp.updateConstraints {
-                $0.top.equalTo(subTitleLabel.snp.bottom).offset(64)
-                $0.centerX.equalToSuperview()
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.274)
-                $0.height.equalTo(160)
-            }
-        } else {
-            partnerButton.snp.updateConstraints {
-                $0.top.equalTo(subTitleLabel.snp.bottom).offset(64)
-                $0.centerX.equalToSuperview()
-                $0.width.equalTo(UIScreen.main.bounds.width * 0.274)
-                $0.height.equalTo(160)
-            }
-        }
-    }
     override func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(UIScreen.main.bounds.height * 0.242)
@@ -119,19 +102,19 @@ class SelectTypeVC: BaseVC {
         partnerButton.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(64)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.274)
+            $0.width.equalToSuperview().multipliedBy(0.276)
             $0.height.equalTo(160)
         }
         honorButton.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(64)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(partnerButton.snp.left).offset(UIScreen.main.bounds.width * (-0.023))
+            $0.left.equalToSuperview().inset(64)
+            $0.right.equalTo(partnerButton.snp.left).offset(-24)
             $0.height.equalTo(160)
         }
         respectButton.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(64)
-            $0.left.equalTo(partnerButton.snp.right).offset(UIScreen.main.bounds.width * 0.023)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.left.equalTo(partnerButton.snp.right).offset(24)
+            $0.right.equalToSuperview().inset(64)
             $0.height.equalTo(160)
         }
         nextButton.snp.makeConstraints {
