@@ -4,7 +4,7 @@ import Then
 import DesignSystem
 import RxCocoa
 
-class SelectTypeVC: BaseVC {
+class SelectTypeViewController: BaseVC {
     private let selectedType = BehaviorRelay<String>(value: "참전유공자 명예 수당")
     private let titleLabel = UILabel().then {
         $0.text = "보훈 수당 지급 신청서 작성"
@@ -47,7 +47,7 @@ class SelectTypeVC: BaseVC {
 
     override func configureVC() {
         self.navigationController?.isNavigationBarHidden = true
-        let nextVC = ApplyVC()
+        let nextVC = ApplyViewController()
         selectedType
             .subscribe(onNext: { [self] value in
                 if value == "참전유공자 명예 수당" {

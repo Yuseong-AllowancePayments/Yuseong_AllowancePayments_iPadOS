@@ -3,7 +3,7 @@ import SnapKit
 import Then
 import DesignSystem
 
-class ApplyVC: BaseVC {
+class ApplyViewController: BaseVC {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -129,7 +129,7 @@ class ApplyVC: BaseVC {
         backView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height * 1.18)
+            $0.height.equalTo(1250)
         }
         backButton.snp.makeConstraints {
             $0.width.height.equalTo(36)
