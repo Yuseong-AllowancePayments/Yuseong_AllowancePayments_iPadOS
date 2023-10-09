@@ -5,8 +5,7 @@ import SnapKit
 import Then
 import DesignSystem
 
-class SelectTypeViewController: BaseVC, Stepper {
-    var steps = PublishRelay<Step>()
+class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     private let selectedType = BehaviorRelay<String>(value: "참전유공자 명예 수당")
     private let titleLabel = UILabel().then {
         $0.text = "보훈 수당 지급 신청서 작성"
@@ -34,22 +33,15 @@ class SelectTypeViewController: BaseVC, Stepper {
         $0.layer.masksToBounds = true
         $0.backgroundColor = .color(.primary(.primary))
     }
-
-    override func addView() {
-        [
-            titleLabel,
-            subTitleLabel,
-            managerLoginButton,
-            partnerButton,
-            honorButton,
-            respectButton,
-            nextButton
-        ].forEach { view.addSubview($0) }
+    override func bind() {
+        let input = SelectTypeViewModel.Input(
+            managerLoginButtonDidTap: managerLoginButton.rx.tap.asSignal(),
+            nextButtonDidTap: nextButton.rx.tap.asSignal()
+        )
+        _ = self.viewModel.transform(input)
     }
-
     override func configureVC() {
         self.navigationController?.isNavigationBarHidden = true
-        let nextVC = ApplyViewController()
         selectedType
             .subscribe(onNext: { [self] value in
                 if value == "참전유공자 명예 수당" {
@@ -78,14 +70,18 @@ class SelectTypeViewController: BaseVC, Stepper {
             .subscribe(onNext: { [self] in
                 selectedType.accept("보훈 예우 수당")
             }).disposed(by: disposeBag)
-        managerLoginButton.rx.tap
-            .map { YuseongAllowanceStep.manageIsRequired }
-            .bind(to: steps)
-            .disposed(by: disposeBag)
-        nextButton.rx.tap
-            .map { YuseongAllowanceStep.applyIsRequired }
-            .bind(to: steps)
-            .disposed(by: disposeBag)
+    }
+
+    override func addView() {
+        [
+            titleLabel,
+            subTitleLabel,
+            managerLoginButton,
+            partnerButton,
+            honorButton,
+            respectButton,
+            nextButton
+        ].forEach { view.addSubview($0) }
     }
     override func setLayout() {
         titleLabel.snp.makeConstraints {

@@ -28,7 +28,10 @@ extension SelectTypeFlow {
     private func navigationToSelectType() -> FlowContributors {
         let selectTypeViewController = container.resolve(SelectTypeViewController.self)!
         self.rootViewController.viewControllers.append(selectTypeViewController)
-        return .one(flowContributor: .contribute(withNext: selectTypeViewController))
+        return .one(flowContributor: .contribute(
+            withNextPresentable: selectTypeViewController,
+            withNextStepper: selectTypeViewController.viewModel
+        ))
     }
 
     private func navigationToManage() -> FlowContributors {

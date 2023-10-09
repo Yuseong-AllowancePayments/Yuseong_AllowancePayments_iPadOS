@@ -28,7 +28,10 @@ class ManageFlow: Flow {
 
 extension ManageFlow {
     private func navigationToManage() -> FlowContributors {
-        return .one(flowContributor: .contribute(withNext: rootViewController))
+        return .one(flowContributor: .contribute(
+            withNextPresentable: rootViewController,
+            withNextStepper: rootViewController.viewModel
+        ))
     }
 
     private func backToScene() -> FlowContributors {

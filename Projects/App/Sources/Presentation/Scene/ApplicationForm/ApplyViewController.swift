@@ -6,8 +6,7 @@ import RxFlow
 import RxCocoa
 import RxSwift
 
-class ApplyViewController: BaseVC, Stepper {
-    let steps = PublishRelay<Step>()
+class ApplyViewController: BaseVC<ApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -96,7 +95,10 @@ class ApplyViewController: BaseVC, Stepper {
     private let spacer = UIView().then {
         $0.backgroundColor = .red
     }
-
+    override func bind() {
+        let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
+        _ = viewModel.transform(input)
+    }
     override func addView() {
         view.addSubview(scrollView)
         scrollView.addSubview(backView)
@@ -117,13 +119,6 @@ class ApplyViewController: BaseVC, Stepper {
             etcField,
             finishButton
         ].forEach { backView.addSubview($0) }
-    }
-
-    override func configureVC() {
-        backButton.rx.tap
-            .map { YuseongAllowanceStep.selectTypeIsRequired }
-            .bind(to: steps)
-            .disposed(by: disposeBag)
     }
     // swiftlint:disable function_body_length
     override func setLayout() {

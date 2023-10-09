@@ -1,5 +1,4 @@
 import UIKit
-
 import RxFlow
 
 class AppFlow: Flow {
@@ -29,9 +28,7 @@ class AppFlow: Flow {
 }
 
 extension AppFlow {
-
     private func navigationToSelectType() -> FlowContributors {
-
         let selectTypeFlow = SelectTypeFlow()
 
         Flows.use(selectTypeFlow, when: .created) { [weak self] root in

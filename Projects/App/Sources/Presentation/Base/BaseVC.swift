@@ -1,27 +1,30 @@
 import UIKit
 import RxSwift
-import RxCocoa
+import DesignSystem
 
-open class BaseVC: UIViewController {
-    let disposeBag = DisposeBag()
-    let bound = UIScreen.main.bounds
+class BaseVC<ViewModel>: UIViewController {
+    var viewModel: ViewModel
+    var disposeBag: DisposeBag = DisposeBag()
 
-    open override func viewDidLoad() {
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         addView()
         setLayout()
         configureVC()
         bind()
     }
-    // swiftlint:disable unneeded_override
-    open override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
-    // swiftlint:enable unneeded_override
 
-    func addView() {}
-    func setLayout() {}
     func configureVC() {}
     func bind() {}
+    func addView() {}
+    func setLayout() {}
 }
