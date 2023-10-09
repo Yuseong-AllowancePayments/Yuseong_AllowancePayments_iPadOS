@@ -30,8 +30,7 @@ final class ButtonCollectionView: UIView {
 
         collectionView.register(ButtonCollectionViewCell.self,
                                 forCellWithReuseIdentifier: ButtonCollectionViewCell.identifier)
-
-        collectionView.isScrollEnabled = true
+        collectionView.isScrollEnabled = false
         Observable.just(categoryTitleList)
             .bind(to: collectionView.rx.items(
                 cellIdentifier: ButtonCollectionViewCell.identifier,
@@ -77,7 +76,7 @@ extension ButtonCollectionView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: (UIScreen.main.bounds.width - 64) * 0.325, height: 76)
+        return CGSize(width: (UIScreen.main.bounds.width - 88) / 3, height: 76)
     }
 }
 

@@ -2,15 +2,19 @@ import UIKit
 import SnapKit
 import Then
 import DesignSystem
+import RxFlow
+import RxCocoa
+import RxSwift
 
-class ApplyViewController: BaseVC {
+class ApplyViewController: BaseVC, Stepper {
+    let steps = PublishRelay<Step>()
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
     private let backView = UIView().then {
         $0.backgroundColor = .white
     }
-    private let backButton = UIButton().then {
+    private let backButton = UIButton(type: .system).then {
         $0.tintColor = .black
         let state = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
         let image = UIImage(systemName: "chevron.left", withConfiguration: state)
@@ -117,9 +121,9 @@ class ApplyViewController: BaseVC {
 
     override func configureVC() {
         backButton.rx.tap
-            .subscribe(onNext: {
-                self.navigationController?.popViewController(animated: true)
-            }).disposed(by: disposeBag)
+            .map { YuseongAllowanceStep.selectTypeIsRequired }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
     }
     // swiftlint:disable function_body_length
     override func setLayout() {

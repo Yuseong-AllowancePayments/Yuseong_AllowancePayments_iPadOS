@@ -1,10 +1,12 @@
 import UIKit
+import RxFlow
+import RxCocoa
 import SnapKit
 import Then
 import DesignSystem
-import RxCocoa
 
-class SelectTypeViewController: BaseVC {
+class SelectTypeViewController: BaseVC, Stepper {
+    var steps = PublishRelay<Step>()
     private let selectedType = BehaviorRelay<String>(value: "참전유공자 명예 수당")
     private let titleLabel = UILabel().then {
         $0.text = "보훈 수당 지급 신청서 작성"
@@ -76,11 +78,14 @@ class SelectTypeViewController: BaseVC {
             .subscribe(onNext: { [self] in
                 selectedType.accept("보훈 예우 수당")
             }).disposed(by: disposeBag)
+        managerLoginButton.rx.tap
+            .map { YuseongAllowanceStep.manageIsRequired }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
         nextButton.rx.tap
-            .bind(onNext: {
-                nextVC.titleLabel.text = "\(self.selectedType.value) 지급 신청서 작성"
-                self.navigationController?.pushViewController(nextVC, animated: true)
-            }).disposed(by: disposeBag)
+            .map { YuseongAllowanceStep.applyIsRequired }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
     }
     override func setLayout() {
         titleLabel.snp.makeConstraints {
