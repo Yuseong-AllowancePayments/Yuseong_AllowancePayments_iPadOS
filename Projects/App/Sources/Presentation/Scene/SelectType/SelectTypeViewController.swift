@@ -36,7 +36,8 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     override func bind() {
         let input = SelectTypeViewModel.Input(
             managerLoginButtonDidTap: managerLoginButton.rx.tap.asSignal(),
-            nextButtonDidTap: nextButton.rx.tap.asSignal()
+            nextButtonDidTap: nextButton.rx.tap.asSignal(),
+            selectType: selectedType
         )
         _ = self.viewModel.transform(input)
     }

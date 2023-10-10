@@ -43,6 +43,5 @@ extension AppFlow {
             withNextPresentable: selectTypeFlow,
             withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.selectTypeIsRequired))
         )
-
     }
 }

@@ -3,7 +3,7 @@ import RxSwift
 import RxFlow
 
 enum YuseongAllowanceStep: Step {
-    case applyIsRequired
+    case applyIsRequired(selectType: String)
 
     case manageIsRequired
 

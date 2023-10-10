@@ -16,8 +16,8 @@ class ApplyFlow: Flow {
     func navigate(to step: RxFlow.Step) -> RxFlow.FlowContributors {
         guard let step = step as? YuseongAllowanceStep else { return .none }
         switch step {
-        case .applyIsRequired:
-            return self.navigationToApply()
+        case .applyIsRequired(let selectType):
+            return self.navigationToApply(selectType: selectType)
         case .selectTypeIsRequired:
             return self.backToScene()
         default:
@@ -27,7 +27,8 @@ class ApplyFlow: Flow {
 }
 
 extension ApplyFlow {
-    private func navigationToApply() -> FlowContributors {
+    private func navigationToApply(selectType: String) -> FlowContributors {
+        rootViewController.titleLabel.text = selectType
         return .one(flowContributor: .contribute(
             withNextPresentable: rootViewController,
             withNextStepper: rootViewController.viewModel)

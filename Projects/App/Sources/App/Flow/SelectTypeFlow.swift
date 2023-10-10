@@ -18,8 +18,8 @@ class SelectTypeFlow: Flow {
             return self.navigationToSelectType()
         case .manageIsRequired:
             return self.navigationToManage()
-        case .applyIsRequired:
-            return self.navigationToApply()
+        case .applyIsRequired(let selectType):
+            return self.navigationToApply(selectType: selectType)
         }
     }
 }
@@ -45,14 +45,14 @@ extension SelectTypeFlow {
         )
     }
 
-    private func navigationToApply() -> FlowContributors {
+    private func navigationToApply(selectType: String) -> FlowContributors {
         let applyFlow = ApplyFlow()
         Flows.use(applyFlow, when: .created) { [weak self] root in
             self?.rootViewController.pushViewController(root, animated: true)
         }
         return .one(flowContributor: .contribute(
             withNextPresentable: applyFlow,
-            withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.applyIsRequired))
+            withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.applyIsRequired(selectType: selectType)))
         )
     }
 }

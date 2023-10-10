@@ -10,6 +10,7 @@ class SelectTypeViewModel: BaseVM, Stepper {
     struct Input {
         let managerLoginButtonDidTap: Signal<Void>
         let nextButtonDidTap: Signal<Void>
+        let selectType: BehaviorRelay<String>
     }
     struct Output {
     }
@@ -20,7 +21,7 @@ class SelectTypeViewModel: BaseVM, Stepper {
             .bind(to: steps)
             .disposed(by: disposeBag)
         input.nextButtonDidTap.asObservable()
-            .map { YuseongAllowanceStep.applyIsRequired }
+            .map { YuseongAllowanceStep.applyIsRequired(selectType: input.selectType.value) }
             .bind(to: steps)
             .disposed(by: disposeBag)
         return Output()
