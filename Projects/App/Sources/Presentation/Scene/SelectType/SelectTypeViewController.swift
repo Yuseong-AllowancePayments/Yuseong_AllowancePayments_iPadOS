@@ -1,10 +1,11 @@
 import UIKit
+import RxFlow
+import RxCocoa
 import SnapKit
 import Then
 import DesignSystem
-import RxCocoa
 
-class SelectTypeViewController: BaseVC {
+class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     private let selectedType = BehaviorRelay<String>(value: "참전유공자 명예 수당")
     private let titleLabel = UILabel().then {
         $0.text = "보훈 수당 지급 신청서 작성"
@@ -32,22 +33,16 @@ class SelectTypeViewController: BaseVC {
         $0.layer.masksToBounds = true
         $0.backgroundColor = .color(.primary(.primary))
     }
-
-    override func addView() {
-        [
-            titleLabel,
-            subTitleLabel,
-            managerLoginButton,
-            partnerButton,
-            honorButton,
-            respectButton,
-            nextButton
-        ].forEach { view.addSubview($0) }
+    override func bind() {
+        let input = SelectTypeViewModel.Input(
+            managerLoginButtonDidTap: managerLoginButton.rx.tap.asSignal(),
+            nextButtonDidTap: nextButton.rx.tap.asSignal(),
+            selectType: selectedType
+        )
+        _ = self.viewModel.transform(input)
     }
-
     override func configureVC() {
         self.navigationController?.isNavigationBarHidden = true
-        let nextVC = ApplyViewController()
         selectedType
             .subscribe(onNext: { [self] value in
                 if value == "참전유공자 명예 수당" {
@@ -76,11 +71,18 @@ class SelectTypeViewController: BaseVC {
             .subscribe(onNext: { [self] in
                 selectedType.accept("보훈 예우 수당")
             }).disposed(by: disposeBag)
-        nextButton.rx.tap
-            .bind(onNext: {
-                nextVC.titleLabel.text = "\(self.selectedType.value) 지급 신청서 작성"
-                self.navigationController?.pushViewController(nextVC, animated: true)
-            }).disposed(by: disposeBag)
+    }
+
+    override func addView() {
+        [
+            titleLabel,
+            subTitleLabel,
+            managerLoginButton,
+            partnerButton,
+            honorButton,
+            respectButton,
+            nextButton
+        ].forEach { view.addSubview($0) }
     }
     override func setLayout() {
         titleLabel.snp.makeConstraints {

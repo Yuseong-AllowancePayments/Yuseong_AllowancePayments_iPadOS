@@ -1,7 +1,14 @@
 import UIKit
+import Swinject
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    static var continer: Container {
+            let continer = Container()
+            continer.registerDependencies()
+            return continer
+        }
 
     func application(
         _ application: UIApplication,

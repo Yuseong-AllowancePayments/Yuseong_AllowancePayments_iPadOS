@@ -1,19 +1,27 @@
 import UIKit
+import RxFlow
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var coordinator = FlowCoordinator()
 
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)
-        let mainViewController = BaseNC(rootViewController: SelectTypeViewController())
-        window?.rootViewController = mainViewController
+        guard let windowScence = (scene as? UIWindowScene) else { return }
+        window = UIWindow(windowScene: windowScence)
+        window?.windowScene = windowScence
+        window?.backgroundColor = .systemBackground
+        let appFlow = AppFlow()
+        self.coordinator.coordinate(flow: appFlow, with: AppStepper())
         window?.makeKeyAndVisible()
+        Flows.use(appFlow, when: .created) { [weak self] root in
+            self?.window?.rootViewController = root
+            self?.window?.makeKeyAndVisible()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}

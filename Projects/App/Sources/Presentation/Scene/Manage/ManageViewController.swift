@@ -1,11 +1,12 @@
 import UIKit
+import RxFlow
 import SnapKit
 import Then
 import RxSwift
 import RxCocoa
 import DesignSystem
 
-class ManageViewController: BaseVC {
+class ManageViewController: BaseVC<ManageViewModel> {
     private let titleLabel = UILabel().then {
         $0.text = "참전유공자 배우자 수당 지급 대상자 조회"
         $0.textColor = .Colors.GrayScale.g90.color

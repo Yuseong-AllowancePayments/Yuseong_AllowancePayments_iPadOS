@@ -2,15 +2,18 @@ import UIKit
 import SnapKit
 import Then
 import DesignSystem
+import RxFlow
+import RxCocoa
+import RxSwift
 
-class ApplyViewController: BaseVC {
+class ApplyViewController: BaseVC<ApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
     private let backView = UIView().then {
         $0.backgroundColor = .white
     }
-    private let backButton = UIButton().then {
+    private let backButton = UIButton(type: .system).then {
         $0.tintColor = .black
         let state = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
         let image = UIImage(systemName: "chevron.left", withConfiguration: state)
@@ -92,7 +95,10 @@ class ApplyViewController: BaseVC {
     private let spacer = UIView().then {
         $0.backgroundColor = .red
     }
-
+    override func bind() {
+        let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
+        _ = viewModel.transform(input)
+    }
     override func addView() {
         view.addSubview(scrollView)
         scrollView.addSubview(backView)
@@ -113,13 +119,6 @@ class ApplyViewController: BaseVC {
             etcField,
             finishButton
         ].forEach { backView.addSubview($0) }
-    }
-
-    override func configureVC() {
-        backButton.rx.tap
-            .subscribe(onNext: {
-                self.navigationController?.popViewController(animated: true)
-            }).disposed(by: disposeBag)
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
