@@ -16,10 +16,12 @@ class SelectTypeFlow: Flow {
         switch step {
         case .selectTypeIsRequired:
             return self.navigationToSelectType()
-        case .manageIsRequired:
-            return self.navigationToManage()
+        case .managerSignInIsRequired:
+            return self.navigationToManagerSignIn()
         case .applyIsRequired(let selectType):
             return self.navigationToApply(selectType: selectType)
+        default:
+            return .none
         }
     }
 }
@@ -34,17 +36,6 @@ extension SelectTypeFlow {
         ))
     }
 
-    private func navigationToManage() -> FlowContributors {
-        let manageFlow = ManageFlow()
-        Flows.use(manageFlow, when: .created) { [weak self] root in
-            self?.rootViewController.pushViewController(root, animated: true)
-        }
-        return .one(flowContributor: .contribute(
-            withNextPresentable: manageFlow,
-            withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.manageIsRequired))
-        )
-    }
-
     private func navigationToApply(selectType: String) -> FlowContributors {
         let applyFlow = ApplyFlow()
         Flows.use(applyFlow, when: .created) { [weak self] root in
@@ -53,6 +44,17 @@ extension SelectTypeFlow {
         return .one(flowContributor: .contribute(
             withNextPresentable: applyFlow,
             withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.applyIsRequired(selectType: selectType)))
+        )
+    }
+
+    private func navigationToManagerSignIn() -> FlowContributors {
+        let managerSignInFlow = ManagerSignInFlow()
+        Flows.use(managerSignInFlow, when: .created) { [weak self] root in
+            self?.rootViewController.pushViewController(root, animated: true)
+        }
+        return .one(flowContributor: .contribute(
+            withNextPresentable: managerSignInFlow,
+            withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.managerSignInIsRequired))
         )
     }
 }

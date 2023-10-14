@@ -8,4 +8,6 @@ enum YuseongAllowanceStep: Step {
     case manageIsRequired
 
     case selectTypeIsRequired
+
+    case managerSignInIsRequired
 }
