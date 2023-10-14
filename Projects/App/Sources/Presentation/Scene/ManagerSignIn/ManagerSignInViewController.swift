@@ -5,7 +5,8 @@ import DesignSystem
 
 class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
     private let logoImage = UIImageView().then {
-        $0.image = UIImage(named: "AppIcon")
+        $0.image = .Image.logo
+        $0.backgroundColor = .red
     }
     override func addView() {
         [

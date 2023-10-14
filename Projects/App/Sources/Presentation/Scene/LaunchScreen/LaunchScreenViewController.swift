@@ -5,7 +5,7 @@ import SnapKit
 
 class LaunchScreenViewController: UIViewController {
     private let logoImageView = UIImageView().then {
-        $0.image = .Image.logo
+        $0.image = .Image.textLogo
         $0.contentMode = .scaleAspectFit
     }
     override func viewDidLoad() {
