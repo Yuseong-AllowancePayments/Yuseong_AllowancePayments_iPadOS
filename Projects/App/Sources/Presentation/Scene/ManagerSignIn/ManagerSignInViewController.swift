@@ -5,7 +5,7 @@ import DesignSystem
 
 class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
     private let titleView = UIView().then {
-        $0.contentMode = .scaleAspectFit
+        $0.backgroundColor = .clear
     }
     private let logoImage = UIImageView().then {
         $0.image = .Image.logo
@@ -54,26 +54,30 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
     }
     override func setLayout() {
         titleView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().inset(432)
+            $0.centerX.equalToSuperview().offset(-255)
+            $0.top.equalTo(view.snp.centerY).offset(-251)
         }
         contentLabel.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).offset(94)
-            $0.left.equalToSuperview().inset(272)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.468)
         }
         idField.snp.makeConstraints {
             $0.top.equalTo(contentLabel.snp.bottom).offset(40)
-            $0.left.right.equalToSuperview().inset(272)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.468)
             $0.height.equalTo(77)
         }
         pwField.snp.makeConstraints {
             $0.top.equalTo(idField.snp.bottom).offset(28)
-            $0.left.right.equalToSuperview().inset(272)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.468)
             $0.height.equalTo(77)
         }
         signInButton.snp.makeConstraints {
             $0.top.equalTo(pwField.snp.bottom).offset(40)
-            $0.left.right.equalToSuperview().inset(272)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.468)
             $0.height.equalTo(60)
         }
         logoImage.snp.makeConstraints {            $0.left.equalToSuperview()

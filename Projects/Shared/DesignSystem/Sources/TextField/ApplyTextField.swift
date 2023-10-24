@@ -42,7 +42,7 @@ public final class ApplyTextField: UITextField {
         super.draw(rect)
         setPlaceholderTextColor()
         if image != "" {
-            setFieldButton()
+            setFieldButton(image ?? "")
         }
     }
 
@@ -97,9 +97,9 @@ private extension ApplyTextField {
         )
     }
 
-    func setFieldButton() {
+    func setFieldButton(_ image: String) {
         let button: UIButton = {
-            $0.setImage(.Image.calendar, for: .normal)
+            $0.setImage(image == "calendar" ? .Image.calendar : .Image.invisible, for: .normal)
             return $0
         }(UIButton())
         self.rightView = button
