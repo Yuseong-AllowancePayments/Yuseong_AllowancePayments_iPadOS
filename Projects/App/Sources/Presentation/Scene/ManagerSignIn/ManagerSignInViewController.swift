@@ -7,7 +7,7 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
     private let titleView = UIView().then {
         $0.backgroundColor = .clear
     }
-    private let logoImage = UIImageView().then {
+    private let logoImageView = UIImageView().then {
         $0.image = .Image.logo
     }
     private let titleLabel = UILabel().then {
@@ -20,12 +20,12 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
         $0.textColor = .color(.grayScale(.g90))
         $0.font = .pretendard(.h2)
     }
-    private let idField = ApplyFieldView(
+    private let idTextField = ApplyFieldView(
         title: "아이디",
         placeholder: "아이디를 입력해 주세요.",
         image: ""
     )
-    private let pwField = ApplyFieldView(
+    private let pwTextField = ApplyFieldView(
         title: "비밀번호",
         placeholder: "비밀번호를 입력해 주세요.",
         image: "invisible"
@@ -41,12 +41,12 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
         [
             titleView,
             contentLabel,
-            idField,
-            pwField,
+            idTextField,
+            pwTextField,
             signInButton
         ].forEach { view.addSubview($0) }
         [
-            logoImage,
+            logoImageView,
             titleLabel
         ].forEach { titleView.addSubview($0) }
     }
@@ -62,32 +62,32 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.468)
         }
-        idField.snp.makeConstraints {
+        idTextField.snp.makeConstraints {
             $0.top.equalTo(contentLabel.snp.bottom).offset(40)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.468)
             $0.height.equalTo(77)
         }
-        pwField.snp.makeConstraints {
-            $0.top.equalTo(idField.snp.bottom).offset(28)
+        pwTextField.snp.makeConstraints {
+            $0.top.equalTo(idTextField.snp.bottom).offset(28)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.468)
             $0.height.equalTo(77)
         }
         signInButton.snp.makeConstraints {
-            $0.top.equalTo(pwField.snp.bottom).offset(40)
+            $0.top.equalTo(pwTextField.snp.bottom).offset(40)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.468)
             $0.height.equalTo(60)
         }
-        logoImage.snp.makeConstraints {            $0.left.equalToSuperview()
+        logoImageView.snp.makeConstraints {            $0.left.equalToSuperview()
             $0.centerY.equalToSuperview()
             $0.width.equalTo(52)
             $0.height.equalTo(46)
         }
         titleLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.left.equalTo(logoImage.snp.right).offset(8)
+            $0.left.equalTo(logoImageView.snp.right).offset(8)
         }
     }
 }
