@@ -18,7 +18,7 @@ class ManageFlow: Flow {
         switch step {
         case .manageIsRequired:
             return self.navigationToManage()
-        case .selectTypeIsRequired:
+        case .managerSignInIsRequired:
             return self.backToScene()
         default:
             return .none

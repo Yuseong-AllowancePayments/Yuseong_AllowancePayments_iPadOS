@@ -15,7 +15,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
         $0.text = "신청하실 수당 유형을 선택해주세요."
         $0.font = .pretendard(.p2)
     }
-    private let managerLoginButton = UIButton().then {
+    private let managerSignInButton = UIButton().then {
         $0.setTitle("담당자 로그인", for: .normal)
         $0.layer.cornerRadius = 8
         $0.setTitleColor(.color(.grayScale(.g70)), for: .normal)
@@ -35,7 +35,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     }
     override func bind() {
         let input = SelectTypeViewModel.Input(
-            managerLoginButtonDidTap: managerLoginButton.rx.tap.asSignal(),
+            managerSignInButtonDidTap: managerSignInButton.rx.tap.asSignal(),
             nextButtonDidTap: nextButton.rx.tap.asSignal(),
             selectType: selectedType
         )
@@ -77,7 +77,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
         [
             titleLabel,
             subTitleLabel,
-            managerLoginButton,
+            managerSignInButton,
             partnerButton,
             honorButton,
             respectButton,
@@ -86,7 +86,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     }
     override func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(UIScreen.main.bounds.height * 0.242)
+            $0.top.equalTo(view.snp.centerY).offset(-273)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(50)
         }
@@ -95,8 +95,8 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(26)
         }
-        managerLoginButton.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(UIScreen.main.bounds.height * 0.242)
+        managerSignInButton.snp.makeConstraints {
+            $0.top.equalTo(view.snp.centerY).offset(-273)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.width.equalTo(119)
             $0.height.equalTo(40)
@@ -123,7 +123,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(partnerButton.snp.bottom).offset(72)
             $0.height.equalTo(60)
-            $0.width.equalTo(UIScreen.main.bounds.width * 0.234)
+            $0.width.equalToSuperview().multipliedBy(0.234)
         }
     }
 }

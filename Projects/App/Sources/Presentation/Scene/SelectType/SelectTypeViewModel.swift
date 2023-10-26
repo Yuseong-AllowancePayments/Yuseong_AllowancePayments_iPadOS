@@ -8,7 +8,7 @@ class SelectTypeViewModel: BaseVM, Stepper {
     private let disposeBag = DisposeBag()
 
     struct Input {
-        let managerLoginButtonDidTap: Signal<Void>
+        let managerSignInButtonDidTap: Signal<Void>
         let nextButtonDidTap: Signal<Void>
         let selectType: BehaviorRelay<String>
     }
@@ -16,8 +16,8 @@ class SelectTypeViewModel: BaseVM, Stepper {
     }
 
     func transform(_ input: Input) -> Output {
-        input.managerLoginButtonDidTap.asObservable()
-            .map { YuseongAllowanceStep.manageIsRequired }
+        input.managerSignInButtonDidTap.asObservable()
+            .map { YuseongAllowanceStep.managerSignInIsRequired }
             .bind(to: steps)
             .disposed(by: disposeBag)
         input.nextButtonDidTap.asObservable()

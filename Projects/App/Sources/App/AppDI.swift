@@ -18,6 +18,9 @@ extension Container {
         self.register(SelectTypeViewModel.self) { _ in
             return SelectTypeViewModel()
         }
+        self.register(ManagerSignInViewModel.self) { _ in
+            return ManagerSignInViewModel()
+        }
     }
 
     private func registerViewController() {
@@ -32,6 +35,9 @@ extension Container {
         }
         self.register(SelectTypeViewController.self) { resolver in
             return SelectTypeViewController(viewModel: resolver.resolve(SelectTypeViewModel.self)!)
+        }
+        self.register(ManagerSignInViewController.self) { resolver in
+            return ManagerSignInViewController(viewModel: resolver.resolve(ManagerSignInViewModel.self)!)
         }
     }
 }
