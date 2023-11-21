@@ -15,7 +15,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
         $0.text = "신청하실 수당 유형을 선택해주세요."
         $0.font = .pretendard(.p2)
     }
-    private let managerSignInButton = UIButton().then {
+    private let managerSignInButton = UIButton(type: .system).then {
         $0.setTitle("담당자 로그인", for: .normal)
         $0.layer.cornerRadius = 8
         $0.setTitleColor(.color(.grayScale(.g70)), for: .normal)
