@@ -48,7 +48,8 @@ class DBHelper {
                account TEXT NOT NULL,
                account_type TEXT NOT NULL,
                account_owner TEXT NOT NULL,
-               application_date TEXT NOT NULL
+               application_date TEXT NOT NULL,
+               note TEXT
                );
 
                CREATE TABLE IF NOT EXISTS spouseTable(
@@ -65,7 +66,8 @@ class DBHelper {
                bank_name TEXT NOT NULL,
                account_owner TEXT NOT NULL,
                account TEXT NOT NULL,
-               application_date TEXT NOT NULL
+               application_date TEXT NOT NULL,
+               note TEXT
                );
 
                CREATE TABLE IF NOT EXISTS courtesyTable(
@@ -77,11 +79,12 @@ class DBHelper {
                post_address TEXT NOT NULL,
                road_address TEXT NOT NULL,
                administrative_address TEXT,
-               phone_nnum TEXT NOT NULL
+               phone_num TEXT NOT NULL
                bank_name TEXT NOT NULL,
                account_owner TEXT NOT NULL,
                account TEXT NOT NULL,
-               application_date TEXT NOT NULL
+               application_date TEXT NOT NULL,
+               note TEXT
                );
                """
         var statement: OpaquePointer? = nil
@@ -101,22 +104,22 @@ class DBHelper {
         sqlite3_finalize(statement)
     }
 
-    func insertIntoVeteran(
-        _ registration_num: String,
-        _ name: String,
-        _ birth_date: String,
-        _ post_address: String,
-        _ road_address: String,
-        _ administrative_address: String,
-        _ phone_num: String,
-        _ bank_name: String,
-        _ account: String,
-        _ account_type: String,
-        _ account_owner: String,
-        _ application_date: String
-    ) {
-        let query = "INSERT INTO veteranTable VALUES()"
-    }
+//    func insertIntoVeteran(
+//        _ registrationNum: String,
+//        _ name: String,
+//        _ birthDate: String,
+//        _ postAddress: String,
+//        _ roadAddress: String,
+//        _ administrativeAddress: String,
+//        _ phoneNum: String,
+//        _ bankName: String,
+//        _ account: String,
+//        _ accountType: String,
+//        _ accountOwner: String,
+//        _ applicationDate: String
+//    ) {
+//        let query = "INSERT INTO veteranTable VALUES()"
+//    }
 
     func dropTable(_ tableName: String) {
         let query = "DROP TABLE \(tableName)"
