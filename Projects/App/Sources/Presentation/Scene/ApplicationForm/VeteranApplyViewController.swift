@@ -35,14 +35,14 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "생년월일을 입력해주세요. 예)2023-01-01",
         image: ""
     )
-    private let registrationNumField = ApplyFieldView(
-        title: "참전등록번호",
-        placeholder: "참전등록번호를 입력해주세요.",
-        image: ""
-    )
     private let roadAddressField = ApplyFieldView(
         title: "주소",
         placeholder: "주소를 입력해주세요.",
+        image: ""
+    )
+    private let registrationNumField = ApplyFieldView(
+        title: "참전등록번호",
+        placeholder: "참전등록번호를 입력해주세요.",
         image: ""
     )
     private let phoneNumField = ApplyFieldView(
@@ -134,26 +134,26 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        registrationNumField.snp.makeConstraints {
+        roadAddressField.snp.makeConstraints {
             $0.top.equalTo(nameField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        roadAddressField.snp.makeConstraints {
-            $0.top.equalTo(registrationNumField.snp.bottom).offset(40)
+        registrationNumField.snp.makeConstraints {
+            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         phoneNumField.snp.makeConstraints {
-            $0.top.equalTo(registrationNumField.snp.bottom).offset(40)
+            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         bankNameField.snp.makeConstraints {
-            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
+            $0.top.equalTo(registrationNumField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
