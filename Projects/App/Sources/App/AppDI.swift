@@ -27,8 +27,14 @@ extension Container {
         self.register(LaunchScreenViewController.self) { _ in
             return LaunchScreenViewController()
         }
-        self.register(ApplyViewController.self) { resolver in
-            return ApplyViewController(viewModel: resolver.resolve(ApplyViewModel.self)!)
+        self.register(VeteranApplyViewController.self) { resolver in
+            return VeteranApplyViewController(viewModel: resolver.resolve(ApplyViewModel.self)!)
+        }
+        self.register(SpouseApplyViewController.self) { resolver in
+            return SpouseApplyViewController(viewModel: resolver.resolve(ApplyViewModel.self)!)
+        }
+        self.register(CourtesyApplyViewController.self) { resolver in
+            return CourtesyApplyViewController(viewModel: resolver.resolve(ApplyViewModel.self)!)
         }
         self.register(ManageViewController.self) { resolver in
             return ManageViewController(viewModel: resolver.resolve(ManageViewModel.self)!)

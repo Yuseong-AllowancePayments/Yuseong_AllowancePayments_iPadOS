@@ -34,7 +34,7 @@ class DBHelper {
         return nil
     }
 
-    func createTable() {
+    func createVeteranTable() {
         let query = """
                CREATE TABLE IF NOT EXISTS veteranTable(
                registration_num TEXT PRIMARY KEY,
@@ -51,7 +51,26 @@ class DBHelper {
                application_date TEXT NOT NULL,
                note TEXT
                );
+               """
+        var statement: OpaquePointer? = nil
 
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            if sqlite3_step(statement) == SQLITE_DONE {
+                print("Creating table has been succesfully done. db: \(String(describing: self.db))")
+            } else {
+                let errorMessage = String(cString: sqlite3_errmsg(db))
+                print("\nsqlte3_step failure while creating table: \(errorMessage)")
+            }
+        } else {
+            let errorMessage = String(cString: sqlite3_errmsg(self.db))
+            print("\nsqlite3_prepare failure while creating table: \(errorMessage)")
+        }
+
+        sqlite3_finalize(statement)
+    }
+
+    func createSpouseTable() {
+        let query = """
                CREATE TABLE IF NOT EXISTS spouseTable(
                affairs_num TEXT PRIMARY KEY,
                applicant_name TEXT NOT NULL,
@@ -69,7 +88,26 @@ class DBHelper {
                application_date TEXT NOT NULL,
                note TEXT
                );
+               """
+        var statement: OpaquePointer? = nil
 
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            if sqlite3_step(statement) == SQLITE_DONE {
+                print("Creating table has been succesfully done. db: \(String(describing: self.db))")
+            } else {
+                let errorMessage = String(cString: sqlite3_errmsg(db))
+                print("\nsqlte3_step failure while creating table: \(errorMessage)")
+            }
+        } else {
+            let errorMessage = String(cString: sqlite3_errmsg(self.db))
+            print("\nsqlite3_prepare failure while creating table: \(errorMessage)")
+        }
+
+        sqlite3_finalize(statement)
+    }
+
+    func createCourtesyTable() {
+        let query = """
                CREATE TABLE IF NOT EXISTS courtesyTable(
                affairs_num TEXT PRIMARY KEY,
                veteran_type TEXT NOT NULL,
@@ -79,7 +117,7 @@ class DBHelper {
                post_address TEXT NOT NULL,
                road_address TEXT NOT NULL,
                administrative_address TEXT,
-               phone_num TEXT NOT NULL
+               phone_num TEXT NOT NULL,
                bank_name TEXT NOT NULL,
                account_owner TEXT NOT NULL,
                account TEXT NOT NULL,

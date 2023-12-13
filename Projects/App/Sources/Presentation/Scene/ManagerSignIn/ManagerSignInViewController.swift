@@ -80,7 +80,8 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
             $0.width.equalToSuperview().multipliedBy(0.468)
             $0.height.equalTo(60)
         }
-        logoImageView.snp.makeConstraints {            $0.left.equalToSuperview()
+        logoImageView.snp.makeConstraints {            
+            $0.left.equalToSuperview()
             $0.centerY.equalToSuperview()
             $0.width.equalTo(52)
             $0.height.equalTo(46)

@@ -37,14 +37,50 @@ extension SelectTypeFlow {
     }
 
     private func navigationToApply(selectType: String) -> FlowContributors {
-        let applyFlow = ApplyFlow()
-        Flows.use(applyFlow, when: .created) { [weak self] root in
-            self?.rootViewController.pushViewController(root, animated: true)
+        let veteranApplyFlow = VeteranApplyFlow()
+        let spouseApplyFlow = SpouseApplyFlow()
+        let courtesyApplyFlow = CourtesyApplyFlow()
+
+        switch selectType {
+        case "참전유공자 명예 수당":
+            Flows.use(veteranApplyFlow, when: .created) { [weak self] root in
+                self?.rootViewController.pushViewController(root, animated: true)
+            }
+            return .one(
+                flowContributor: .contribute(
+                    withNextPresentable: veteranApplyFlow,
+                    withNextStepper: OneStepper(
+                        withSingleStep: YuseongAllowanceStep.applyIsRequired(selectType: selectType)
+                    )
+                )
+            )
+        case "참전유공자 배우자 수당":
+            Flows.use(spouseApplyFlow, when: .created) { [weak self] root in
+                self?.rootViewController.pushViewController(root, animated: true)
+            }
+            return .one(
+                flowContributor: .contribute(
+                    withNextPresentable: spouseApplyFlow,
+                    withNextStepper: OneStepper(
+                        withSingleStep: YuseongAllowanceStep.applyIsRequired(selectType: selectType)
+                    )
+                )
+            )
+        case "보훈 예우 수당":
+            Flows.use(courtesyApplyFlow, when: .created) { [weak self] root in
+                self?.rootViewController.pushViewController(root, animated: true)
+            }
+            return .one(
+                flowContributor: .contribute(
+                    withNextPresentable: courtesyApplyFlow,
+                    withNextStepper: OneStepper(
+                        withSingleStep: YuseongAllowanceStep.applyIsRequired(selectType: selectType)
+                    )
+                )
+            )
+        default:
+            return .none
         }
-        return .one(flowContributor: .contribute(
-            withNextPresentable: applyFlow,
-            withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.applyIsRequired(selectType: selectType)))
-        )
     }
 
     private func navigationToManagerSignIn() -> FlowContributors {
