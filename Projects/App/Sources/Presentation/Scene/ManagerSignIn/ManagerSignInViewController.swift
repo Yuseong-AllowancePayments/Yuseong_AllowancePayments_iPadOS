@@ -2,6 +2,7 @@ import UIKit
 import SnapKit
 import Then
 import DesignSystem
+import RxSwift
 
 class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
     private let titleView = UIView().then {
@@ -78,7 +79,29 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
         ].forEach { ellipsisBackView.addSubview($0) }
     }
     override func configureVC() {
-        
+        let ellipsis = [
+            firstEllipsisImage,
+            secondEllipsisImage,
+            thirdEllipsisImage,
+            fourthEllipsisImage
+        ]
+        pinTextField.rx.text.orEmpty
+            .subscribe(onNext: { text in
+                if text.count == 0 {
+                    ellipsis[...].forEach { all in
+                        all.tintColor = .color(.grayScale(.g30))
+                    }
+                } else if text.count > 4 {
+                    self.pinTextField.text = String(text.prefix(4))
+                } else {
+                    ellipsis[...(text.count-1)].forEach { focus in
+                        focus.tintColor = .color(.grayScale(.g50))
+                    }
+                    ellipsis[text.count...].forEach { notFocus in
+                        notFocus.tintColor = .color(.grayScale(.g30))
+                    }
+                }
+            }).disposed(by: disposeBag)
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
