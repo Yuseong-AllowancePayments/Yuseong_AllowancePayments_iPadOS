@@ -109,14 +109,14 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
         }
         honorButton.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(64)
-            $0.left.equalToSuperview().inset(64)
+            $0.width.equalToSuperview().multipliedBy(0.276)
             $0.right.equalTo(partnerButton.snp.left).offset(-24)
             $0.height.equalTo(160)
         }
         respectButton.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(64)
             $0.left.equalTo(partnerButton.snp.right).offset(24)
-            $0.right.equalToSuperview().inset(64)
+            $0.width.equalToSuperview().multipliedBy(0.276)
             $0.height.equalTo(160)
         }
         nextButton.snp.makeConstraints {
