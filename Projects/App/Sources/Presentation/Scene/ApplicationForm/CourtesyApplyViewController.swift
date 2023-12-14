@@ -35,6 +35,24 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "보훈 번호를 입력해주세요.",
         image: ""
     )
+    private let postAddressField = ApplyFieldView(
+        title: "신청인 우편번호",
+        placeholder: "우편번호 찾기 버튼을 눌러주세요.",
+        image: ""
+    )
+    private let findAddressButton = UIButton(type: .system).then {
+        $0.setTitle("우편번호 찾기", for: .normal)
+        $0.backgroundColor = .color(.grayScale(.g05))
+        $0.setTitleColor(.color(.grayScale(.g90)), for: .normal)
+        $0.layer.cornerRadius = 8
+        $0.layer.borderColor = UIColor.color(.grayScale(.g90)).cgColor
+        $0.layer.borderWidth = 1
+    }
+    private let roadAddressField = ApplyFieldView(
+        title: "신청인 상세 주소",
+        placeholder: "우편번호 찾기 후 상세 주소를 입력해주세요.",
+        image: ""
+    )
     private let applicantNameField = ApplyFieldView(
         title: "신청인 성명",
         placeholder: "신청인의 성명을 입력해주세요.",
@@ -42,7 +60,12 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
     )
     private let applicantBirthDateField = ApplyFieldView(
         title: "신청인 생년월일",
-        placeholder: "신청인의 생년월일을 입력해주세요. 예) 2023-01-01",
+        placeholder: "신청인의 생년월일을 입력해주세요.  예) 2023-01-01",
+        image: ""
+    )
+    private let applicantSinField = ApplyFieldView(
+        title: "신청인 주민등록번호",
+        placeholder: "신청인의 주민등록번호를 입력해주세요.",
         image: ""
     )
     private let applicantGenderField = ApplyFieldView(
@@ -53,16 +76,6 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
     private let phoneNumField = ApplyFieldView(
         title: "신청인 전화번호",
         placeholder: "신청인의 전화번호를 입력해주세요.",
-        image: ""
-    )
-    private let postAddressField = ApplyFieldView(
-        title: "우편 번호",
-        placeholder: "도로명 주소를 입력하면 자동 입력됩니다.",
-        image: ""
-    )
-    private let roadAddressField = ApplyFieldView(
-        title: "신청인 주소",
-        placeholder: "주소를 입력해주세요.",
         image: ""
     )
     private let bankNameField = ApplyFieldView(
@@ -80,19 +93,24 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "계좌 번호를 입력해주세요.",
         image: ""
     )
+    private let moveInField = ApplyFieldView(
+        title: "전입일",
+        placeholder: "전입일과 지역을 입력해주세요.  예) 2023-01-01(대전 서구)",
+        image: ""
+    )
     private let noticeLabel = UILabel().then {
-        $0.font = .pretendard(.h5)
-        $0.textColor = .black
+        $0.font = .pretendard(.h4)
+        $0.textColor = .color(.grayScale(.g90))
         $0.text = "아래는 보훈 대상자가 유족일 경우에만 입력해주세요."
     }
     private let relationField = ApplyFieldView(
         title: "가족 관계",
-        placeholder: "보훈 대상자와의 가족 관계를 입력해주세요. 예) 자녀",
+        placeholder: "보훈 대상자와의 가족 관계를 입력해주세요.  예) 자녀",
         image: ""
     )
     private let priorityField = ApplyFieldView(
         title: "선순위 유족 여부",
-        placeholder: "선순위 유족 여부를 입력해주세요. 예) 예",
+        placeholder: "선순위 유족 여부를 입력해주세요.  예) 예",
         image: ""
     )
     private let finishButton = UIButton().then {
@@ -114,15 +132,18 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
             titleLabel,
             veteranTypeField,
             affairsNumField,
+            postAddressField,
+            findAddressButton,
+            roadAddressField,
             applicantNameField,
             applicantBirthDateField,
+            applicantSinField,
             applicantGenderField,
             phoneNumField,
-            postAddressField,
-            roadAddressField,
             bankNameField,
             accountOwnerField,
             accountField,
+            moveInField,
             noticeLabel,
             relationField,
             priorityField,
@@ -137,7 +158,7 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
         backView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-            $0.height.equalTo(1250)
+            $0.height.equalTo(1500)
         }
         backButton.snp.makeConstraints {
             $0.width.height.equalTo(36)
@@ -161,62 +182,78 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        applicantNameField.snp.makeConstraints {
+        postAddressField.snp.makeConstraints {
             $0.top.equalTo(veteranTypeField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        applicantBirthDateField.snp.makeConstraints {
-            $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
+        findAddressButton.snp.makeConstraints {
+            $0.bottom.equalTo(postAddressField.snp.bottom).offset(-4)
             $0.left.equalTo(backView.snp.centerX).offset(15)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.height.equalTo(77)
-        }
-        applicantGenderField.snp.makeConstraints {
-            $0.top.equalTo(applicantNameField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
-            $0.height.equalTo(77)
-        }
-        phoneNumField.snp.makeConstraints {
-            $0.top.equalTo(applicantBirthDateField.snp.bottom).offset(40)
-            $0.left.equalTo(backView.snp.centerX).offset(15)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.height.equalTo(77)
-        }
-        postAddressField.snp.makeConstraints {
-            $0.top.equalTo(applicantGenderField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
-            $0.height.equalTo(77)
+            $0.width.equalTo(120)
+            $0.height.equalTo(40)
         }
         roadAddressField.snp.makeConstraints {
-            $0.top.equalTo(phoneNumField.snp.bottom).offset(40)
-            $0.left.equalTo(backView.snp.centerX).offset(15)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.top.equalTo(postAddressField.snp.bottom).offset(40)
+            $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        bankNameField.snp.makeConstraints {
-            $0.top.equalTo(postAddressField.snp.bottom).offset(40)
+        applicantNameField.snp.makeConstraints {
+            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        accountOwnerField.snp.makeConstraints {
+        applicantBirthDateField.snp.makeConstraints {
             $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        accountField.snp.makeConstraints {
-            $0.top.equalTo(bankNameField.snp.bottom).offset(40)
+        applicantSinField.snp.makeConstraints {
+            $0.top.equalTo(applicantNameField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
+        applicantGenderField.snp.makeConstraints {
+            $0.top.equalTo(applicantBirthDateField.snp.bottom).offset(40)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
+        phoneNumField.snp.makeConstraints {
+            $0.top.equalTo(applicantSinField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.height.equalTo(77)
+        }
+        bankNameField.snp.makeConstraints {
+            $0.top.equalTo(applicantGenderField.snp.bottom).offset(40)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
+        accountOwnerField.snp.makeConstraints {
+            $0.top.equalTo(phoneNumField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.height.equalTo(77)
+        }
+        accountField.snp.makeConstraints {
+            $0.top.equalTo(bankNameField.snp.bottom).offset(40)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
+        moveInField.snp.makeConstraints {
+            $0.top.equalTo(accountOwnerField.snp.bottom).offset(40)
+            $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
         noticeLabel.snp.makeConstraints {
-            $0.top.equalTo(accountField.snp.bottom).offset(52)
+            $0.top.equalTo(moveInField.snp.bottom).offset(52)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
         }
         relationField.snp.makeConstraints {
