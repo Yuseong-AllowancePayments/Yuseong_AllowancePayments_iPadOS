@@ -257,7 +257,7 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
             $0.height.equalTo(77)
         }
         noticeLabel.snp.makeConstraints {
-            $0.top.equalTo(moveInField.snp.bottom).offset(52)
+            $0.top.equalTo(moveInField.snp.bottom).offset(64)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
         }
         relationField.snp.makeConstraints {
