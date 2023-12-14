@@ -35,6 +35,11 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "생년월일을 입력해주세요. 예)2023-01-01",
         image: ""
     )
+    private let postAddressField = ApplyFieldView(
+        title: "우편 번호",
+        placeholder: "주소를 입력하면 자동 입력됩니다.",
+        image: ""
+    )
     private let roadAddressField = ApplyFieldView(
         title: "주소",
         placeholder: "주소를 입력해주세요.",
@@ -77,9 +82,6 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         $0.backgroundColor = .color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }
-    private let spacer = UIView().then {
-        $0.backgroundColor = .red
-    }
     override func bind() {
         let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
         _ = viewModel.transform(input)
@@ -93,6 +95,7 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
             nameField,
             birthDateField,
             registrationNumField,
+            postAddressField,
             roadAddressField,
             phoneNumField,
             bankNameField,
@@ -134,9 +137,15 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
+        postAddressField.snp.makeConstraints {
+            $0.top.equalTo(nameField.snp.bottom).offset(64)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.height.equalTo(77)
+        }
         roadAddressField.snp.makeConstraints {
             $0.top.equalTo(nameField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
@@ -178,7 +187,7 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         }
         finishButton.snp.makeConstraints {
             $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.top.equalTo(accountOwnerField.snp.bottom).offset(64)
+            $0.top.equalTo(accountOwnerField.snp.bottom).offset(78)
             $0.height.equalTo(60)
         }
     }

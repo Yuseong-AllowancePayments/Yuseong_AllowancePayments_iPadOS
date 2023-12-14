@@ -35,6 +35,11 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "신청인의 주민등록번호를 입력해주세요.",
         image: ""
     )
+    private let postAddressField = ApplyFieldView(
+        title: "우편 번호",
+        placeholder: "주소를 입력하면 자동 입력됩니다.",
+        image: ""
+    )
     private let roadAddressField = ApplyFieldView(
         title: "신청인 주소",
         placeholder: "신청인의 주소를 입력해주세요.",
@@ -87,9 +92,6 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
         $0.backgroundColor = .color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }
-    private let spacer = UIView().then {
-        $0.backgroundColor = .red
-    }
     override func bind() {
         let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
         _ = viewModel.transform(input)
@@ -102,6 +104,7 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
             titleLabel,
             applicantNameField,
             applicantSinField,
+            postAddressField,
             roadAddressField,
             warNameField,
             veteranNameField,
@@ -146,63 +149,69 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        roadAddressField.snp.makeConstraints {
-            $0.top.equalTo(applicantNameField.snp.bottom).offset(40)
+        postAddressField.snp.makeConstraints {
+            $0.top.equalTo(applicantNameField.snp.bottom).offset(64)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        warNameField.snp.makeConstraints {
-            $0.top.equalTo(applicantSinField.snp.bottom).offset(40)
+        roadAddressField.snp.makeConstraints {
+            $0.top.equalTo(applicantSinField.snp.bottom).offset(64)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
+        warNameField.snp.makeConstraints {
+            $0.top.equalTo(postAddressField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         veteranNameField.snp.makeConstraints {
             $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         affairsNumField.snp.makeConstraints {
             $0.top.equalTo(warNameField.snp.bottom).offset(40)
-            $0.left.equalTo(backView.snp.centerX).offset(15)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         veteranSinField.snp.makeConstraints {
             $0.top.equalTo(veteranNameField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         deathDateField.snp.makeConstraints {
             $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
-            $0.left.equalTo(backView.snp.centerX).offset(15)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         bankNameField.snp.makeConstraints {
             $0.top.equalTo(veteranSinField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
-            $0.height.equalTo(77)
-        }
-        accountOwnerField.snp.makeConstraints {
-            $0.top.equalTo(deathDateField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        accountField.snp.makeConstraints {
-            $0.top.equalTo(bankNameField.snp.bottom).offset(40)
+        accountOwnerField.snp.makeConstraints {
+            $0.top.equalTo(deathDateField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
+        accountField.snp.makeConstraints {
+            $0.top.equalTo(bankNameField.snp.bottom).offset(40)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
         finishButton.snp.makeConstraints {
             $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.top.equalTo(accountField.snp.bottom).offset(64)
+            $0.top.equalTo(accountField.snp.bottom).offset(78)
             $0.height.equalTo(60)
         }
     }
