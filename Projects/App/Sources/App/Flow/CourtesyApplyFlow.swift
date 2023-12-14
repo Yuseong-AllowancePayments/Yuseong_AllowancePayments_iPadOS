@@ -1,16 +1,16 @@
 import UIKit
 import RxFlow
 
-class ApplyFlow: Flow {
+class CourtesyApplyFlow: Flow {
     private let container = AppDelegate.continer
 
     var root: Presentable {
         self.rootViewController
     }
-    private let rootViewController: ApplyViewController
+    private let rootViewController: CourtesyApplyViewController
 
     init() {
-        rootViewController = container.resolve(ApplyViewController.self)!
+        rootViewController = container.resolve(CourtesyApplyViewController.self)!
     }
 
     func navigate(to step: RxFlow.Step) -> RxFlow.FlowContributors {
@@ -26,7 +26,7 @@ class ApplyFlow: Flow {
     }
 }
 
-extension ApplyFlow {
+extension CourtesyApplyFlow {
     private func navigationToApply(selectType: String) -> FlowContributors {
         rootViewController.titleLabel.text = selectType
         return .one(flowContributor: .contribute(

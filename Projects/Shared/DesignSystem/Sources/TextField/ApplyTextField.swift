@@ -23,8 +23,8 @@ public final class ApplyTextField: UITextField {
     override public func becomeFirstResponder() -> Bool {
         let didBecomeFirstResponder = super.becomeFirstResponder()
         if didBecomeFirstResponder {
-            self.layer.borderWidth = 1
-            self.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
+            self.layer.borderWidth = 1.5
+            self.layer.borderColor = UIColor.color(.grayScale(.g30)).cgColor
         }
         return didBecomeFirstResponder
     }
@@ -32,8 +32,8 @@ public final class ApplyTextField: UITextField {
     override public func resignFirstResponder() -> Bool {
         let didResignFirstResponder = super.resignFirstResponder()
         if didResignFirstResponder {
-            self.layer.borderWidth = 0
-            self.layer.borderColor = nil
+            self.layer.borderWidth = 1
+            self.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
         }
         return didResignFirstResponder
     }
@@ -99,7 +99,8 @@ private extension ApplyTextField {
 
     func setFieldButton(_ image: String) {
         let button: UIButton = {
-            $0.setImage(image == "calendar" ? .Image.calendar : .Image.invisible, for: .normal)
+//            $0.setImage(image == "map" ? .Image.mapPin : .Image.calendar, for: .normal)
+            $0.tintColor = .color(.grayScale(.g05))
             return $0
         }(UIButton())
         self.rightView = button

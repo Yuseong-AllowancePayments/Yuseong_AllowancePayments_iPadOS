@@ -6,7 +6,7 @@ import RxFlow
 import RxCocoa
 import RxSwift
 
-class ApplyViewController: BaseVC<ApplyViewModel> {
+class VeteranApplyViewController: BaseVC<ApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -30,48 +30,51 @@ class ApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "성명을 입력해주세요.",
         image: ""
     )
-    private let sinField = ApplyFieldView(
+    private let birthDateField = ApplyFieldView(
+        title: "생년월일",
+        placeholder: "생년월일을 입력해주세요.  예) 2023-01-01",
+        image: ""
+    )
+    private let sinNumField = ApplyFieldView(
         title: "주민등록번호",
         placeholder: "주민등록번호를 입력해주세요.",
         image: ""
     )
-    private let affairsNumField = ApplyFieldView(
-        title: "보훈 번호",
-        placeholder: "보훈 번호를 입력해주세요.",
+    private let registrationNumField = ApplyFieldView(
+        title: "참전등록번호",
+        placeholder: "참전등록번호를 입력해주세요.",
         image: ""
     )
-    private let acquisitionDateField = ApplyFieldView(
-        title: "보훈 자격 취득일",
-        placeholder: "보훈 자격 취득일을 선택해주세요.",
-        image: "calendar"
-    )
-    private let applicationDateField = ApplyFieldView(
-        title: "보훈 수당 신청일",
-        placeholder: "보훈 수당 신청일을 선택해주세요.",
-        image: "calendar"
-    )
-    private let moveInDateField = ApplyFieldView(
-        title: "전입일",
-        placeholder: "전입일을 선택해주세요.",
-        image: "calendar"
-    )
-    private let addressField = ApplyFieldView(
-        title: "주소",
-        placeholder: "도로명 주소를 입력해주세요.",
+    private let postAddressField = ApplyFieldView(
+        title: "우편번호",
+        placeholder: "우편번호 찾기 버튼을 눌러주세요.",
         image: ""
     )
-    private let depositTypeField = ApplyFieldView(
-        title: "입금 유형",
-        placeholder: "입금 유형을 입력해주세요.",
+    private let findAddressButton = UIButton(type: .system).then {
+        $0.setTitle("우편번호 찾기", for: .normal)
+        $0.backgroundColor = .color(.grayScale(.g05))
+        $0.setTitleColor(.color(.grayScale(.g90)), for: .normal)
+        $0.layer.cornerRadius = 8
+        $0.layer.borderColor = UIColor.color(.grayScale(.g90)).cgColor
+        $0.layer.borderWidth = 1
+    }
+    private let roadAddressField = ApplyFieldView(
+        title: "상세 주소",
+        placeholder: "우편번호 찾기 후 상세 주소를 입력해주세요.",
         image: ""
     )
-    private let bankField = ApplyFieldView(
+    private let phoneNumField = ApplyFieldView(
+        title: "전화번호",
+        placeholder: "전화번호를 입력해주세요.",
+        image: ""
+    )
+    private let bankNameField = ApplyFieldView(
         title: "은행명",
         placeholder: "은행명을 입력해주세요.",
         image: ""
     )
-    private let ownerNameField = ApplyFieldView(
-        title: "예금주",
+    private let accountOwnerField = ApplyFieldView(
+        title: "예금주 성명",
         placeholder: "예금주 성명을 입력해주세요.",
         image: ""
     )
@@ -80,9 +83,9 @@ class ApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "계좌 번호를 입력해주세요.",
         image: ""
     )
-    private let etcField = ApplyFieldView(
-        title: "비고(기타)",
-        placeholder: "비고 사항을 입력해주세요.",
+    private let moveInField = ApplyFieldView(
+        title: "전입일",
+        placeholder: "전입일과 지역을 입력해주세요.  예) 2023-01-01(대전 서구)",
         image: ""
     )
     private let finishButton = UIButton().then {
@@ -90,10 +93,8 @@ class ApplyViewController: BaseVC<ApplyViewModel> {
         $0.titleLabel?.font = .pretendard(.context)
         $0.titleLabel?.textColor = .white
         $0.backgroundColor = .color(.primary(.primary))
+        $0.titleLabel?.font = .pretendard(.p2)
         $0.layer.cornerRadius = 8
-    }
-    private let spacer = UIView().then {
-        $0.backgroundColor = .red
     }
     override func bind() {
         let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
@@ -106,19 +107,22 @@ class ApplyViewController: BaseVC<ApplyViewModel> {
             backButton,
             titleLabel,
             nameField,
-            sinField,
-            affairsNumField,
-            acquisitionDateField,
-            applicationDateField,
-            moveInDateField,
-            addressField,
-            depositTypeField,
-            bankField,
-            ownerNameField,
+            birthDateField,
+            sinNumField,
+            registrationNumField,
+            postAddressField,
+            findAddressButton,
+            roadAddressField,
+            phoneNumField,
+            bankNameField,
+            accountOwnerField,
             accountField,
-            etcField,
+            moveInField,
             finishButton
         ].forEach { backView.addSubview($0) }
+    }
+    override func configureVC() {
+        self.hideKeyboardWhenTappedAround()
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
@@ -146,74 +150,73 @@ class ApplyViewController: BaseVC<ApplyViewModel> {
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        sinField.snp.makeConstraints {
+        birthDateField.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(64)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        affairsNumField.snp.makeConstraints {
+        sinNumField.snp.makeConstraints {
             $0.top.equalTo(nameField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        acquisitionDateField.snp.makeConstraints {
-            $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
-            $0.height.equalTo(77)
-        }
-        applicationDateField.snp.makeConstraints {
-            $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
+        registrationNumField.snp.makeConstraints {
+            $0.top.equalTo(birthDateField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        moveInDateField.snp.makeConstraints {
-            $0.top.equalTo(acquisitionDateField.snp.bottom).offset(40)
+        postAddressField.snp.makeConstraints {
+            $0.top.equalTo(sinNumField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        addressField.snp.makeConstraints {
-            $0.top.equalTo(acquisitionDateField.snp.bottom).offset(40)
+        findAddressButton.snp.makeConstraints {
+            $0.bottom.equalTo(postAddressField.snp.bottom).offset(-4)
             $0.left.equalTo(backView.snp.centerX).offset(15)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.width.equalTo(120)
+            $0.height.equalTo(40)
+        }
+        roadAddressField.snp.makeConstraints {
+            $0.top.equalTo(postAddressField.snp.bottom).offset(40)
+            $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        depositTypeField.snp.makeConstraints {
-            $0.top.equalTo(moveInDateField.snp.bottom).offset(40)
+        phoneNumField.snp.makeConstraints {
+            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        bankField.snp.makeConstraints {
-            $0.top.equalTo(addressField.snp.bottom).offset(40)
+        accountOwnerField.snp.makeConstraints {
+            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        ownerNameField.snp.makeConstraints {
-            $0.top.equalTo(depositTypeField.snp.bottom).offset(40)
+        bankNameField.snp.makeConstraints {
+            $0.top.equalTo(phoneNumField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         accountField.snp.makeConstraints {
-            $0.top.equalTo(bankField.snp.bottom).offset(40)
+            $0.top.equalTo(accountOwnerField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        etcField.snp.makeConstraints {
-            $0.top.equalTo(ownerNameField.snp.bottom).offset(40)
+        moveInField.snp.makeConstraints {
+            $0.top.equalTo(bankNameField.snp.bottom).offset(40)
             $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.height.equalTo(179)
+            $0.height.equalTo(77)
         }
         finishButton.snp.makeConstraints {
             $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.top.equalTo(etcField.snp.bottom).offset(48)
+            $0.top.equalTo(moveInField.snp.bottom).offset(78)
             $0.height.equalTo(60)
         }
     }

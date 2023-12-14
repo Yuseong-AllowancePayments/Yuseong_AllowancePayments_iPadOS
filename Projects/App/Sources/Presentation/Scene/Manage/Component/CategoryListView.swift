@@ -23,6 +23,9 @@ class CategoryListView: UIView {
     }
     private let addressLabel = PaddingLabel().then {
         $0.setCategoryCellLabel(text: "주소")
+        $0.layer.cornerRadius = 12
+        $0.layer.maskedCorners = .layerMaxXMinYCorner
+        $0.clipsToBounds = true
     }
     override func layoutSubviews() {
         [
