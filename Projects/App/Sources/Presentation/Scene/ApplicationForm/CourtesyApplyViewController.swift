@@ -6,6 +6,7 @@ import RxFlow
 import RxCocoa
 import RxSwift
 
+// swiftlint:disable type_body_length
 class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -150,6 +151,9 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
             finishButton
         ].forEach { backView.addSubview($0) }
     }
+    override func configureVC() {
+        self.hideKeyboardWhenTappedAround()
+    }
     // swiftlint:disable function_body_length
     override func setLayout() {
         scrollView.snp.makeConstraints {
@@ -276,3 +280,4 @@ class CourtesyApplyViewController: BaseVC<ApplyViewModel> {
     }
     // swiftlint:enable function_body_length
 }
+// swiftlint:enable type_body_length

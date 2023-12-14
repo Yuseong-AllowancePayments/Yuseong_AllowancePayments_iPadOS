@@ -1,6 +1,7 @@
 import Foundation
 import SQLite3
 
+// swiftlint:disable identifier_name
 class DBHelper {
     static let shared = DBHelper()
 
@@ -16,7 +17,7 @@ class DBHelper {
     }
 
     private func createDB() -> OpaquePointer? {
-        var db: OpaquePointer? = nil
+        var db: OpaquePointer?
         do {
             let dbPath: String = try FileManager.default.url(
                 for: .documentDirectory,
@@ -37,22 +38,25 @@ class DBHelper {
     func createVeteranTable() {
         let query = """
                CREATE TABLE IF NOT EXISTS veteranTable(
-               registration_num TEXT PRIMARY KEY,
-               name TEXT NOT NULL,
-               birth_date TEXT NOT NULL,
-               post_address TEXT NOT NULL,
-               road_address TEXT NOT NULL,
-               administrative_address TEXT,
-               phone_num TEXT NOT NULL,
-               bank_name TEXT NOT NULL,
-               account TEXT NOT NULL,
-               account_type TEXT NOT NULL,
-               account_owner TEXT NOT NULL,
-               application_date TEXT NOT NULL,
-               note TEXT
+                    serial_num TEXT,
+                    name TEXT NOT NULL,
+                    birth_date TEXT NOT NULL,
+                    sin TEXT NOT NULL,
+                    registration_num TEXT PRIMARY KEY,
+                    post_address TEXT NOT NULL,
+                    road_address TEXT NOT NULL,
+                    administrative_address TEXT,
+                    phone_num TEXT NOT NULL,
+                    account_owner TEXT NOT NULL,
+                    bank_name TEXT NOT NULL,
+                    account TEXT NOT NULL,
+                    move_in_date TEXT NOT NULL,
+                    application_date TEXT NOT NULL,
+                    application_reason TEXT,
+                    note TEXT
                );
                """
-        var statement: OpaquePointer? = nil
+        var statement: OpaquePointer?
 
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
             if sqlite3_step(statement) == SQLITE_DONE {
@@ -72,24 +76,28 @@ class DBHelper {
     func createSpouseTable() {
         let query = """
                CREATE TABLE IF NOT EXISTS spouseTable(
-               affairs_num TEXT PRIMARY KEY,
-               applicant_name TEXT NOT NULL,
-               applicant_sin TEXT NOT NULL,
-               applicant_post_address TEXT NOT NULL,
-               applicant_road_address TEXT NOT NULL,
-               administrative_address TEXT,
-               veteran_name TEXT NOT NULL,
-               veteran_sin TEXT NOT NULL,
-               death_date TEXT NOT NULL,
-               war_name TEXT NOT NULL,
-               bank_name TEXT NOT NULL,
-               account_owner TEXT NOT NULL,
-               account TEXT NOT NULL,
-               application_date TEXT NOT NULL,
-               note TEXT
+                    serial_num TEXT,
+                    applicant_name TEXT NOT NULL,
+                    applicant_sin TEXT NOT NULL,
+                    applicant_phone_num TEXT NOT NULL,
+                    applicant_post_address TEXT NOT NULL,
+                    applicant_road_address TEXT NOT NULL,
+                    administrative_address TEXT,
+                    veteran_name TEXT NOT NULL,
+                    war_name TEXT NOT NULL,
+                    veteran_sin TEXT NOT NULL,
+                    affairs_num TEXT PRIMARY KEY,
+                    death_date TEXT NOT NULL,
+                    bank_name TEXT NOT NULL,
+                    account_owner TEXT NOT NULL,
+                    account TEXT NOT NULL,
+                    move_in_date TEXT NOT NULL,
+                    application_date TEXT NOT NULL,
+                    application_reason TEXT,
+                    note TEXT
                );
                """
-        var statement: OpaquePointer? = nil
+        var statement: OpaquePointer?
 
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
             if sqlite3_step(statement) == SQLITE_DONE {
@@ -109,23 +117,29 @@ class DBHelper {
     func createCourtesyTable() {
         let query = """
                CREATE TABLE IF NOT EXISTS courtesyTable(
-               affairs_num TEXT PRIMARY KEY,
-               veteran_type TEXT NOT NULL,
-               applicant_name TEXT NOT NULL,
-               birth_date TEXT NOT NULL,
-               gender TEXT NOT NULL,
-               post_address TEXT NOT NULL,
-               road_address TEXT NOT NULL,
-               administrative_address TEXT,
-               phone_num TEXT NOT NULL,
-               bank_name TEXT NOT NULL,
-               account_owner TEXT NOT NULL,
-               account TEXT NOT NULL,
-               application_date TEXT NOT NULL,
-               note TEXT
+                    serial_num TEXT,
+                    veteran_type TEXT NOT NULL,
+                    affairs_num TEXT PRIMARY KEY,
+                    post_address TEXT NOT NULL,
+                    road_address TEXT NOT NULL,
+                    administrative_address TEXT,
+                    applicant_name TEXT NOT NULL,
+                    birth_date TEXT NOT NULL,
+                    applicant_sin TEXT NOT NULL,
+                    gender TEXT NOT NULL,
+                    phone_num TEXT NOT NULL,
+                    bank_name TEXT NOT NULL,
+                    account_owner TEXT NOT NULL,
+                    account TEXT NOT NULL,
+                    move_in_date TEXT NOT NULL,
+                    relation TEXT,
+                    priority TEXT,
+                    application_date TEXT NOT NULL,
+                    application_reason TEXT,
+                    note TEXT
                );
                """
-        var statement: OpaquePointer? = nil
+        var statement: OpaquePointer?
 
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
             if sqlite3_step(statement) == SQLITE_DONE {
@@ -161,7 +175,7 @@ class DBHelper {
 
     func dropTable(_ tableName: String) {
         let query = "DROP TABLE \(tableName)"
-        var statement: OpaquePointer? = nil
+        var statement: OpaquePointer?
 
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
             if sqlite3_step(statement) == SQLITE_DONE {
@@ -174,3 +188,4 @@ class DBHelper {
         }
     }
 }
+// swiftlint:enable identifier_name

@@ -132,6 +132,9 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
             finishButton
         ].forEach { backView.addSubview($0) }
     }
+    override func configureVC() {
+        self.hideKeyboardWhenTappedAround()
+    }
     // swiftlint:disable function_body_length
     override func setLayout() {
         scrollView.snp.makeConstraints {

@@ -83,6 +83,11 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
     }
 
     override func configureVC() {
+        self.view.backgroundColor = .white
+        self.hideKeyboardWhenTappedAround()
+    }
+
+    override func bind() {
         let ellipsis = [
             firstEllipsisImage,
             secondEllipsisImage,
@@ -106,9 +111,6 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
                     }
                 }
             }).disposed(by: disposeBag)
-    }
-
-    override func bind() {
         signInButton.rx.tap
             .subscribe(onNext: {
                 var request = URLRequest(url: URL(string: "http://3.34.137.58:8080/auth/token")!)
@@ -125,7 +127,7 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
                     print("http Body Error")
                 }
 
-                URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+                URLSession.shared.dataTask(with: request) { [self] (_, response, _) in
                     guard let response = response as? HTTPURLResponse else { return }
                     if response.statusCode == 201 {
                         self.verificationResult.accept(true)
