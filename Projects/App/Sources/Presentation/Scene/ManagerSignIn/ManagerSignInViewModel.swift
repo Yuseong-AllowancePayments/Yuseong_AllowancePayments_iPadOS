@@ -8,11 +8,16 @@ class ManagerSignInViewModel: BaseVM, Stepper {
     private var disposeBag = DisposeBag()
 
     struct Input {
+        let isSucceedVerification: PublishRelay<Bool>
     }
     struct Output {
     }
 
     func transform(_ input: Input) -> Output {
+        input.isSucceedVerification.asObservable()
+            .map { _ in YuseongAllowanceStep.manageIsRequired }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
         return Output()
     }
 }

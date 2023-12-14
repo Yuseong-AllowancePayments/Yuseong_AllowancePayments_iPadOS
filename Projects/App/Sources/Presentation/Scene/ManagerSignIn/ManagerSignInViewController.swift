@@ -1,10 +1,12 @@
 import UIKit
+import RxRelay
 import SnapKit
 import Then
 import DesignSystem
 import RxSwift
 
 class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
+    private let verificationResult = PublishRelay<Bool>()
     private let titleView = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -58,6 +60,7 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
         $0.backgroundColor = .color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }
+
     override func addView() {
         [
             titleView,
@@ -78,6 +81,7 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
             pinTextField
         ].forEach { ellipsisBackView.addSubview($0) }
     }
+
     override func configureVC() {
         let ellipsis = [
             firstEllipsisImage,
@@ -103,6 +107,36 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
                 }
             }).disposed(by: disposeBag)
     }
+
+    override func bind() {
+        signInButton.rx.tap
+            .subscribe(onNext: {
+                var request = URLRequest(url: URL(string: "http://3.34.137.58:8080/auth/token")!)
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+                let parameter = [
+                    "pin": String(describing: self.pinTextField.text!)
+                ] as Dictionary
+
+                do {
+                    try request.httpBody = JSONSerialization.data(withJSONObject: parameter, options: [])
+                } catch {
+                    print("http Body Error")
+                }
+
+                URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+                    guard let response = response as? HTTPURLResponse else { return }
+                    if response.statusCode == 201 {
+                        self.verificationResult.accept(true)
+                    }
+                }.resume()
+            }).disposed(by: disposeBag)
+
+        let input = ManagerSignInViewModel.Input(isSucceedVerification: verificationResult)
+        _ = viewModel.transform(input)
+    }
+
     // swiftlint:disable function_body_length
     override func setLayout() {
         titleView.snp.makeConstraints {
