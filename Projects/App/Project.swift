@@ -38,7 +38,8 @@ let targets: [Target] = [
             .SPM.RxFlow,
             .SPM.SnapKit,
             .SPM.Then,
-            .SPM.Swinject
+            .SPM.Swinject,
+            .SPM.RealmSwift
         ],
         settings: .settings(base: env.baseSetting)
     )

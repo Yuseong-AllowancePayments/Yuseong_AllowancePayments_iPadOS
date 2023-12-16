@@ -11,4 +11,5 @@ public extension TargetDependency.SPM {
     static let SnapKit = TargetDependency.external(name: "SnapKit")
     static let Then = TargetDependency.external(name: "Then")
     static let Swinject = TargetDependency.external(name: "Swinject")
+    static let RealmSwift = TargetDependency.external(name: "RealmSwift")
 }

@@ -23,13 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            // Fallback on earlier versions
 //        }
 //        print(text.split(separator: "|"))
-        let dbHelper = DBHelper()
-        dbHelper.createVeteranTable()
-        dbHelper.createSpouseTable()
-        dbHelper.createCourtesyTable()
-//        dbHelper.dropTable("veteranTable")
-//        dbHelper.dropTable("spouseTable")
-//        dbHelper.dropTable("courtesyTable")
         let appFlow = AppFlow()
         self.coordinator.coordinate(flow: appFlow, with: AppStepper())
         window?.makeKeyAndVisible()
