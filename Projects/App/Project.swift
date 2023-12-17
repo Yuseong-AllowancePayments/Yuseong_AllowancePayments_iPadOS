@@ -41,7 +41,7 @@ let targets: [Target] = [
             .SPM.Swinject,
             .SPM.RealmSwift
         ],
-        settings: .settings(base: env.baseSetting)
+        settings: .settings(base: env.baseSetting.otherLinkerFlags(["-ObjC"]))
     )
 ]
 
