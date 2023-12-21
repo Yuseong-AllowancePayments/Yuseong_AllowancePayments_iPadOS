@@ -7,8 +7,27 @@ import RxCocoa
 import DesignSystem
 
 class ManageViewController: BaseVC<ManageViewModel> {
+    var bottomButtonType: BottomButtonType = .honor {
+        didSet {
+            dataTableView.reloadData()
+        }
+    }
+    var topButtonType: TopButtonType = .current {
+        didSet {
+            dataTableView.reloadData()
+        }
+    }
+    var currentWidth = 1080 {
+        didSet {
+            contentView.snp.remakeConstraints {
+                $0.edges.equalTo(scrollView.contentLayoutGuide)
+                $0.height.equalToSuperview()
+                $0.width.equalTo(currentWidth)
+            }
+        }
+    }
     private let titleLabel = UILabel().then {
-        $0.text = "참전유공자 배우자 수당 지급 대상자 조회"
+        $0.text = "참전유공자 명예 수당 지급 대상자 조회"
         $0.textColor = .Colors.GrayScale.g90.color
         $0.font = UIFont.pretendard(.h1)
     }
@@ -26,19 +45,35 @@ class ManageViewController: BaseVC<ManageViewModel> {
         $0.backgroundColor = UIColor.color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }
+    private let uploadButton = UIButton(type: .system).then {
+        $0.setTitle("엑셀파일 업로드", for: .normal)
+        $0.setTitleColor(UIColor.color(.grayScale(.g70)), for: .normal)
+        $0.backgroundColor = UIColor.color(.grayScale(.g10))
+        $0.layer.cornerRadius = 8
+    }
     private let scrollView = UIScrollView().then {
         $0.showsHorizontalScrollIndicator = false
     }
     private let contentView = UIView().then {
         $0.backgroundColor = .white
     }
-    private let categoryListView = CategoryListView()
 
-    private let dataTableView = UITableView().then {
+    private let dataTableView = UITableView(frame: .zero, style: .plain).then {
         $0.rowHeight = 56
-        $0.register(DataTableViewCell.self, forCellReuseIdentifier: DataTableViewCell.identifier)
+        $0.register(DefaultDataTableViewCell.self, forCellReuseIdentifier: DefaultDataTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
+        $0.tableFooterView = .init(frame: .init(x: 0, y: 0, width: 0, height: 120))
+        $0.sectionHeaderHeight = 56
+        $0.register(
+            DefaultHeaderFooterView.self,
+            forHeaderFooterViewReuseIdentifier: DefaultHeaderFooterView.identifier
+        )
+        $0.register(
+            HonorHeaderFooterView.self,
+            forHeaderFooterViewReuseIdentifier: HonorHeaderFooterView.identifier
+        )
+        $0.sectionHeaderTopPadding = 0
     }
     private let buttonCollectionView = ButtonCollectionView().then {
         $0.backgroundColor = .white
@@ -50,8 +85,23 @@ class ManageViewController: BaseVC<ManageViewModel> {
         super.viewWillTransition(to: size, with: coordinator)
         buttonCollectionView.collectionView.collectionViewLayout.invalidateLayout()
     }
+    override func configureVC() {
+        self.buttonCollectionView.selectedIndex.subscribe(onNext: { [weak self] in
+            self?.titleLabel.text = "\($0.rawValue) 지급 대상자 조회"
+            self?.bottomButtonType = $0
+            print($0)
+        }).disposed(by: disposeBag)
+        self.underLineSegmentedControl.selectedIndex.subscribe(onNext: { [weak self] in
+            self?.topButtonType = $0
+            print($0)
+        })
+        .disposed(by: disposeBag)
+    }
     override func bind() {
+        print(bottomButtonType)
+        print(topButtonType)
         dataTableView.dataSource = self
+        dataTableView.delegate = self
     }
 
     override func addView() {
@@ -59,13 +109,13 @@ class ManageViewController: BaseVC<ManageViewModel> {
             titleLabel,
             noticeLabel,
             underLineSegmentedControl,
+            uploadButton,
             printButton,
             scrollView,
             buttonCollectionView
         ].forEach { self.view.addSubview($0) }
         scrollView.addSubview(contentView)
         [
-            categoryListView,
             dataTableView
         ].forEach { contentView.addSubview($0) }
         scrollView.contentSize = contentView.frame.size
@@ -84,7 +134,13 @@ class ManageViewController: BaseVC<ManageViewModel> {
             $0.top.equalTo(noticeLabel.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(64)
             $0.height.equalTo(50)
-            $0.trailing.equalTo(printButton.snp.leading).offset(-36)
+            $0.trailing.equalTo(uploadButton.snp.leading).offset(-36)
+        }
+        uploadButton.snp.makeConstraints {
+            $0.top.equalTo(noticeLabel.snp.bottom).offset(34)
+            $0.trailing.equalTo(printButton.snp.leading).offset(-14)
+            $0.height.equalTo(40)
+            $0.width.equalTo(137)
         }
         printButton.snp.makeConstraints {
             $0.top.equalTo(noticeLabel.snp.bottom).offset(34)
@@ -97,19 +153,13 @@ class ManageViewController: BaseVC<ManageViewModel> {
             $0.top.equalTo(underLineSegmentedControl.snp.bottom).offset(36)
             $0.trailing.bottom.equalToSuperview()
         }
-        contentView.snp.makeConstraints {
+        contentView.snp.updateConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.height.equalToSuperview()
-            $0.width.equalTo(1070)
+            $0.width.equalTo(currentWidth)
         }
-        categoryListView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
-            $0.height.equalTo(56)
-        }
-        dataTableView.snp.makeConstraints {
-            $0.top.equalTo(categoryListView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+        dataTableView.snp.updateConstraints {
+            $0.edges.equalToSuperview()
         }
         buttonCollectionView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -119,16 +169,16 @@ class ManageViewController: BaseVC<ManageViewModel> {
     }
 }
 
-extension ManageViewController: UITableViewDataSource {
+extension ManageViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 30
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: DataTableViewCell.identifier,
+            withIdentifier: DefaultDataTableViewCell.identifier,
             for: indexPath
-        ) as? DataTableViewCell else { return UITableViewCell() }
+        ) as? DefaultDataTableViewCell else { return UITableViewCell() }
         cell.setupView(
             number: "9999",
             administrativeBuilding: "lorem ipsumdollar",
@@ -139,5 +189,43 @@ extension ManageViewController: UITableViewDataSource {
         )
         cell.selectionStyle = .none
         return cell
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if topButtonType == .new {
+            switch bottomButtonType {
+            case .honor:
+                guard let header = tableView.dequeueReusableHeaderFooterView(
+                    withIdentifier: HonorHeaderFooterView.identifier
+                ) as? HonorHeaderFooterView else {
+                    return UIView()
+                }
+                currentWidth = 2550
+                return header
+            case .veteransAffairs:
+                guard let header = tableView.dequeueReusableHeaderFooterView(
+                    withIdentifier: DefaultHeaderFooterView.identifier
+                ) as? DefaultHeaderFooterView else {
+                    return UIView()
+                }
+                currentWidth = 1080
+                return header
+            case .wife:
+                guard let header = tableView.dequeueReusableHeaderFooterView(
+                    withIdentifier: DefaultHeaderFooterView.identifier
+                ) as? DefaultHeaderFooterView else {
+                    return UIView()
+                }
+                currentWidth = 1080
+                return header
+            }
+        } else {
+            guard let header = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: DefaultHeaderFooterView.identifier
+            ) as? DefaultHeaderFooterView else {
+                return UIView()
+            }
+            currentWidth = 1080
+            return header
+        }
     }
 }

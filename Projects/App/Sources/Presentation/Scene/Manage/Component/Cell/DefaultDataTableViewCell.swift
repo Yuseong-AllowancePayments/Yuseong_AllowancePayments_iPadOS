@@ -3,27 +3,27 @@ import Then
 import SnapKit
 import DesignSystem
 
-class DataTableViewCell: UITableViewCell {
+class DefaultDataTableViewCell: UITableViewCell {
 
-    static let identifier = "DataTableViewCell"
+    static let identifier = "DefaultDataTableViewCell"
 
-    private lazy var numberLabel = PaddingLabel().then {
-        $0.setDataCellLabel(backGroundColor: UIColor.color(.grayScale(.g10)))
+    private lazy var numberLabel = UITextField().then {
+        $0.setDataCell(backGroundColor: UIColor.color(.grayScale(.g10)))
     }
-    private lazy var administrativeBuildingLabel = PaddingLabel().then {
-        $0.setDataCellLabel()
+    private lazy var administrativeBuildingLabel = UITextField().then {
+        $0.setDataCell()
     }
-    private lazy var veteransAffairsNumberLabel = PaddingLabel().then {
-        $0.setDataCellLabel()
+    private lazy var veteransAffairsNumberLabel = UITextField().then {
+        $0.setDataCell()
     }
-    private lazy var nameLabel = PaddingLabel().then {
-        $0.setDataCellLabel()
+    private lazy var nameLabel = UITextField().then {
+        $0.setDataCell()
     }
-    private lazy var residentNumberLabel = PaddingLabel().then {
-        $0.setDataCellLabel()
+    private lazy var residentNumberLabel = UITextField().then {
+        $0.setDataCell()
     }
-    private lazy var addressLabel = PaddingLabel().then {
-        $0.setDataCellLabel()
+    private lazy var addressLabel = UITextField().then {
+        $0.setDataCell()
     }
     // swiftlint:disable function_parameter_count
     func setupView(
@@ -45,7 +45,7 @@ class DataTableViewCell: UITableViewCell {
     // swiftlint:enable function_parameter_count
 }
 
-private extension DataTableViewCell {
+private extension DefaultDataTableViewCell {
     func setupLayout() {
         [
             numberLabel,

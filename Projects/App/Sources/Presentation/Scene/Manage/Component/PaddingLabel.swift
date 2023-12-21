@@ -25,9 +25,14 @@ import DesignSystem
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
     }
-    func setCategoryCellLabel(text: String, isRound: Bool = false) {
-        if isRound {
+    func setCategoryCellLabel(text: String, isLeftRound: Bool = false, isRightRound: Bool = false) {
+        if isLeftRound {
             self.layer.maskedCorners = .layerMinXMinYCorner
+            self.layer.cornerRadius = 12
+            self.clipsToBounds = true
+        }
+        if isRightRound {
+            self.layer.maskedCorners = .layerMaxXMinYCorner
             self.layer.cornerRadius = 12
             self.clipsToBounds = true
         }

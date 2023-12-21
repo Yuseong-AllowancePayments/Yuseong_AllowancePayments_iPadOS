@@ -5,12 +5,18 @@ import RxSwift
 import RxCocoa
 import DesignSystem
 
+public enum BottomButtonType: String {
+    case honor = "참전유공자 명예 수당"
+    case wife = "참전유공자 배우자 수당"
+    case veteransAffairs = "보훈 예우 수당"
+}
+
 final class ButtonCollectionView: UIView {
-    private var categoryTitleList: [String]
+    var categoryTitleList: [String]
 
-    let selectedIndex = PublishSubject<Int>()
+    let selectedIndex = PublishRelay<BottomButtonType>()
 
-    let itemSelected = PublishSubject<IndexPath>()
+    let itemSelected = PublishRelay<IndexPath>()
 
     private let disposeBag = DisposeBag()
 
@@ -56,10 +62,25 @@ final class ButtonCollectionView: UIView {
             animated: true,
             scrollPosition: []
         )
+        self.selectedIndex.accept(.honor)
         collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
-                self?.selectedIndex.onNext(indexPath.row)
+                switch indexPath.row {
+                case 0:
+                    self?.selectedIndex.accept(.honor)
+                case 1:
+                    self?.selectedIndex.accept(.wife)
+                case 2:
+                    self?.selectedIndex.accept(.veteransAffairs)
+                default:
+                    self?.selectedIndex.accept(.honor)
+                }
             }).disposed(by: self.disposeBag)
+
+        self.backgroundColor = .white
+        self.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 24
     }
 
     required init?(coder: NSCoder) {

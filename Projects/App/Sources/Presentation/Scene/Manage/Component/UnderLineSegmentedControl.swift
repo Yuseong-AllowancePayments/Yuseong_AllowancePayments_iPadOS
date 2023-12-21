@@ -5,11 +5,18 @@ import Then
 import SnapKit
 import DesignSystem
 
+enum TopButtonType {
+    case current
+    case money
+    case new
+    case stop
+}
+
 final class UnderLineSegmentedControl: UIView {
 
     private var categoryTitleList: [String]
 
-    let selectedIndex = PublishSubject<Int>()
+    let selectedIndex = PublishRelay<TopButtonType>()
 
     let itemSelected = PublishSubject<IndexPath>()
 
@@ -64,7 +71,18 @@ final class UnderLineSegmentedControl: UIView {
         )
         collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
-                self?.selectedIndex.onNext(indexPath.row)
+                switch indexPath.row {
+                case 0:
+                    self?.selectedIndex.accept(.current)
+                case 1:
+                    self?.selectedIndex.accept(.money)
+                case 2:
+                    self?.selectedIndex.accept(.new)
+                case 3:
+                    self?.selectedIndex.accept(.stop)
+                default:
+                    self?.selectedIndex.accept(.current)
+                }
             }).disposed(by: self.disposeBag)
     }
 

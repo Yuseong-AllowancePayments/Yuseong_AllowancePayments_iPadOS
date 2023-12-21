@@ -84,13 +84,13 @@ extension SelectTypeFlow {
     }
 
     private func navigationToManagerSignIn() -> FlowContributors {
-        let managerSignInFlow = ManagerSignInFlow()
+        let managerSignInFlow = ManageFlow()
         Flows.use(managerSignInFlow, when: .created) { [weak self] root in
             self?.rootViewController.pushViewController(root, animated: true)
         }
         return .one(flowContributor: .contribute(
             withNextPresentable: managerSignInFlow,
-            withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.managerSignInIsRequired))
+            withNextStepper: OneStepper(withSingleStep: YuseongAllowanceStep.manageIsRequired))
         )
     }
 }

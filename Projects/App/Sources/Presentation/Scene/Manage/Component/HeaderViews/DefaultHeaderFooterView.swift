@@ -5,9 +5,10 @@ import RxCocoa
 import RxSwift
 import DesignSystem
 
-class CategoryListView: UIView {
+class DefaultHeaderFooterView: UITableViewHeaderFooterView {
+    static let identifier = "DefaultHeaderFooterView"
     private let numberLabel = PaddingLabel().then {
-        $0.setCategoryCellLabel(text: "연변", isRound: true)
+        $0.setCategoryCellLabel(text: "연변", isLeftRound: true)
     }
     private let administrativeBuildingLabel = PaddingLabel().then {
         $0.setCategoryCellLabel(text: "행정동")
@@ -22,10 +23,7 @@ class CategoryListView: UIView {
         $0.setCategoryCellLabel(text: "주민등록번호")
     }
     private let addressLabel = PaddingLabel().then {
-        $0.setCategoryCellLabel(text: "주소")
-        $0.layer.cornerRadius = 12
-        $0.layer.maskedCorners = .layerMaxXMinYCorner
-        $0.clipsToBounds = true
+        $0.setCategoryCellLabel(text: "주소", isRightRound: true)
     }
     override func layoutSubviews() {
         [
