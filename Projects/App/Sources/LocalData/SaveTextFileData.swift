@@ -12,3 +12,11 @@ func readTextFile() -> String {
         return "Error: file read failed - \(error.localizedDescription)"
     }
 }
+
+func readFileByLine(from fileUrl: URL) async throws -> Array<Any> {
+    var arr = [Any]()
+    for try await line in fileUrl.lines {
+        arr.append(line.replacingOccurrences(of: "|||", with: "| | |").replacingOccurrences(of: "||", with: "| |").split(separator: "|"))
+    }
+    return arr
+}
