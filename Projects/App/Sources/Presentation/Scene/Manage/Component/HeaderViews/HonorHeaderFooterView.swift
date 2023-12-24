@@ -72,77 +72,77 @@ class HonorHeaderFooterView: UITableViewHeaderFooterView {
         ].forEach { addSubview($0) }
         numberLabel.snp.makeConstraints {
             $0.leading.top.bottom.equalToSuperview()
-            $0.width.equalTo(100)
+            $0.width.equalTo(99)
         }
         warRegistrationNumberLabel.snp.makeConstraints {
             $0.leading.equalTo(numberLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
         nameLabel.snp.makeConstraints {
             $0.leading.equalTo(warRegistrationNumberLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(100)
+            $0.width.equalTo(98)
         }
         residentRegistrationNumberLabel.snp.makeConstraints {
             $0.leading.equalTo(nameLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(200)
+            $0.width.equalTo(198)
         }
         birthDayLabel.snp.makeConstraints {
             $0.leading.equalTo(residentRegistrationNumberLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
         postNumberLabel.snp.makeConstraints {
             $0.leading.equalTo(birthDayLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(100)
+            $0.width.equalTo(98)
         }
         addressLabel.snp.makeConstraints {
             $0.leading.equalTo(postNumberLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(400)
+            $0.width.equalTo(398)
         }
         phoneNumberLabel.snp.makeConstraints {
             $0.leading.equalTo(addressLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(200)
+            $0.width.equalTo(198)
         }
         bankNameLabel.snp.makeConstraints {
             $0.leading.equalTo(phoneNumberLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
         accountNumberLabel.snp.makeConstraints {
             $0.leading.equalTo(bankNameLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(200)
+            $0.width.equalTo(198)
         }
         accountHolderNameLabel.snp.makeConstraints {
             $0.leading.equalTo(accountNumberLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
         moveInDateLabel.snp.makeConstraints {
             $0.leading.equalTo(accountHolderNameLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
         applicationDateLabel.snp.makeConstraints {
             $0.leading.equalTo(moveInDateLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
         applicationReasonLabel.snp.makeConstraints {
             $0.leading.equalTo(applicationDateLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
         noteLabel.snp.makeConstraints {
             $0.leading.equalTo(applicationReasonLabel.snp.trailing).offset(2)
             $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
+            $0.width.equalTo(148)
         }
     }
 }

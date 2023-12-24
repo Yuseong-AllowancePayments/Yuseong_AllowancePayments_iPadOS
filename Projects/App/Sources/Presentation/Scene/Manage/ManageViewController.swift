@@ -61,6 +61,7 @@ class ManageViewController: BaseVC<ManageViewModel> {
     private let dataTableView = UITableView(frame: .zero, style: .plain).then {
         $0.rowHeight = 56
         $0.register(DefaultDataTableViewCell.self, forCellReuseIdentifier: DefaultDataTableViewCell.identifier)
+        $0.register(HonoerDataTableViewCell.self, forCellReuseIdentifier: HonoerDataTableViewCell.identifier)
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.tableFooterView = .init(frame: .init(x: 0, y: 0, width: 0, height: 120))
@@ -175,20 +176,80 @@ extension ManageViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: DefaultDataTableViewCell.identifier,
-            for: indexPath
-        ) as? DefaultDataTableViewCell else { return UITableViewCell() }
-        cell.setupView(
-            number: "9999",
-            administrativeBuilding: "lorem ipsumdollar",
-            veteransAffairsNumber: "0",
-            name: "홍길동",
-            residentNumber: "999999-9999999",
-            address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
-        )
-        cell.selectionStyle = .none
-        return cell
+        if topButtonType == .new {
+            switch bottomButtonType {
+            case .honor:
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: HonoerDataTableViewCell.identifier,
+                    for: indexPath
+                ) as? HonoerDataTableViewCell else { return UITableViewCell() }
+                cell.setupView(
+                    number: "3",
+                    warRegistrationNumber: "324901",
+                    name: "박주영",
+                    residentRegistrationNumber: "12340",
+                    birthDay: "2006-05-25",
+                    postNumber: "12341",
+                    address: "전라남도 순천시 좌야로 101",
+                    phoneNumber: "342324",
+                    bankName: "신한은행",
+                    accountNumber: "12341234",
+                    accountHolderName: "ㅁㄴㅇ람ㄴ림ㄴ",
+                    moveInDate: "234324",
+                    applicationDate: "23423",
+                    applicationReason: "ㅁㄴ앎ㄴㅇㄹ",
+                    note: "ㅁ나일"
+                )
+                cell.selectionStyle = .none
+                return cell
+            case .veteransAffairs:
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: DefaultDataTableViewCell.identifier,
+                    for: indexPath
+                ) as? DefaultDataTableViewCell else { return UITableViewCell() }
+                cell.setupView(
+                    number: "9999",
+                    administrativeBuilding: "lorem ipsumdollar",
+                    veteransAffairsNumber: "0",
+                    name: "홍길동",
+                    residentNumber: "999999-9999999",
+                    address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
+                )
+                cell.selectionStyle = .none
+                return cell
+            case .wife:
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: DefaultDataTableViewCell.identifier,
+                    for: indexPath
+                ) as? DefaultDataTableViewCell else { return UITableViewCell() }
+                cell.setupView(
+                    number: "9999",
+                    administrativeBuilding: "lorem ipsumdollar",
+                    veteransAffairsNumber: "0",
+                    name: "홍길동",
+                    residentNumber: "999999-9999999",
+                    address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
+                )
+                cell.selectionStyle = .none
+                return cell
+            }
+        } else {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: DefaultDataTableViewCell.identifier,
+                for: indexPath
+            ) as? DefaultDataTableViewCell else { return UITableViewCell() }
+            cell.setupView(
+                number: "9999",
+                administrativeBuilding: "lorem ipsumdollar",
+                veteransAffairsNumber: "0",
+                name: "홍길동",
+                residentNumber: "999999-9999999",
+                address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
+            )
+            cell.selectionStyle = .none
+            return cell
+        }
+
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if topButtonType == .new {
