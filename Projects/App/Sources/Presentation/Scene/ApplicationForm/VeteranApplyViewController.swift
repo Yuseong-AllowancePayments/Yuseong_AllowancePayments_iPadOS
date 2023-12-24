@@ -5,6 +5,7 @@ import DesignSystem
 import RxFlow
 import RxCocoa
 import RxSwift
+import WebKit
 
 class VeteranApplyViewController: BaseVC<ApplyViewModel> {
     private let scrollView = UIScrollView().then {
@@ -222,3 +223,14 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
     }
     // swiftlint:enable function_body_length
 }
+
+//extension UIViewController {
+//    func callWebView() {
+//        let contentController = WKUserContentController()
+//        let configuration = WKWebViewConfiguration()
+//
+//        contentController.add(self, name: "")
+//        configuration.userContentController = contentController
+//        webView = WKWebView(frame: .zero, configuration: configuration)
+//    }
+//}

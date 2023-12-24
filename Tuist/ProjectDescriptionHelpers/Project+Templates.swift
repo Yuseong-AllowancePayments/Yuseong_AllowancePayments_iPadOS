@@ -11,7 +11,7 @@ public extension Project {
         name: String,
         platform: Platform = env.platform,
         product: Product,
-        packages: [Package] = [],
+        packages: [Package] = [.RealmSwift],
         deploymentTarget: DeploymentTarget? = env.deploymentTarget,
         externalDependencies: [TargetDependency] = [],
         internalDependencies: [TargetDependency] = [],

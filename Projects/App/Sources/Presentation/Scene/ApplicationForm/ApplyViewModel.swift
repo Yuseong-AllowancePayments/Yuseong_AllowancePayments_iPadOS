@@ -1,4 +1,5 @@
 import Foundation
+import RealmSwift
 import RxSwift
 import RxCocoa
 import RxFlow
@@ -6,6 +7,7 @@ import RxFlow
 class ApplyViewModel: BaseVM, Stepper {
     let steps = PublishRelay<Step>()
     private let disposeBag = DisposeBag()
+//    private let realm = try! Realm()
 
     struct Input {
         let backButtonDidTap: Signal<Void>
@@ -20,4 +22,8 @@ class ApplyViewModel: BaseVM, Stepper {
             .disposed(by: disposeBag)
         return Output()
     }
+
+//    func insertData(_ data: Object) {
+//        let realm = try! Realm()
+//    }
 }
