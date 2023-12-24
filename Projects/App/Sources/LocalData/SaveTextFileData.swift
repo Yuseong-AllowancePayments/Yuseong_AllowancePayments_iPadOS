@@ -6,10 +6,16 @@ func readTextFile() -> Any {
         let data = try String(contentsOfFile: paths, encoding: .utf8).components(separatedBy: .newlines)
         var arr = [Any]()
         data.forEach { line in
-            arr.append(line.replacingOccurrences(of: "|||", with: "| | |").replacingOccurrences(of: "||", with: "| |").split(separator: "|"))
+            arr.append(
+                line.replacingOccurrences(of: "|||", with: "| | |")
+                .replacingOccurrences(of: "||", with: "| |")
+                .split(separator: "|")
+            )
         }
 //        data.components(separatedBy: .newlines).map {
-//            $0.replacingOccurrences(of: "|||", with: "| | |").replacingOccurrences(of: "||", with: " | |").split(separator: "|")
+//            $0.replacingOccurrences(of: "|||", with: "| | |")
+//                .replacingOccurrences(of: "||", with: " | |")
+//                .split(separator: "|")
 //        }
         return arr
     } catch {
