@@ -97,9 +97,6 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         $0.titleLabel?.font = .pretendard(.p2)
         $0.layer.cornerRadius = 8
     }
-    private let contentController = WKUserContentController()
-    private let configuration = WKWebViewConfiguration()
-    private let preferences = WKPreferences()
     private var webView: WKWebView!
     override func bind() {
         let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
@@ -132,8 +129,6 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
     }
     override func configureVC() {
         self.hideKeyboardWhenTappedAround()
-//        DispatchQueue.main.async { [self] in
-//        }
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
@@ -236,34 +231,30 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
 
 extension VeteranApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
     func createdWebView() {
-        DispatchQueue.main.async { [self] in
-//            if #available(iOS 14.0, *) {
-//                configuration.defaultWebpagePreferences.allowsContentJavaScript = true
-//            } else {
-//                configuration.preferences.javaScriptEnabled = true
-//            }
-//            preferences.javaScriptCanOpenWindowsAutomatically = true
-//            configuration.preferences = preferences
-            contentController.add(self, name: "iOS")
-            configuration.userContentController = contentController
-            webView = WKWebView(frame: .zero, configuration: configuration)
+        let contentController = WKUserContentController()
+        contentController.add(self, name: "callBackHandler")
 
-//            webView.uiDelegate = self
-            webView.navigationDelegate = self
-//            webView.allowsBackForwardNavigationGestures = true
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = contentController
 
-            backView.addSubview(webView)
-            webView.snp.makeConstraints {
-                $0.top.bottom.equalToSuperview().inset(200)
-                $0.left.right.equalToSuperview().inset(150)
-            }
-
-            webView.load(URLRequest(url: URL(string: "https://daum-address-webview.vercel.app/")!))
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        self.webView.navigationDelegate = self
+        backView.addSubview(webView)
+        webView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(200)
+            $0.left.right.equalToSuperview().inset(150)
         }
+        guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
+              let webView = webView
+        else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
+
     }
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print(message.name)
-//        guard message.name == "iOS", let data = message.body as? [String: Any] else { return }
-//        print(data)
+        if let data = message.body as? [String: Any] {
+            postAddressField.textField.text = data["zonecode"] as? String ?? ""
+        }
+        webView.isHidden = true
     }
 }

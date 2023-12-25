@@ -9,7 +9,7 @@ public final class ApplyFieldView: UIView {
         return $0
     }(UILabel())
 
-    private let textField = ApplyTextField()
+    public let textField = ApplyTextField()
 
     private var title: String {
         get { label.text ?? "" }
