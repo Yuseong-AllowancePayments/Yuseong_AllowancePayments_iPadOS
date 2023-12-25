@@ -1,33 +1,6 @@
 import Foundation
 import RealmSwift
 
-final class LocalData: Object {
-    @Persisted var veteranTable: VeteranTable
-    @Persisted var spouseTable: SpouseTable
-    @Persisted var courtesyTable: CourtesyTable
-}
-
-class VeteranTable: Object {
-    @Persisted var paymentTargetTab: List<VeteranPaymentTargetTab>
-    @Persisted var cashPaymentTab: List<VeteranCashPaymentTab>
-    @Persisted var newComerVeteranTab: List<VeteranNewcomerTab>
-    @Persisted var stoppageTab: List<VeteranStoppageTab>
-}
-
-class SpouseTable: Object {
-    @Persisted var paymentTargetTab: List<SpousePaymentTargetTab>
-    @Persisted var cashpaymentTab: List<SpouseCashPaymentTab>
-    @Persisted var newComerSpouseTab: List<SpouseNewcomerTab>
-    @Persisted var stoppageTab: List<SpouseStoppageTab>
-}
-
-class CourtesyTable: Object {
-    @Persisted var paymentTargetTab: List<CourtesyPaymentTargetTab>
-    @Persisted var cashpaymentTab: List<CourtesyCashPaymentTab>
-    @Persisted var newComerCourtesyTab: List<CourtesyNewcomerTab>
-    @Persisted var stoppageTab: List<CourtesyStoppageTab>
-}
-
 class VeteranPaymentTargetTab: Object {
     @Persisted var serialNum: String = ""
     @Persisted var administrativeAddress: String = ""
@@ -62,7 +35,7 @@ class VeteranNewcomerTab: Object {
     @Persisted var name: String = ""
     @Persisted var birthDate: String = ""
     @Persisted var sin: String = ""
-    @Persisted(primaryKey: true) var registrationNum: String = ""
+    @Persisted(primaryKey: true) var registrationNum: String
     @Persisted var postAddress: String = ""
     @Persisted var roadAddress: String = ""
     @Persisted var administrativeAddress: String = ""

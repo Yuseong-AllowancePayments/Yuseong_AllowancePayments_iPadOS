@@ -7,13 +7,16 @@ import RxCocoa
 import DesignSystem
 
 class ManageViewController: BaseVC<ManageViewModel> {
+    private let roadData = PublishRelay<(BottomButtonType, TopButtonType)>()
     var bottomButtonType: BottomButtonType = .honor {
         didSet {
+            roadData.accept((bottomButtonType, topButtonType))
             dataTableView.reloadData()
         }
     }
     var topButtonType: TopButtonType = .current {
         didSet {
+            roadData.accept((bottomButtonType, topButtonType))
             dataTableView.reloadData()
         }
     }
@@ -57,15 +60,10 @@ class ManageViewController: BaseVC<ManageViewModel> {
     private let contentView = UIView().then {
         $0.backgroundColor = .white
     }
-
-    private let dataTableView = UITableView(frame: .zero, style: .plain).then {
-        $0.rowHeight = 56
+    private let dataTableView = DataTableView().then {
         $0.register(DefaultDataTableViewCell.self, forCellReuseIdentifier: DefaultDataTableViewCell.identifier)
         $0.register(HonoerDataTableViewCell.self, forCellReuseIdentifier: HonoerDataTableViewCell.identifier)
-        $0.separatorStyle = .none
-        $0.showsVerticalScrollIndicator = false
-        $0.tableFooterView = .init(frame: .init(x: 0, y: 0, width: 0, height: 120))
-        $0.sectionHeaderHeight = 56
+        $0.register(WifeDataTableViewCell.self, forCellReuseIdentifier: WifeDataTableViewCell.identifier)
         $0.register(
             DefaultHeaderFooterView.self,
             forHeaderFooterViewReuseIdentifier: DefaultHeaderFooterView.identifier
@@ -74,7 +72,10 @@ class ManageViewController: BaseVC<ManageViewModel> {
             HonorHeaderFooterView.self,
             forHeaderFooterViewReuseIdentifier: HonorHeaderFooterView.identifier
         )
-        $0.sectionHeaderTopPadding = 0
+        $0.register(
+            WifeHeaderFooterView.self,
+            forHeaderFooterViewReuseIdentifier: WifeHeaderFooterView.identifier
+        )
     }
     private let buttonCollectionView = ButtonCollectionView().then {
         $0.backgroundColor = .white
@@ -90,18 +91,67 @@ class ManageViewController: BaseVC<ManageViewModel> {
         self.buttonCollectionView.selectedIndex.subscribe(onNext: { [weak self] in
             self?.titleLabel.text = "\($0.rawValue) 지급 대상자 조회"
             self?.bottomButtonType = $0
-            print($0)
         }).disposed(by: disposeBag)
         self.underLineSegmentedControl.selectedIndex.subscribe(onNext: { [weak self] in
             self?.topButtonType = $0
-            print($0)
         })
         .disposed(by: disposeBag)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        self.roadData.accept((.honor, .current))
+    }
+
     override func bind() {
-        print(bottomButtonType)
-        print(topButtonType)
-        dataTableView.dataSource = self
+        let input = ManageViewModel.Input(
+            viewAppear: roadData
+        )
+        let output = viewModel.transform(input)
+        output.veteranPaymentTargetList
+            .bind(to: self.dataTableView.rx.items(
+                cellIdentifier: DefaultDataTableViewCell.identifier,
+                cellType: DefaultDataTableViewCell.self
+            )) { row, item, cell in
+                cell.setupView(
+                    serialNum: item.serialNum,
+                    administrativeAddress: item.administrativeAddress,
+                    affairsNum: item.affairsNum,
+                    sin: item.sin,
+                    name: item.name,
+                    address: item.address,
+                    depositType: item.depositType,
+                    bankName: item.bankName,
+                    accountOwner: item.accountOwner,
+                    account: item.account,
+                    sibi: item.sibi,
+                    gubi: item.gubi,
+                    note: item.note
+                )
+                cell.selectionStyle = .none
+            }.disposed(by: disposeBag)
+        output.veteranNewcomerList
+            .bind(to: self.dataTableView.rx.items(
+                cellIdentifier: HonoerDataTableViewCell.identifier,
+                cellType: HonoerDataTableViewCell.self
+            )) { row, item, cell in
+                cell.setupView(
+                    number: item.serialNum,
+                    warRegistrationNumber: item.registrationNum,
+                    name: item.name,
+                    residentRegistrationNumber: item.sin,
+                    birthDay: item.birthDate,
+                    postNumber: item.postAddress,
+                    address: item.roadAddress,
+                    phoneNumber: item.phoneNum,
+                    bankName: item.bankName,
+                    accountNumber: item.account,
+                    accountHolderName: item.accountOwner,
+                    moveInDate: item.moveInDate,
+                    applicationDate: item.applicationDate,
+                    applicationReason: item.applicationReason,
+                    note: item.note
+                )
+                cell.selectionStyle = .none
+            }.disposed(by: disposeBag)
         dataTableView.delegate = self
     }
 
@@ -170,87 +220,7 @@ class ManageViewController: BaseVC<ManageViewModel> {
     }
 }
 
-extension ManageViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 30
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if topButtonType == .new {
-            switch bottomButtonType {
-            case .honor:
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: HonoerDataTableViewCell.identifier,
-                    for: indexPath
-                ) as? HonoerDataTableViewCell else { return UITableViewCell() }
-                cell.setupView(
-                    number: "3",
-                    warRegistrationNumber: "324901",
-                    name: "박주영",
-                    residentRegistrationNumber: "12340",
-                    birthDay: "2006-05-25",
-                    postNumber: "12341",
-                    address: "전라남도 순천시 좌야로 101",
-                    phoneNumber: "342324",
-                    bankName: "신한은행",
-                    accountNumber: "12341234",
-                    accountHolderName: "ㅁㄴㅇ람ㄴ림ㄴ",
-                    moveInDate: "234324",
-                    applicationDate: "23423",
-                    applicationReason: "ㅁㄴ앎ㄴㅇㄹ",
-                    note: "ㅁ나일"
-                )
-                cell.selectionStyle = .none
-                return cell
-            case .veteransAffairs:
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: DefaultDataTableViewCell.identifier,
-                    for: indexPath
-                ) as? DefaultDataTableViewCell else { return UITableViewCell() }
-                cell.setupView(
-                    number: "9999",
-                    administrativeBuilding: "lorem ipsumdollar",
-                    veteransAffairsNumber: "0",
-                    name: "홍길동",
-                    residentNumber: "999999-9999999",
-                    address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
-                )
-                cell.selectionStyle = .none
-                return cell
-            case .wife:
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: DefaultDataTableViewCell.identifier,
-                    for: indexPath
-                ) as? DefaultDataTableViewCell else { return UITableViewCell() }
-                cell.setupView(
-                    number: "9999",
-                    administrativeBuilding: "lorem ipsumdollar",
-                    veteransAffairsNumber: "0",
-                    name: "홍길동",
-                    residentNumber: "999999-9999999",
-                    address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
-                )
-                cell.selectionStyle = .none
-                return cell
-            }
-        } else {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: DefaultDataTableViewCell.identifier,
-                for: indexPath
-            ) as? DefaultDataTableViewCell else { return UITableViewCell() }
-            cell.setupView(
-                number: "9999",
-                administrativeBuilding: "lorem ipsumdollar",
-                veteransAffairsNumber: "0",
-                name: "홍길동",
-                residentNumber: "999999-9999999",
-                address: "부산시 해운대구 뭐시기뭐시기뭐시기뭐시기"
-            )
-            cell.selectionStyle = .none
-            return cell
-        }
-
-    }
+extension ManageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if topButtonType == .new {
             switch bottomButtonType {
@@ -272,11 +242,11 @@ extension ManageViewController: UITableViewDataSource, UITableViewDelegate {
                 return header
             case .wife:
                 guard let header = tableView.dequeueReusableHeaderFooterView(
-                    withIdentifier: DefaultHeaderFooterView.identifier
-                ) as? DefaultHeaderFooterView else {
+                    withIdentifier: WifeHeaderFooterView.identifier
+                ) as? WifeHeaderFooterView else {
                     return UIView()
                 }
-                currentWidth = 1080
+                currentWidth = 3250
                 return header
             }
         } else {
