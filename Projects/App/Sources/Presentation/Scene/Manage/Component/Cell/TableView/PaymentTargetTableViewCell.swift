@@ -3,9 +3,9 @@ import Then
 import SnapKit
 import DesignSystem
 
-class DefaultDataTableViewCell: UITableViewCell {
+class PaymentTargetTableViewCell: UITableViewCell {
 
-    static let identifier = "DefaultDataTableViewCell"
+    static let identifier = "PaymentTargetTableViewCell"
 
     private lazy var serialNumLabel = UITextField().then {
         $0.setDataCell(backGroundColor: UIColor.color(.grayScale(.g10)))
@@ -80,7 +80,7 @@ class DefaultDataTableViewCell: UITableViewCell {
     // swiftlint:enable function_parameter_count
 }
 
-private extension DefaultDataTableViewCell {
+private extension PaymentTargetTableViewCell {
     func setupLayout() {
         [
             serialNumLabel,

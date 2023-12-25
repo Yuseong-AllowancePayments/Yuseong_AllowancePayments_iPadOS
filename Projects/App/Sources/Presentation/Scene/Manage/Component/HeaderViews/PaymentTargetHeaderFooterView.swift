@@ -5,8 +5,8 @@ import RxCocoa
 import RxSwift
 import DesignSystem
 
-class DefaultHeaderFooterView: UITableViewHeaderFooterView {
-    static let identifier = "DefaultHeaderFooterView"
+class PaymentTargetHeaderFooterView: UITableViewHeaderFooterView {
+    static let identifier = "PaymentTargetHeaderFooterView"
     private let numberLabel = PaddingLabel().then {
         $0.setCategoryCellLabel(text: "연변", isLeftRound: true)
     }

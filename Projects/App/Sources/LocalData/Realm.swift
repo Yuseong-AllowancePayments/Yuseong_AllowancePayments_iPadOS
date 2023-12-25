@@ -1,5 +1,6 @@
 import Foundation
 import RealmSwift
+import UIKit
 
 class VeteranPaymentTargetTab: Object {
     @Persisted var serialNum: String = ""
@@ -15,6 +16,24 @@ class VeteranPaymentTargetTab: Object {
     @Persisted var sibi: String = ""
     @Persisted var gubi: String = ""
     @Persisted var note: String = ""
+
+    func toPaymentTarget() -> PaymentTargetTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            bankName: self.bankName,
+            accountOwner: self.accountOwner,
+            account: self.account,
+            sibi: self.sibi,
+            gubi: self.gubi,
+            note: self.note
+        )
+    }
 }
 
 class VeteranCashPaymentTab: Object {
@@ -28,6 +47,20 @@ class VeteranCashPaymentTab: Object {
     @Persisted var sibi: String = ""
     @Persisted var gubi: String = ""
     @Persisted var note: String = ""
+    func toCashPayment() -> CashPaymentTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            sibi: self.sibi,
+            gubi: self.gubi,
+            note: self.note
+        )
+    }
 }
 
 class VeteranNewcomerTab: Object {
@@ -64,6 +97,24 @@ class VeteranStoppageTab: Object {
     @Persisted var stoppageReason: String = ""
     @Persisted var stoppageDate: String = ""
     @Persisted var moveInAddress: String = ""
+    func toStoppage() -> StoppageTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            bankName: self.bankName,
+            accountOwner: self.accountOwner,
+            account: self.account,
+            note: self.note,
+            stoppageReason: self.stoppageReason,
+            stoppageDate: self.stoppageDate,
+            moveInAddress: self.moveInAddress
+        )
+    }
 }
 
 class SpousePaymentTargetTab: Object {
@@ -80,6 +131,23 @@ class SpousePaymentTargetTab: Object {
     @Persisted var sibi: String = ""
     @Persisted var gubi: String = ""
     @Persisted var note: String = ""
+    func toPaymentTarget() -> PaymentTargetTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            bankName: self.bankName,
+            accountOwner: self.accountOwner,
+            account: self.account,
+            sibi: self.sibi,
+            gubi: self.gubi,
+            note: self.note
+        )
+    }
 }
 
 class SpouseCashPaymentTab: Object {
@@ -93,6 +161,20 @@ class SpouseCashPaymentTab: Object {
     @Persisted var sibi: String = ""
     @Persisted var gubi: String = ""
     @Persisted var note: String = ""
+    func toCashPayment() -> CashPaymentTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            sibi: self.sibi,
+            gubi: self.gubi,
+            note: self.note
+        )
+    }
 }
 
 class SpouseNewcomerTab: Object {
@@ -132,6 +214,24 @@ class SpouseStoppageTab: Object {
     @Persisted var stoppageReason: String = ""
     @Persisted var stoppageDate: String = ""
     @Persisted var moveInAddress: String = ""
+    func toStoppage() -> StoppageTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            bankName: self.bankName,
+            accountOwner: self.accountOwner,
+            account: self.account,
+            note: self.note,
+            stoppageReason: self.stoppageReason,
+            stoppageDate: self.stoppageDate,
+            moveInAddress: self.moveInAddress
+        )
+    }
 }
 
 class CourtesyPaymentTargetTab: Object {
@@ -148,6 +248,23 @@ class CourtesyPaymentTargetTab: Object {
     @Persisted var sibi: String = ""
     @Persisted var gubi: String = ""
     @Persisted var note: String = ""
+    func toPaymentTarget() -> PaymentTargetTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            bankName: self.bankName,
+            accountOwner: self.accountOwner,
+            account: self.account,
+            sibi: self.sibi,
+            gubi: self.gubi,
+            note: self.note
+        )
+    }
 }
 
 class CourtesyCashPaymentTab: Object {
@@ -161,6 +278,20 @@ class CourtesyCashPaymentTab: Object {
     @Persisted var sibi: String = ""
     @Persisted var gubi: String = ""
     @Persisted var note: String = ""
+    func toCashPayment() -> CashPaymentTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            sibi: self.sibi,
+            gubi: self.gubi,
+            note: self.note
+        )
+    }
 }
 
 class CourtesyNewcomerTab: Object {
@@ -201,4 +332,22 @@ class CourtesyStoppageTab: Object {
     @Persisted var stoppageReason: String = ""
     @Persisted var stoppageDate: String = ""
     @Persisted var moveInAddress: String = ""
+    func toStoppage() -> StoppageTab {
+        return .init(
+            serialNum: self.serialNum,
+            administrativeAddress: self.administrativeAddress,
+            affairsNum: self.affairsNum,
+            sin: self.sin,
+            name: self.name,
+            address: self.address,
+            depositType: self.depositType,
+            bankName: self.bankName,
+            accountOwner: self.accountOwner,
+            account: self.account,
+            note: self.note,
+            stoppageReason: self.stoppageReason,
+            stoppageDate: self.stoppageDate,
+            moveInAddress: self.moveInAddress
+        )
+    }
 }

@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import RxFlow
 import RealmSwift
-// swiftlint:disable force_try
+
 class ManageViewModel: BaseVM, Stepper {
     let steps = PublishRelay<Step>()
     private var disposeBag = DisposeBag()
@@ -11,86 +11,62 @@ class ManageViewModel: BaseVM, Stepper {
         let viewAppear: PublishRelay<(BottomButtonType, TopButtonType)>
     }
     struct Output {
-        let veteranPaymentTargetList: BehaviorRelay<[VeteranPaymentTargetTab]>
-        let veteranCashPaymentList: BehaviorRelay<[VeteranCashPaymentTab]>
+        let paymentTargetList: BehaviorRelay<[PaymentTargetTab]>
+        let cashPaymentList: BehaviorRelay<[CashPaymentTab]>
         let veteranNewcomerList: BehaviorRelay<[VeteranNewcomerTab]>
-        let veteranStoppageList: BehaviorRelay<[VeteranStoppageTab]>
-        let spousePaymentTargetList: BehaviorRelay<[SpousePaymentTargetTab]>
-        let spouseCashPaymentList: BehaviorRelay<[SpouseCashPaymentTab]>
         let spouseNewcomerList: BehaviorRelay<[SpouseNewcomerTab]>
-        let spouseStoppageList: BehaviorRelay<[SpouseStoppageTab]>
-        let courtesyPaymentTargetList: BehaviorRelay<[CourtesyPaymentTargetTab]>
-        let courtesyCashPaymentList: BehaviorRelay<[CourtesyCashPaymentTab]>
         let courtesyNewcomerList: BehaviorRelay<[CourtesyNewcomerTab]>
-        let courtesyStoppageList: BehaviorRelay<[CourtesyStoppageTab]>
+        let stoppageList: BehaviorRelay<[StoppageTab]>
     }
 // swiftlint: disable function_body_length
     func transform(_ input: Input) -> Output {
-        var veteranPaymentTargetList = BehaviorRelay<[VeteranPaymentTargetTab]>(value: [])
-        var veteranCashPaymentList = BehaviorRelay<[VeteranCashPaymentTab]>(value: [])
-        var veteranNewcomerList = BehaviorRelay<[VeteranNewcomerTab]>(value: [])
-        var veteranStoppageList = BehaviorRelay<[VeteranStoppageTab]>(value: [])
-        var spousePaymentTargetList = BehaviorRelay<[SpousePaymentTargetTab]>(value: [])
-        var spouseCashPaymentList = BehaviorRelay<[SpouseCashPaymentTab]>(value: [])
-        var spouseNewcomerList = BehaviorRelay<[SpouseNewcomerTab]>(value: [])
-        var spouseStoppageList = BehaviorRelay<[SpouseStoppageTab]>(value: [])
-        var courtesyPaymentTargetList = BehaviorRelay<[CourtesyPaymentTargetTab]>(value: [])
-        var courtesyCashPaymentList = BehaviorRelay<[CourtesyCashPaymentTab]>(value: [])
-        var courtesyNewcomerList = BehaviorRelay<[CourtesyNewcomerTab]>(value: [])
-        var courtesyStoppageList = BehaviorRelay<[CourtesyStoppageTab]>(value: [])
+        let paymentTargetList = BehaviorRelay<[PaymentTargetTab]>(value: [])
+        let cashPaymentList = BehaviorRelay<[CashPaymentTab]>(value: [])
+        let veteranNewcomerList = BehaviorRelay<[VeteranNewcomerTab]>(value: [])
+        let spouseNewcomerList = BehaviorRelay<[SpouseNewcomerTab]>(value: [])
+        let courtesyNewcomerList = BehaviorRelay<[CourtesyNewcomerTab]>(value: [])
+        let stoppageList = BehaviorRelay<[StoppageTab]>(value: [])
         input.viewAppear.asObservable()
             .subscribe(onNext: {
                 do {
                     let realm = try Realm()
                     switch $0.1 {
                     case .current:
+                        var list: [PaymentTargetTab] = []
                         switch $0.0 {
                         case .honor:
-                            var list: [VeteranPaymentTargetTab] = []
                             realm.objects(VeteranPaymentTargetTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toPaymentTarget())
                             }
-                            veteranPaymentTargetList.accept(list)
-                            print(list)
                         case .veteransAffairs:
-                            var list: [CourtesyPaymentTargetTab] = []
                             realm.objects(CourtesyPaymentTargetTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toPaymentTarget())
                             }
-                            courtesyPaymentTargetList.accept(list)
-                            print(list)
                         case .wife:
-                            var list: [SpousePaymentTargetTab] = []
                             realm.objects(SpousePaymentTargetTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toPaymentTarget())
                             }
-                            spousePaymentTargetList.accept(list)
-                            print(list)
                         }
+                        paymentTargetList.accept(list)
+                        print(list)
                     case .money:
+                        var list: [CashPaymentTab] = []
                         switch $0.0 {
                         case .honor:
-                            var list: [VeteranCashPaymentTab] = []
                             realm.objects(VeteranCashPaymentTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toCashPayment())
                             }
-                            veteranCashPaymentList.accept(list)
-                            print(list)
                         case .veteransAffairs:
-                            var list: [CourtesyCashPaymentTab] = []
                             realm.objects(CourtesyCashPaymentTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toCashPayment())
                             }
-                            courtesyCashPaymentList.accept(list)
-                            print(list)
                         case .wife:
-                            var list: [SpouseCashPaymentTab] = []
                             realm.objects(SpouseCashPaymentTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toCashPayment())
                             }
-                            spouseCashPaymentList.accept(list)
-                            print(list)
                         }
+                        cashPaymentList.accept(list)
+                        print(list)
                     case .new:
                         switch $0.0 {
                         case .honor:
@@ -116,49 +92,36 @@ class ManageViewModel: BaseVM, Stepper {
                             print(list)
                         }
                     case .stop:
+                        var list: [StoppageTab] = []
                         switch $0.0 {
                         case .honor:
-                            var list: [VeteranStoppageTab] = []
                             realm.objects(VeteranStoppageTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toStoppage())
                             }
-                            veteranStoppageList.accept(list)
-                            print(list)
                         case .veteransAffairs:
-                            var list: [CourtesyStoppageTab] = []
                             realm.objects(CourtesyStoppageTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toStoppage())
                             }
-                            courtesyStoppageList.accept(list)
-                            print(list)
                         case .wife:
-                            var list: [SpouseStoppageTab] = []
                             realm.objects(SpouseStoppageTab.self).forEach {
-                                list.append($0)
+                                list.append($0.toStoppage())
                             }
-                            spouseStoppageList.accept(list)
-                            print(list)
                         }
+                        stoppageList.accept(list)
+                        print(list)
                     }
                 } catch {
                     print("Error initialising new realm, \(error)")
                 }
             }).disposed(by: disposeBag)
         return Output(
-            veteranPaymentTargetList: veteranPaymentTargetList,
-            veteranCashPaymentList: veteranCashPaymentList,
+            paymentTargetList: paymentTargetList,
+            cashPaymentList: cashPaymentList,
             veteranNewcomerList: veteranNewcomerList,
-            veteranStoppageList: veteranStoppageList,
-            spousePaymentTargetList: spousePaymentTargetList,
-            spouseCashPaymentList: spouseCashPaymentList,
             spouseNewcomerList: spouseNewcomerList,
-            spouseStoppageList: spouseStoppageList,
-            courtesyPaymentTargetList: courtesyPaymentTargetList,
-            courtesyCashPaymentList: courtesyCashPaymentList,
             courtesyNewcomerList: courtesyNewcomerList,
-            courtesyStoppageList: courtesyStoppageList
+            stoppageList: stoppageList
         )
     }
 }
-// swiftlint:enable force_try
 // swiftlint: enable function_body_length

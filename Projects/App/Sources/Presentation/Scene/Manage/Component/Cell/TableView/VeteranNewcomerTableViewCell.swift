@@ -5,8 +5,8 @@ import RxCocoa
 import RxSwift
 import DesignSystem
 
-class HonoerDataTableViewCell: UITableViewCell {
-    static let identifier = "HonoerDataTableViewCell"
+class VeteranNewcomerTableViewCell: UITableViewCell {
+    static let identifier = "VeteranNewcomerTableViewCell"
     private let numberLabel = UITextField().then {
         $0.setDataCell(backGroundColor: UIColor.color(.grayScale(.g10)))
     }
@@ -90,7 +90,7 @@ class HonoerDataTableViewCell: UITableViewCell {
     // swiftlint:enable function_parameter_count
 }
 
-private extension HonoerDataTableViewCell {
+private extension VeteranNewcomerTableViewCell {
     func setupLayout() {
         [
             numberLabel,

@@ -5,8 +5,8 @@ import RxCocoa
 import RxSwift
 import DesignSystem
 
-class WifeDataTableViewCell: UITableViewCell {
-    static let identifier = "WifeDataTableViewCell"
+class SpouseNewcomerTableViewCell: UITableViewCell {
+    static let identifier = "SpouseNewcomerTableViewCell"
     private let numberLabel = UITextField().then {
         $0.setDataCell(backGroundColor: UIColor.color(.grayScale(.g10)))
     }
@@ -110,7 +110,7 @@ class WifeDataTableViewCell: UITableViewCell {
     // swiftlint:enable function_parameter_count
 }
 
-private extension WifeDataTableViewCell {
+private extension SpouseNewcomerTableViewCell {
     // swiftlint:disable function_body_length
     func setupLayout() {
         [
@@ -136,7 +136,7 @@ private extension WifeDataTableViewCell {
         ].forEach { addSubview($0) }
         numberLabel.snp.makeConstraints {
             $0.leading.top.bottom.equalToSuperview()
-            $0.width.equalTo(99)
+            $0.width.equalTo(100)
         }
         veteransAffairsNumberLabel.snp.makeConstraints {
             $0.leading.equalTo(numberLabel.snp.trailing)

@@ -5,8 +5,8 @@ import RxCocoa
 import RxSwift
 import DesignSystem
 
-class VeteransAffairsHeaderView: UITableViewHeaderFooterView {
-    static let identifier = "VeteransAffairsHeaderView"
+class SpouseNewcomerHeaderFooterView: UITableViewHeaderFooterView {
+    static let identifier = "SpouseNewcomerHeaderFooterView"
     private let numberLabel = PaddingLabel().then {
         $0.setCategoryCellLabel(text: "연변", isLeftRound: true)
     }

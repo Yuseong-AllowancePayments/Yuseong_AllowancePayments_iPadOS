@@ -11,22 +11,74 @@ class ManageViewController: BaseVC<ManageViewModel> {
     var bottomButtonType: BottomButtonType = .honor {
         didSet {
             roadData.accept((bottomButtonType, topButtonType))
-            dataTableView.reloadData()
+            if topButtonType == .new {
+                switch bottomButtonType {
+                case .honor:
+                    paymentTargetTableView.isHidden = true
+                    cashPaymentTableView.isHidden = true
+                    veteranNewcomerTableView.isHidden = false
+                    spouseNewcomerTableView.isHidden = true
+                    stoppageTableView.isHidden = true
+                case .wife:
+                    paymentTargetTableView.isHidden = true
+                    cashPaymentTableView.isHidden = true
+                    veteranNewcomerTableView.isHidden = true
+                    spouseNewcomerTableView.isHidden = false
+                    stoppageTableView.isHidden = true
+                case .veteransAffairs:
+                    paymentTargetTableView.isHidden = true
+                    cashPaymentTableView.isHidden = true
+                    veteranNewcomerTableView.isHidden = true
+                    spouseNewcomerTableView.isHidden = true
+                    stoppageTableView.isHidden = true
+                }
+            }
         }
     }
     var topButtonType: TopButtonType = .current {
         didSet {
-            roadData.accept((bottomButtonType, topButtonType))
-            dataTableView.reloadData()
-        }
-    }
-    var currentWidth = 1080 {
-        didSet {
-            contentView.snp.remakeConstraints {
-                $0.edges.equalTo(scrollView.contentLayoutGuide)
-                $0.height.equalToSuperview()
-                $0.width.equalTo(currentWidth)
+            switch topButtonType {
+            case .current:
+                paymentTargetTableView.isHidden = false
+                cashPaymentTableView.isHidden = true
+                veteranNewcomerTableView.isHidden = true
+                spouseNewcomerTableView.isHidden = true
+                stoppageTableView.isHidden = true
+            case .money:
+                paymentTargetTableView.isHidden = true
+                cashPaymentTableView.isHidden = false
+                veteranNewcomerTableView.isHidden = true
+                stoppageTableView.isHidden = true
+                spouseNewcomerTableView.isHidden = true
+            case .new:
+                switch bottomButtonType {
+                case .honor:
+                    paymentTargetTableView.isHidden = true
+                    cashPaymentTableView.isHidden = true
+                    veteranNewcomerTableView.isHidden = false
+                    spouseNewcomerTableView.isHidden = true
+                    stoppageTableView.isHidden = true
+                case .wife:
+                    paymentTargetTableView.isHidden = true
+                    cashPaymentTableView.isHidden = true
+                    veteranNewcomerTableView.isHidden = true
+                    spouseNewcomerTableView.isHidden = false
+                    stoppageTableView.isHidden = true
+                case .veteransAffairs:
+                    paymentTargetTableView.isHidden = true
+                    cashPaymentTableView.isHidden = true
+                    veteranNewcomerTableView.isHidden = true
+                    spouseNewcomerTableView.isHidden = true
+                    stoppageTableView.isHidden = true
+                }
+            case .stop:
+                paymentTargetTableView.isHidden = true
+                cashPaymentTableView.isHidden = true
+                veteranNewcomerTableView.isHidden = true
+                spouseNewcomerTableView.isHidden = true
+                stoppageTableView.isHidden = false
             }
+            roadData.accept((bottomButtonType, topButtonType))
         }
     }
     private let titleLabel = UILabel().then {
@@ -54,39 +106,25 @@ class ManageViewController: BaseVC<ManageViewModel> {
         $0.backgroundColor = UIColor.color(.grayScale(.g10))
         $0.layer.cornerRadius = 8
     }
-    private let scrollView = UIScrollView().then {
-        $0.showsHorizontalScrollIndicator = false
-    }
-    private let contentView = UIView().then {
-        $0.backgroundColor = .white
-    }
-    private let dataTableView = DataTableView().then {
-        $0.register(DefaultDataTableViewCell.self, forCellReuseIdentifier: DefaultDataTableViewCell.identifier)
-        $0.register(HonoerDataTableViewCell.self, forCellReuseIdentifier: HonoerDataTableViewCell.identifier)
-        $0.register(WifeDataTableViewCell.self, forCellReuseIdentifier: WifeDataTableViewCell.identifier)
-        $0.register(
-            DefaultHeaderFooterView.self,
-            forHeaderFooterViewReuseIdentifier: DefaultHeaderFooterView.identifier
-        )
-        $0.register(
-            HonorHeaderFooterView.self,
-            forHeaderFooterViewReuseIdentifier: HonorHeaderFooterView.identifier
-        )
-        $0.register(
-            WifeHeaderFooterView.self,
-            forHeaderFooterViewReuseIdentifier: WifeHeaderFooterView.identifier
-        )
-    }
+    // tableviews
+    private let paymentTargetTableView = PaymentTargetTableView()
+    private let cashPaymentTableView = CashPaymentTableView()
+    private let veteranNewcomerTableView = VeteranNewcomerTableView()
+    private let spouseNewcomerTableView = SpouseNewcomerTableView()
+    private let stoppageTableView = StoppageTableView()
+
     private let buttonCollectionView = ButtonCollectionView().then {
         $0.backgroundColor = .white
         $0.layer.borderColor = UIColor.color(.grayScale(.g20)).cgColor
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 24
     }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         buttonCollectionView.collectionView.collectionViewLayout.invalidateLayout()
     }
+
     override func configureVC() {
         self.buttonCollectionView.selectedIndex.subscribe(onNext: { [weak self] in
             self?.titleLabel.text = "\($0.rawValue) 지급 대상자 조회"
@@ -97,20 +135,21 @@ class ManageViewController: BaseVC<ManageViewModel> {
         })
         .disposed(by: disposeBag)
     }
+
     override func viewWillAppear(_ animated: Bool) {
         self.roadData.accept((.honor, .current))
     }
-
+// swiftlint: disable function_body_length
     override func bind() {
         let input = ManageViewModel.Input(
             viewAppear: roadData
         )
         let output = viewModel.transform(input)
-        output.veteranPaymentTargetList
-            .bind(to: self.dataTableView.rx.items(
-                cellIdentifier: DefaultDataTableViewCell.identifier,
-                cellType: DefaultDataTableViewCell.self
-            )) { row, item, cell in
+        output.paymentTargetList
+            .bind(to: self.paymentTargetTableView.dataTableView.rx.items(
+                cellIdentifier: PaymentTargetTableViewCell.identifier,
+                cellType: PaymentTargetTableViewCell.self
+            )) { _, item, cell in
                 cell.setupView(
                     serialNum: item.serialNum,
                     administrativeAddress: item.administrativeAddress,
@@ -128,11 +167,30 @@ class ManageViewController: BaseVC<ManageViewModel> {
                 )
                 cell.selectionStyle = .none
             }.disposed(by: disposeBag)
+        output.cashPaymentList
+            .bind(to: self.cashPaymentTableView.dataTableView.rx.items(
+                cellIdentifier: CashPaymentTableViewCell.identifier,
+                cellType: CashPaymentTableViewCell.self
+            )) { _, item, cell in
+                cell.setUpView(
+                    serialNum: item.serialNum,
+                    administrativeAddress: item.administrativeAddress,
+                    affairsNum: item.affairsNum,
+                    sin: item.sin,
+                    name: item.name,
+                    address: item.address,
+                    depositType: item.depositType,
+                    sibi: item.sibi,
+                    gubi: item.gubi,
+                    note: item.note
+                )
+                cell.selectionStyle = .none
+            }.disposed(by: disposeBag)
         output.veteranNewcomerList
-            .bind(to: self.dataTableView.rx.items(
-                cellIdentifier: HonoerDataTableViewCell.identifier,
-                cellType: HonoerDataTableViewCell.self
-            )) { row, item, cell in
+            .bind(to: self.veteranNewcomerTableView.dataTableView.rx.items(
+                cellIdentifier: VeteranNewcomerTableViewCell.identifier,
+                cellType: VeteranNewcomerTableViewCell.self
+            )) { _, item, cell in
                 cell.setupView(
                     number: item.serialNum,
                     warRegistrationNumber: item.registrationNum,
@@ -152,8 +210,59 @@ class ManageViewController: BaseVC<ManageViewModel> {
                 )
                 cell.selectionStyle = .none
             }.disposed(by: disposeBag)
-        dataTableView.delegate = self
+        output.spouseNewcomerList
+            .bind(to: self.spouseNewcomerTableView.dataTableView.rx.items(
+                cellIdentifier: SpouseNewcomerTableViewCell.identifier,
+                cellType: SpouseNewcomerTableViewCell.self
+            )) { _, item, cell in
+                cell.setupView(
+                    number: item.serialNum,
+                    veteransAffairsNumber: item.affairsNum,
+                    applicantName: item.applicantName,
+                    applicantResidentRegistrationNumber: item.applicantSin,
+                    applicantPhoneNumber: item.applicantPhoneNum,
+                    applicantPostNumber: item.applicantPostAddress,
+                    applicantAddress: item.applicantRoadAddress,
+                    administrativeBuilding: item.administrativeAddress,
+                    warVeteranName: item.warName,
+                    veteranResidentRegistrationNumber: item.veteranSin,
+                    dateOfDeathOfVeteran: item.deathDate,
+                    division: item.veteranName,
+                    bankName: item.bankName,
+                    depositorName: item.accountOwner,
+                    accountNumber: item.account,
+                    moveInDate: item.moveInDate,
+                    applicationDate: item.applicationDate,
+                    newApplicationReason: item.applicationReason,
+                    note: item.note
+                )
+                cell.selectionStyle = .none
+            }.disposed(by: disposeBag)
+        output.stoppageList
+            .bind(to: self.stoppageTableView.dataTableView.rx.items(
+                cellIdentifier: StoppageTableViewCell.identifier,
+                cellType: StoppageTableViewCell.self
+            )) { _, item, cell in
+                cell.setupView(
+                    serialNum: item.serialNum,
+                    administrativeAddress: item.administrativeAddress,
+                    affairsNum: item.affairsNum,
+                    sin: item.sin,
+                    name: item.name,
+                    address: item.address,
+                    depositType: item.depositType,
+                    bankName: item.bankName,
+                    accountOwner: item.accountOwner,
+                    account: item.account,
+                    note: item.note,
+                    stoppageReason: item.stoppageReason,
+                    stoppageDate: item.stoppageDate,
+                    moveInAddress: item.moveInAddress
+                )
+                cell.selectionStyle = .none
+            }.disposed(by: disposeBag)
     }
+// swiftlint: enable function_body_length
 
     override func addView() {
         [
@@ -162,14 +271,13 @@ class ManageViewController: BaseVC<ManageViewModel> {
             underLineSegmentedControl,
             uploadButton,
             printButton,
-            scrollView,
+            paymentTargetTableView,
+            cashPaymentTableView,
+            veteranNewcomerTableView,
+            spouseNewcomerTableView,
+            stoppageTableView,
             buttonCollectionView
         ].forEach { self.view.addSubview($0) }
-        scrollView.addSubview(contentView)
-        [
-            dataTableView
-        ].forEach { contentView.addSubview($0) }
-        scrollView.contentSize = contentView.frame.size
     }
 
     override func setLayout() {
@@ -199,64 +307,35 @@ class ManageViewController: BaseVC<ManageViewModel> {
             $0.height.equalTo(40)
             $0.width.equalTo(119)
         }
-        scrollView.snp.makeConstraints {
+        paymentTargetTableView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(64)
             $0.top.equalTo(underLineSegmentedControl.snp.bottom).offset(36)
             $0.trailing.bottom.equalToSuperview()
         }
-        contentView.snp.updateConstraints {
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.height.equalToSuperview()
-            $0.width.equalTo(currentWidth)
+        cashPaymentTableView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(64)
+            $0.top.equalTo(underLineSegmentedControl.snp.bottom).offset(36)
+            $0.trailing.bottom.equalToSuperview()
         }
-        dataTableView.snp.updateConstraints {
-            $0.edges.equalToSuperview()
+        veteranNewcomerTableView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(64)
+            $0.top.equalTo(underLineSegmentedControl.snp.bottom).offset(36)
+            $0.trailing.bottom.equalToSuperview()
+        }
+        spouseNewcomerTableView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(64)
+            $0.top.equalTo(underLineSegmentedControl.snp.bottom).offset(36)
+            $0.trailing.bottom.equalToSuperview()
+        }
+        stoppageTableView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(64)
+            $0.top.equalTo(underLineSegmentedControl.snp.bottom).offset(36)
+            $0.trailing.bottom.equalToSuperview()
         }
         buttonCollectionView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(25)
             $0.height.equalTo(100)
-        }
-    }
-}
-
-extension ManageViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if topButtonType == .new {
-            switch bottomButtonType {
-            case .honor:
-                guard let header = tableView.dequeueReusableHeaderFooterView(
-                    withIdentifier: HonorHeaderFooterView.identifier
-                ) as? HonorHeaderFooterView else {
-                    return UIView()
-                }
-                currentWidth = 2550
-                return header
-            case .veteransAffairs:
-                guard let header = tableView.dequeueReusableHeaderFooterView(
-                    withIdentifier: DefaultHeaderFooterView.identifier
-                ) as? DefaultHeaderFooterView else {
-                    return UIView()
-                }
-                currentWidth = 1080
-                return header
-            case .wife:
-                guard let header = tableView.dequeueReusableHeaderFooterView(
-                    withIdentifier: WifeHeaderFooterView.identifier
-                ) as? WifeHeaderFooterView else {
-                    return UIView()
-                }
-                currentWidth = 3250
-                return header
-            }
-        } else {
-            guard let header = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: DefaultHeaderFooterView.identifier
-            ) as? DefaultHeaderFooterView else {
-                return UIView()
-            }
-            currentWidth = 1080
-            return header
         }
     }
 }
