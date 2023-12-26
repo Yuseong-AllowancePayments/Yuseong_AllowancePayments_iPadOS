@@ -7,25 +7,10 @@ import RxFlow
 class SpouseApplyViewModel: BaseVM, Stepper {
     let steps = PublishRelay<Step>()
     private let disposeBag = DisposeBag()
-//    private let realm = try! Realm()
 
     struct Input {
         let backButtonDidTap: Signal<Void>
         let finishButtonDidTap: Signal<Void>
-//        let title: String
-//        let applicantName: String
-//        let applicantSin: String
-//        let postAddress: String
-//        let roadAddress: String
-//        let warName: String
-//        let veteranName: String
-//        let affairsNum: String
-//        let veteranSin: String
-//        let deathDate: String
-//        let bankName: String
-//        let accountOwner: String
-//        let account: String
-//        let moveIn: String
     }
     struct Output {
     }
@@ -41,8 +26,8 @@ class SpouseApplyViewModel: BaseVM, Stepper {
                     let realm = try Realm()
                     try realm.write {
                         let data = realm.create(SpouseNewcomerTab.self)
-//                        data.serialNum = input.tit
-//                        data.applicantName = "df"
+//                        data.serialNum =
+//                        data.applicantName =
 //                        data.applicantSin =
 //                        data.applicantPhoneNum
 //                        data.applicantPostAddress

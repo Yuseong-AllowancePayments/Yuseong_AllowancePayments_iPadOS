@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 import SnapKit
 import Then
 import DesignSystem
@@ -121,9 +122,14 @@ class CourtesyApplyViewController: BaseVC<CourtesyApplyViewModel> {
         $0.backgroundColor = .color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }
+    private var webView: WKWebView!
     override func bind() {
         let input = CourtesyApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
         _ = viewModel.transform(input)
+        findAddressButton.rx.tap
+            .subscribe(onNext: { [self] in
+                createdWebView()
+            }).disposed(by: disposeBag)
     }
     override func addView() {
         view.addSubview(scrollView)
@@ -281,3 +287,35 @@ class CourtesyApplyViewController: BaseVC<CourtesyApplyViewModel> {
     // swiftlint:enable function_body_length
 }
 // swiftlint:enable type_body_length
+
+extension CourtesyApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
+    func createdWebView() {
+        let contentController = WKUserContentController()
+        contentController.add(self, name: "callBackHandler")
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = contentController
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        self.webView.navigationDelegate = self
+        backView.addSubview(webView)
+        webView.layer.borderColor = UIColor.color(.grayScale(.g70)).cgColor
+        webView.layer.borderWidth = 1
+        webView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(200)
+            $0.left.right.equalToSuperview().inset(150)
+            $0.bottom.equalTo(self.view.snp.bottom).inset(200)
+        }
+        guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
+              let webView = webView
+        else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let data = message.body as? [String: Any] {
+            postAddressField.textField.text = data["zonecode"] as? String ?? ""
+            roadAddressField.textField.text = "\(data["roadAddress"] as? String ?? "")" +
+            " (\(data["buildingName"] as? String ?? ""))"
+        }
+        webView.removeFromSuperview()
+    }
+}
