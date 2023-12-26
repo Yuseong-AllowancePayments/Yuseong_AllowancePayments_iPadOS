@@ -4,7 +4,7 @@ import RxSwift
 import RxCocoa
 import RxFlow
 
-class ApplyViewModel: BaseVM, Stepper {
+class CourtesyApplyViewModel: BaseVM, Stepper {
     let steps = PublishRelay<Step>()
     private let disposeBag = DisposeBag()
 //    private let realm = try! Realm()
@@ -22,8 +22,4 @@ class ApplyViewModel: BaseVM, Stepper {
             .disposed(by: disposeBag)
         return Output()
     }
-
-//    func insertData(_ data: Object) {
-//        let realm = try! Realm()
-//    }
 }

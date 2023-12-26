@@ -5,9 +5,8 @@ import DesignSystem
 import RxFlow
 import RxCocoa
 import RxSwift
-import WebKit
 
-class VeteranApplyViewController: BaseVC<ApplyViewModel> {
+class SpouseApplyViewController: BaseVC<SpouseApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -26,24 +25,14 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         $0.font = .pretendard(.h1)
         $0.textColor = .black
     }
-    private let nameField = ApplyFieldView(
-        title: "성명",
-        placeholder: "성명을 입력해주세요.",
+    private let applicantNameField = ApplyFieldView(
+        title: "신청인 성명",
+        placeholder: "신청인의 성명을 입력해주세요.",
         image: ""
     )
-    private let birthDateField = ApplyFieldView(
-        title: "생년월일",
-        placeholder: "생년월일을 입력해주세요.  예) 2023-01-01",
-        image: ""
-    )
-    private let sinNumField = ApplyFieldView(
-        title: "주민등록번호",
-        placeholder: "주민등록번호를 입력해주세요.",
-        image: ""
-    )
-    private let registrationNumField = ApplyFieldView(
-        title: "참전등록번호",
-        placeholder: "참전등록번호를 입력해주세요.",
+    private let applicantSinField = ApplyFieldView(
+        title: "신청인 주민등록번호",
+        placeholder: "신청인의 주민등록번호를 입력해주세요.",
         image: ""
     )
     private let postAddressField = ApplyFieldView(
@@ -60,13 +49,33 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         $0.layer.borderWidth = 1
     }
     private let roadAddressField = ApplyFieldView(
-        title: "상세 주소",
+        title: "신청인 상세 주소",
         placeholder: "우편번호 찾기 후 상세 주소를 입력해주세요.",
         image: ""
     )
-    private let phoneNumField = ApplyFieldView(
-        title: "전화번호",
-        placeholder: "전화번호를 입력해주세요.",
+    private let veteranNameField = ApplyFieldView(
+        title: "참전유공자 성명",
+        placeholder: "참전유공자의 성명을 입력해주세요.",
+        image: ""
+    )
+    private let warNameField = ApplyFieldView(
+        title: "구분",
+        placeholder: "6.25참전 또는 월남참전을 입력해주세요.",
+        image: ""
+    )
+    private let veteranSinField = ApplyFieldView(
+        title: "참전유공자 주민등록번호",
+        placeholder: "참전유공자의 주민등록번호를 입력해주세요.",
+        image: ""
+    )
+    private let affairsNumField = ApplyFieldView(
+        title: "보훈번호",
+        placeholder: "참전유공자의 보훈번호를 입력해주세요.",
+        image: ""
+    )
+    private let deathDateField = ApplyFieldView(
+        title: "참전유공자 사망일자",
+        placeholder: "참전유공자의 사망일자를 입력해주세요.  예) 2023-01-01",
         image: ""
     )
     private let bankNameField = ApplyFieldView(
@@ -75,7 +84,7 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         image: ""
     )
     private let accountOwnerField = ApplyFieldView(
-        title: "예금주 성명",
+        title: "예금주",
         placeholder: "예금주 성명을 입력해주세요.",
         image: ""
     )
@@ -89,16 +98,19 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "전입일과 지역을 입력해주세요.  예) 2023-01-01(대전 서구)",
         image: ""
     )
-    private let finishButton = UIButton().then {
+    private let finishButton = UIButton(type: .system).then {
         $0.setTitle("작성 완료", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .pretendard(.context)
         $0.titleLabel?.textColor = .white
         $0.backgroundColor = .color(.primary(.primary))
-        $0.titleLabel?.font = .pretendard(.p2)
         $0.layer.cornerRadius = 8
     }
     override func bind() {
-        let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
+        let input = SpouseApplyViewModel.Input(
+            backButtonDidTap: backButton.rx.tap.asSignal(),
+            finishButtonDidTap: finishButton.rx.tap.asSignal()
+        )
         _ = viewModel.transform(input)
     }
     override func addView() {
@@ -107,14 +119,16 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         [
             backButton,
             titleLabel,
-            nameField,
-            birthDateField,
-            sinNumField,
-            registrationNumField,
+            applicantNameField,
+            applicantSinField,
             postAddressField,
             findAddressButton,
             roadAddressField,
-            phoneNumField,
+            warNameField,
+            veteranNameField,
+            affairsNumField,
+            veteranSinField,
+            deathDateField,
             bankNameField,
             accountOwnerField,
             accountField,
@@ -133,7 +147,7 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         backView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-            $0.height.equalTo(1250)
+            $0.height.equalTo(1300)
         }
         backButton.snp.makeConstraints {
             $0.width.height.equalTo(36)
@@ -145,32 +159,20 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
             $0.height.equalTo(50)
             $0.left.equalTo(backButton.snp.right).offset(16)
         }
-        nameField.snp.makeConstraints {
+        applicantNameField.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(64)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
-        birthDateField.snp.makeConstraints {
+        applicantSinField.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(64)
-            $0.left.equalTo(backView.snp.centerX).offset(15)
-            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.height.equalTo(77)
-        }
-        sinNumField.snp.makeConstraints {
-            $0.top.equalTo(nameField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
-            $0.height.equalTo(77)
-        }
-        registrationNumField.snp.makeConstraints {
-            $0.top.equalTo(birthDateField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         postAddressField.snp.makeConstraints {
-            $0.top.equalTo(sinNumField.snp.bottom).offset(40)
+            $0.top.equalTo(applicantNameField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
@@ -186,32 +188,56 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
             $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
-        phoneNumField.snp.makeConstraints {
-            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
-            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
-            $0.right.equalTo(backView.snp.centerX).offset(-15)
-            $0.height.equalTo(77)
-        }
-        accountOwnerField.snp.makeConstraints {
+        warNameField.snp.makeConstraints {
             $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
+        veteranNameField.snp.makeConstraints {
+            $0.top.equalTo(roadAddressField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.height.equalTo(77)
+        }
+        veteranSinField.snp.makeConstraints {
+            $0.top.equalTo(warNameField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.height.equalTo(77)
+        }
+        affairsNumField.snp.makeConstraints {
+            $0.top.equalTo(veteranNameField.snp.bottom).offset(40)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
+        deathDateField.snp.makeConstraints {
+            $0.top.equalTo(veteranSinField.snp.bottom).offset(40)
+            $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.right.equalTo(backView.snp.centerX).offset(-15)
+            $0.height.equalTo(77)
+        }
         bankNameField.snp.makeConstraints {
-            $0.top.equalTo(phoneNumField.snp.bottom).offset(40)
+            $0.top.equalTo(affairsNumField.snp.bottom).offset(40)
+            $0.left.equalTo(backView.snp.centerX).offset(15)
+            $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
+            $0.height.equalTo(77)
+        }
+        accountOwnerField.snp.makeConstraints {
+            $0.top.equalTo(deathDateField.snp.bottom).offset(40)
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.right.equalTo(backView.snp.centerX).offset(-15)
             $0.height.equalTo(77)
         }
         accountField.snp.makeConstraints {
-            $0.top.equalTo(accountOwnerField.snp.bottom).offset(40)
+            $0.top.equalTo(bankNameField.snp.bottom).offset(40)
             $0.left.equalTo(backView.snp.centerX).offset(15)
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
         moveInField.snp.makeConstraints {
-            $0.top.equalTo(bankNameField.snp.bottom).offset(40)
+            $0.top.equalTo(accountField.snp.bottom).offset(40)
             $0.left.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(77)
         }
@@ -223,14 +249,3 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
     }
     // swiftlint:enable function_body_length
 }
-
-//extension UIViewController {
-//    func callWebView() {
-//        let contentController = WKUserContentController()
-//        let configuration = WKWebViewConfiguration()
-//
-//        contentController.add(self, name: "")
-//        configuration.userContentController = contentController
-//        webView = WKWebView(frame: .zero, configuration: configuration)
-//    }
-//}
