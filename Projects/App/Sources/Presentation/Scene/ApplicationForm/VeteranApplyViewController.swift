@@ -97,9 +97,14 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         $0.titleLabel?.font = .pretendard(.p2)
         $0.layer.cornerRadius = 8
     }
+    private var webView: WKWebView!
     override func bind() {
         let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
         _ = viewModel.transform(input)
+        findAddressButton.rx.tap
+            .subscribe(onNext: { [self] in
+                createdWebView()
+            }).disposed(by: disposeBag)
     }
     override func addView() {
         view.addSubview(scrollView)
@@ -224,13 +229,32 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
     // swiftlint:enable function_body_length
 }
 
-//extension UIViewController {
-//    func callWebView() {
-//        let contentController = WKUserContentController()
-//        let configuration = WKWebViewConfiguration()
-//
-//        contentController.add(self, name: "")
-//        configuration.userContentController = contentController
-//        webView = WKWebView(frame: .zero, configuration: configuration)
-//    }
-//}
+extension VeteranApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
+    func createdWebView() {
+        let contentController = WKUserContentController()
+        contentController.add(self, name: "callBackHandler")
+
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = contentController
+
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        self.webView.navigationDelegate = self
+        backView.addSubview(webView)
+        webView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(200)
+            $0.left.right.equalToSuperview().inset(150)
+        }
+        guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
+              let webView = webView
+        else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
+
+    }
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let data = message.body as? [String: Any] {
+            postAddressField.textField.text = data["zonecode"] as? String ?? ""
+        }
+        webView.isHidden = true
+    }
+}

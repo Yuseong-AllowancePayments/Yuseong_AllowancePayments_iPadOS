@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScence)
         window?.windowScene = windowScence
         window?.backgroundColor = .systemBackground
-        print(readTextFile())
+//        print(readTextFile())
 //        readTextFile()
         let appFlow = AppFlow()
         self.coordinator.coordinate(flow: appFlow, with: AppStepper())
