@@ -110,8 +110,7 @@ class SpouseApplyViewController: BaseVC<SpouseApplyViewModel> {
     private var webView: WKWebView!
     override func bind() {
         let input = SpouseApplyViewModel.Input(
-            backButtonDidTap: backButton.rx.tap.asSignal(),
-            finishButtonDidTap: finishButton.rx.tap.asSignal()
+            backButtonDidTap: backButton.rx.tap.asSignal()
         )
         _ = viewModel.transform(input)
         findAddressButton.rx.tap

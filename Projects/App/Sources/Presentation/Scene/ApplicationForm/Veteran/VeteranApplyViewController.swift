@@ -1,4 +1,5 @@
 import UIKit
+import RealmSwift
 import SnapKit
 import Then
 import DesignSystem
@@ -8,6 +9,7 @@ import RxSwift
 import WebKit
 
 class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
+    private let dataok = PublishRelay<Void>()
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -99,11 +101,46 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
     }
     private var webView: WKWebView!
     override func bind() {
-        let input = VeteranApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
+        let input = VeteranApplyViewModel.Input(
+            backButtonDidTap: backButton.rx.tap.asSignal(),
+            finishButtonDidTap: dataok.asSignal()
+        )
         _ = viewModel.transform(input)
         findAddressButton.rx.tap
             .subscribe(onNext: { [self] in
                 createdWebView()
+            }).disposed(by: disposeBag)
+        finishButton.rx.tap 
+            .subscribe(onNext: { [self] in
+                DispatchQueue.main.async {
+                    do {
+                        let realm = try Realm()
+                        try realm.write {
+                            let data = realm.create(VeteranNewcomerTab.self)
+                            data.serialNum = " "
+                            data.name = nameField.textField.text ?? ""
+                            data.birthDate = birthDateField.textField.text ?? ""
+                            data.sin = sinNumField.textField.text ?? ""
+                            data.registrationNum = registrationNumField.textField.text ?? ""
+                            data.postAddress = postAddressField.textField.text ?? ""
+                            data.roadAddress = roadAddressField.textField.text ?? ""
+                            data.administrativeAddress = " "
+                            data.phoneNum = phoneNumField.textField.text ?? ""
+                            data.accountOwner = accountOwnerField.textField.text ?? ""
+                            data.bankName = bankNameField.textField.text ?? ""
+                            data.account = accountField.textField.text ?? ""
+                            data.moveInDate = moveInField.textField.text ?? ""
+                            data.applicationDate = convertDate()
+                            data.applicationReason = " "
+                            data.note = " "
+                            realm.add(data)
+                            dataok.accept(())
+                        }
+                    } catch {
+                        print("Error initialising new realm, \(error)")
+                    }
+                }
+                
             }).disposed(by: disposeBag)
     }
     override func addView() {
@@ -230,32 +267,39 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
 }
 
 extension VeteranApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
-  func createdWebView() {
-    let contentController = WKUserContentController()
-    contentController.add(self, name: "callBackHandler")
-    let configuration = WKWebViewConfiguration()
-    configuration.userContentController = contentController
-    webView = WKWebView(frame: .zero, configuration: configuration)
-    self.webView.navigationDelegate = self
-    backView.addSubview(webView)
-    webView.layer.borderColor = UIColor.color(.grayScale(.g70)).cgColor
-    webView.layer.borderWidth = 1
-    webView.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(200)
-      $0.left.right.equalToSuperview().inset(150)
+    func createdWebView() {
+        let contentController = WKUserContentController()
+        contentController.add(self, name: "callBackHandler")
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = contentController
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        self.webView.navigationDelegate = self
+        backView.addSubview(webView)
+        webView.layer.borderColor = UIColor.color(.grayScale(.g70)).cgColor
+        webView.layer.borderWidth = 1
+        webView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(200)
+            $0.left.right.equalToSuperview().inset(150)
+        }
+        guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
+              let webView = webView
+        else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
-    guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
-       let webView = webView
-    else { return }
-    let request = URLRequest(url: url)
-    webView.load(request)
-  }
-  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-    if let data = message.body as? [String: Any] {
-      postAddressField.textField.text = data["zonecode"] as? String ?? ""
-      roadAddressField.textField.text = "\(data["roadAddress"] as? String ?? "")" +
-                        " (\(data["buildingName"] as? String ?? ""))"
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let data = message.body as? [String: Any] {
+            postAddressField.textField.text = data["zonecode"] as? String ?? ""
+            roadAddressField.textField.text = "\(data["roadAddress"] as? String ?? "")" +
+            " (\(data["buildingName"] as? String ?? ""))"
+        }
+        webView.removeFromSuperview()
     }
-    webView.removeFromSuperview()
-  }
+    func convertDate() -> String {
+        let nowDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let str = dateFormatter.string(from: nowDate)
+        return str
+    }
 }
