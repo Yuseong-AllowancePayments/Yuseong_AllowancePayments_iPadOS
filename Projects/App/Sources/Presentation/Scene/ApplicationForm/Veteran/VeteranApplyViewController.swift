@@ -9,7 +9,6 @@ import RxSwift
 import WebKit
 
 class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
-    private let dataok = PublishRelay<Void>()
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -102,8 +101,7 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
     private var webView: WKWebView!
     override func bind() {
         let input = VeteranApplyViewModel.Input(
-            backButtonDidTap: backButton.rx.tap.asSignal(),
-            finishButtonDidTap: dataok.asSignal()
+            backButtonDidTap: backButton.rx.tap.asSignal()
         )
         _ = viewModel.transform(input)
         findAddressButton.rx.tap
@@ -111,36 +109,29 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
                 createdWebView()
             }).disposed(by: disposeBag)
         finishButton.rx.tap 
-            .subscribe(onNext: { [self] in
-                DispatchQueue.main.async {
-                    do {
-                        let realm = try Realm()
-                        try realm.write {
-                            let data = realm.create(VeteranNewcomerTab.self)
-                            data.serialNum = " "
-                            data.name = nameField.textField.text ?? ""
-                            data.birthDate = birthDateField.textField.text ?? ""
-                            data.sin = sinNumField.textField.text ?? ""
-                            data.registrationNum = registrationNumField.textField.text ?? ""
-                            data.postAddress = postAddressField.textField.text ?? ""
-                            data.roadAddress = roadAddressField.textField.text ?? ""
-                            data.administrativeAddress = " "
-                            data.phoneNum = phoneNumField.textField.text ?? ""
-                            data.accountOwner = accountOwnerField.textField.text ?? ""
-                            data.bankName = bankNameField.textField.text ?? ""
-                            data.account = accountField.textField.text ?? ""
-                            data.moveInDate = moveInField.textField.text ?? ""
-                            data.applicationDate = convertDate()
-                            data.applicationReason = " "
-                            data.note = " "
-                            realm.add(data)
-                            dataok.accept(())
-                        }
-                    } catch {
-                        print("Error initialising new realm, \(error)")
-                    }
+            .subscribe(onNext: {
+                DispatchQueue.main.async { [self] in
+                    viewModel.insertData(
+                        VeteranNewComer(
+                            serialNum: getCurrentMonth(),
+                            name: nameField.textField.text ?? "",
+                            birthDate: birthDateField.textField.text ?? "",
+                            sin: sinNumField.textField.text ?? "",
+                            registrationNum: registrationNumField.textField.text ?? "",
+                            postAddress: postAddressField.textField.text ?? "",
+                            roadAddress: roadAddressField.textField.text ?? "",
+                            administrativeAddress: " ",
+                            phoneNum: phoneNumField.textField.text ?? "",
+                            accountOwner: accountOwnerField.textField.text ?? "",
+                            bankName: bankNameField.textField.text ?? "",
+                            account: accountField.textField.text ?? "",
+                            moveInDate: moveInField.textField.text ?? "",
+                            applicationDate: convertCurrentDate(),
+                            applicationReason: "",
+                            note: ""
+                        )
+                    )
                 }
-                
             }).disposed(by: disposeBag)
     }
     override func addView() {
@@ -294,12 +285,5 @@ extension VeteranApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNa
             " (\(data["buildingName"] as? String ?? ""))"
         }
         webView.removeFromSuperview()
-    }
-    func convertDate() -> String {
-        let nowDate = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let str = dateFormatter.string(from: nowDate)
-        return str
     }
 }

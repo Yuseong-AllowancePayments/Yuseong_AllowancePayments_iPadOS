@@ -7,11 +7,10 @@ import RxFlow
 class VeteranApplyViewModel: BaseVM, Stepper {
     let steps = PublishRelay<Step>()
     private let disposeBag = DisposeBag()
-    var data = VeteranNewComer()
+    var insertResult = BehaviorRelay<Bool>(value: false)
 
     struct Input {
         let backButtonDidTap: Signal<Void>
-        let finishButtonDidTap: Signal<Void>
     }
     struct Output {
     }
@@ -21,11 +20,41 @@ class VeteranApplyViewModel: BaseVM, Stepper {
             .map { YuseongAllowanceStep.selectTypeIsRequired }
             .bind(to: steps)
             .disposed(by: disposeBag)
-        input.finishButtonDidTap.asObservable()
-            .map { YuseongAllowanceStep.selectTypeIsRequired }
-            .bind(to: steps)
-            .disposed(by: disposeBag)
         return Output()
+    }
+
+    func insertData(_ data: VeteranNewComer){
+        do {
+            let realm = try Realm()
+            guard let newValue = realm.object(ofType: VeteranNewcomerTab.self, forPrimaryKey: data.registrationNum) else { return }
+            try realm.write {
+                newValue.serialNum = data.serialNum
+                newValue.name = data.name
+                newValue.birthDate = data.birthDate
+                newValue.sin = data.sin
+                newValue.postAddress = data.postAddress
+                newValue.roadAddress = data.roadAddress
+                newValue.administrativeAddress = data.administrativeAddress
+                newValue.phoneNum = data.phoneNum
+                newValue.accountOwner = data.accountOwner
+                newValue.bankName = data.bankName
+                newValue.account = data.account
+                newValue.moveInDate = data.moveInDate
+                newValue.applicationDate = data.applicationDate
+                newValue.applicationReason = data.applicationReason
+                newValue.note = data.note
+                realm.add(newValue)
+            }
+            insertResult.accept(true)
+
+            insertResult.asObservable()
+                .map { _ in YuseongAllowanceStep.selectTypeIsRequired }
+                .bind(to: steps)
+                .disposed(by: disposeBag)
+        } catch {
+            print("Error initialising new realm, \(error)")
+            insertResult.accept(false)
+        }
     }
 }
 
