@@ -65,13 +65,13 @@ class VeteranCashPaymentTab: Object {
 
 class VeteranNewcomerTab: Object {
     @Persisted var serialNum: String = ""
+    @Persisted var administrativeAddress: String = ""
+    @Persisted(primaryKey: true) var registrationNum: String
     @Persisted var name: String = ""
     @Persisted var birthDate: String = ""
     @Persisted var sin: String = ""
-    @Persisted(primaryKey: true) var registrationNum: String
     @Persisted var postAddress: String = ""
     @Persisted var roadAddress: String = ""
-    @Persisted var administrativeAddress: String = ""
     @Persisted var phoneNum: String = ""
     @Persisted var accountOwner: String = ""
     @Persisted var bankName: String = ""
@@ -86,17 +86,17 @@ class VeteranStoppageTab: Object {
     @Persisted var serialNum: String = ""
     @Persisted var administrativeAddress: String = ""
     @Persisted var affairsNum: String = ""
-    @Persisted(primaryKey: true) var sin: String = ""
     @Persisted var name: String = ""
+    @Persisted(primaryKey: true) var sin: String = ""
     @Persisted var address: String = ""
     @Persisted var depositType: String = ""
     @Persisted var bankName: String = ""
     @Persisted var accountOwner: String = ""
     @Persisted var account: String = ""
-    @Persisted var note: String = ""
     @Persisted var stoppageReason: String = ""
     @Persisted var stoppageDate: String = ""
     @Persisted var moveInAddress: String = ""
+    @Persisted var note: String = ""
     func toStoppage() -> StoppageTab {
         return .init(
             serialNum: self.serialNum,
@@ -296,8 +296,8 @@ class CourtesyCashPaymentTab: Object {
 
 class CourtesyNewcomerTab: Object {
     @Persisted var serialNum: String = ""
-    @Persisted(primaryKey: true) var veteranType: String = ""
-    @Persisted var affairsNum: String = ""
+    @Persisted var veteranType: String = ""
+    @Persisted(primaryKey: true) var affairsNum: String = ""
     @Persisted var postAddress: String = ""
     @Persisted var roadAddress: String = ""
     @Persisted var administrativeAddress: String = ""

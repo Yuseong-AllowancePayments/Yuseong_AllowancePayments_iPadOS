@@ -35,9 +35,35 @@ class DBHelper {
         return nil
     }
 
-    func createVeteranTable() {
+    func createAdministrationTable() {
         let query = """
-               CREATE TABLE IF NOT EXISTS veteranTable(
+               CREATE TABLE IF NOT EXISTS administration(
+                    우편번호 TEXT,
+               시도 TEXT,
+               시도영문 TEXT,
+               시군구 TEXT,
+               시군구영문 TEXT,
+               읍면 TEXT,
+               읍면영문 TEXT,
+               도로명코드 TEXT,
+               도로명 TEXT,
+               도로명영문 TEXT,
+               지하여부 TEXT,
+               건물번호본번 TEXT,
+               건물번호부번 TEXT,
+               건물관리번호 TEXT,
+               다량배달처명 TEXT,
+               시군구용건물명 TEXT,
+               법정동코드 TEXT,
+               법정동명 TEXT,
+               리명 TEXT,
+               행정동명 TEXT,
+               산여부 TEXT,
+               지번본번 TEXT,
+               읍면동일련번호 TEXT,
+               지번부번 TEXT,
+               구우편번호 TEXT,
+               우편번호일련번호 TEXT
                     serial_num TEXT,
                     name TEXT NOT NULL,
                     birth_date TEXT NOT NULL,
@@ -51,89 +77,6 @@ class DBHelper {
                     bank_name TEXT NOT NULL,
                     account TEXT NOT NULL,
                     move_in_date TEXT NOT NULL,
-                    application_date TEXT NOT NULL,
-                    application_reason TEXT,
-                    note TEXT
-               );
-               """
-        var statement: OpaquePointer?
-
-        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-            if sqlite3_step(statement) == SQLITE_DONE {
-                print("Creating table has been succesfully done. db: \(String(describing: self.db))")
-            } else {
-                let errorMessage = String(cString: sqlite3_errmsg(db))
-                print("\nsqlte3_step failure while creating table: \(errorMessage)")
-            }
-        } else {
-            let errorMessage = String(cString: sqlite3_errmsg(self.db))
-            print("\nsqlite3_prepare failure while creating table: \(errorMessage)")
-        }
-
-        sqlite3_finalize(statement)
-    }
-
-    func createSpouseTable() {
-        let query = """
-               CREATE TABLE IF NOT EXISTS spouseTable(
-                    serial_num TEXT,
-                    applicant_name TEXT NOT NULL,
-                    applicant_sin TEXT NOT NULL,
-                    applicant_phone_num TEXT NOT NULL,
-                    applicant_post_address TEXT NOT NULL,
-                    applicant_road_address TEXT NOT NULL,
-                    administrative_address TEXT,
-                    veteran_name TEXT NOT NULL,
-                    war_name TEXT NOT NULL,
-                    veteran_sin TEXT NOT NULL,
-                    affairs_num TEXT PRIMARY KEY,
-                    death_date TEXT NOT NULL,
-                    bank_name TEXT NOT NULL,
-                    account_owner TEXT NOT NULL,
-                    account TEXT NOT NULL,
-                    move_in_date TEXT NOT NULL,
-                    application_date TEXT NOT NULL,
-                    application_reason TEXT,
-                    note TEXT
-               );
-               """
-        var statement: OpaquePointer?
-
-        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-            if sqlite3_step(statement) == SQLITE_DONE {
-                print("Creating table has been succesfully done. db: \(String(describing: self.db))")
-            } else {
-                let errorMessage = String(cString: sqlite3_errmsg(db))
-                print("\nsqlte3_step failure while creating table: \(errorMessage)")
-            }
-        } else {
-            let errorMessage = String(cString: sqlite3_errmsg(self.db))
-            print("\nsqlite3_prepare failure while creating table: \(errorMessage)")
-        }
-
-        sqlite3_finalize(statement)
-    }
-
-    func createCourtesyTable() {
-        let query = """
-               CREATE TABLE IF NOT EXISTS courtesyTable(
-                    serial_num TEXT,
-                    veteran_type TEXT NOT NULL,
-                    affairs_num TEXT PRIMARY KEY,
-                    post_address TEXT NOT NULL,
-                    road_address TEXT NOT NULL,
-                    administrative_address TEXT,
-                    applicant_name TEXT NOT NULL,
-                    birth_date TEXT NOT NULL,
-                    applicant_sin TEXT NOT NULL,
-                    gender TEXT NOT NULL,
-                    phone_num TEXT NOT NULL,
-                    bank_name TEXT NOT NULL,
-                    account_owner TEXT NOT NULL,
-                    account TEXT NOT NULL,
-                    move_in_date TEXT NOT NULL,
-                    relation TEXT,
-                    priority TEXT,
                     application_date TEXT NOT NULL,
                     application_reason TEXT,
                     note TEXT

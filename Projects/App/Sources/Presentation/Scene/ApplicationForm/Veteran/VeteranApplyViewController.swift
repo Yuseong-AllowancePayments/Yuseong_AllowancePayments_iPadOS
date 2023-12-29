@@ -110,28 +110,28 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
             }).disposed(by: disposeBag)
         finishButton.rx.tap 
             .subscribe(onNext: {
-                DispatchQueue.main.async { [self] in
-                    viewModel.insertData(
-                        VeteranNewComer(
-                            serialNum: getCurrentMonth(),
-                            name: nameField.textField.text ?? "",
-                            birthDate: birthDateField.textField.text ?? "",
-                            sin: sinNumField.textField.text ?? "",
-                            registrationNum: registrationNumField.textField.text ?? "",
-                            postAddress: postAddressField.textField.text ?? "",
-                            roadAddress: roadAddressField.textField.text ?? "",
-                            administrativeAddress: " ",
-                            phoneNum: phoneNumField.textField.text ?? "",
-                            accountOwner: accountOwnerField.textField.text ?? "",
-                            bankName: bankNameField.textField.text ?? "",
-                            account: accountField.textField.text ?? "",
-                            moveInDate: moveInField.textField.text ?? "",
-                            applicationDate: convertCurrentDate(),
-                            applicationReason: "",
-                            note: ""
-                        )
-                    )
-                }
+//                DispatchQueue.main.async { [self] in
+//                    viewModel.insertData(
+//                        VeteranNewComer(
+//                            serialNum: getCurrentMonth(),
+//                            name: nameField.textField.text ?? "",
+//                            birthDate: birthDateField.textField.text ?? "",
+//                            sin: sinNumField.textField.text ?? "",
+//                            registrationNum: registrationNumField.textField.text ?? "",
+//                            postAddress: postAddressField.textField.text ?? "",
+//                            roadAddress: roadAddressField.textField.text ?? "",
+//                            administrativeAddress: " ",
+//                            phoneNum: phoneNumField.textField.text ?? "",
+//                            accountOwner: accountOwnerField.textField.text ?? "",
+//                            bankName: bankNameField.textField.text ?? "",
+//                            account: accountField.textField.text ?? "",
+//                            moveInDate: moveInField.textField.text ?? "",
+//                            applicationDate: convertCurrentDate(),
+//                            applicationReason: "",
+//                            note: ""
+//                        )
+//                    )
+//                }
             }).disposed(by: disposeBag)
     }
     override func addView() {
