@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        } catch {
 //            print("Error initialising new realm, \(error)")
 //        }
-        print(readTextFile())
         return true
     }
 
