@@ -15,9 +15,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScence)
         window?.windowScene = windowScence
         window?.backgroundColor = .systemBackground
-        readTextFile()
+//        readTextFile()
         let dbHelper = DBHelper()
-        dbHelper.createAdministrationTable()
+//        dbHelper.createAdministrationTable()
+        dbHelper.dropTable("administration")
         let appFlow = AppFlow()
         self.coordinator.coordinate(flow: appFlow, with: AppStepper())
         window?.makeKeyAndVisible()

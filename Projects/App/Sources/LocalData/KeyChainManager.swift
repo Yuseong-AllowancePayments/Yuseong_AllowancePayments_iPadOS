@@ -19,7 +19,7 @@ class KeychainManager {
             kSecAttrService as String: service as AnyObject,
             kSecAttrAccount as String: account as AnyObject,
             kSecClass as String: kSecClassGenericPassword,
-            kSecValueData as String: value as AnyObject,
+            kSecValueData as String: value as AnyObject
         ]
         let status = SecItemAdd(query as CFDictionary, nil)
         if status == errSecDuplicateItem {
@@ -44,7 +44,7 @@ class KeychainManager {
             kSecAttrService as String: service as AnyObject,
             kSecAttrAccount as String: account as AnyObject,
             kSecClass as String: kSecClassGenericPassword,
-            kSecValueData as String: value as AnyObject,
+            kSecValueData as String: value as AnyObject
         ]
         let attributes: [String: AnyObject] = [
             kSecValueData as String: value as AnyObject
@@ -68,7 +68,7 @@ class KeychainManager {
             kSecAttrAccount as String: account as AnyObject,
             kSecClass as String: kSecClassGenericPassword,
             kSecMatchLimit as String: kSecMatchLimitOne,
-            kSecReturnData as String: kCFBooleanTrue,
+            kSecReturnData as String: kCFBooleanTrue
         ]
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)

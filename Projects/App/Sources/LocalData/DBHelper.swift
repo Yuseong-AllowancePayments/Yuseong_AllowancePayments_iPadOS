@@ -72,8 +72,8 @@ class DBHelper {
         var statement: OpaquePointer?
 
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_text(statement, 2, 우편번호, -1, nil)
-            sqlite3_bind_text(statement, 3, 행정동, -1, nil)
+            sqlite3_bind_text(statement, 1, 우편번호, -1, nil)
+            sqlite3_bind_text(statement, 2, 행정동, -1, nil)
 
             if sqlite3_step(statement) == SQLITE_DONE {
                 print("insert data success")
