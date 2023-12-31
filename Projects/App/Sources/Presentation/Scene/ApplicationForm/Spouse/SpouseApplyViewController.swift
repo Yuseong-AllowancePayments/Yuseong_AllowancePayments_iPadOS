@@ -7,6 +7,7 @@ import RxFlow
 import RxCocoa
 import RxSwift
 
+// swiftlint: disable type_body_length
 class SpouseApplyViewController: BaseVC<SpouseApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -143,6 +144,18 @@ class SpouseApplyViewController: BaseVC<SpouseApplyViewModel> {
     }
     override func configureVC() {
         self.hideKeyboardWhenTappedAround()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
@@ -256,32 +269,51 @@ class SpouseApplyViewController: BaseVC<SpouseApplyViewModel> {
 }
 
 extension SpouseApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
-  func createdWebView() {
-    let contentController = WKUserContentController()
-    contentController.add(self, name: "callBackHandler")
-    let configuration = WKWebViewConfiguration()
-    configuration.userContentController = contentController
-    webView = WKWebView(frame: .zero, configuration: configuration)
-    self.webView.navigationDelegate = self
-    backView.addSubview(webView)
-    webView.layer.borderColor = UIColor.color(.grayScale(.g70)).cgColor
-    webView.layer.borderWidth = 1
-    webView.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(200)
-      $0.left.right.equalToSuperview().inset(150)
+    func createdWebView() {
+        let contentController = WKUserContentController()
+        contentController.add(self, name: "callBackHandler")
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = contentController
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        self.webView.navigationDelegate = self
+        backView.addSubview(webView)
+        webView.layer.borderColor = UIColor.color(.grayScale(.g70)).cgColor
+        webView.layer.borderWidth = 1
+        webView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(200)
+            $0.left.right.equalToSuperview().inset(150)
+        }
+        guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
+              let webView = webView
+        else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
-    guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
-       let webView = webView
-    else { return }
-    let request = URLRequest(url: url)
-    webView.load(request)
-  }
-  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-    if let data = message.body as? [String: Any] {
-      postAddressField.textField.text = data["zonecode"] as? String ?? ""
-      roadAddressField.textField.text = "\(data["roadAddress"] as? String ?? "")" +
-                        " (\(data["buildingName"] as? String ?? ""))"
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let data = message.body as? [String: Any] {
+            postAddressField.textField.text = data["zonecode"] as? String ?? ""
+            roadAddressField.textField.text = "\(data["roadAddress"] as? String ?? "")" +
+            " (\(data["buildingName"] as? String ?? ""))"
+        }
+        webView.removeFromSuperview()
     }
-    webView.removeFromSuperview()
-  }
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+        }
+        let contentInset = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: keyboardFrame.size.height + 20,
+            right: 0.0)
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+    @objc private func keyboardWillHide() {
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
 }
+// swiftlint: enable type_body_length

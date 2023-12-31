@@ -8,6 +8,7 @@ import RxCocoa
 import RxSwift
 import WebKit
 
+// swiftlint: disable type_body_length
 class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -110,28 +111,28 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
             }).disposed(by: disposeBag)
         finishButton.rx.tap
             .subscribe(onNext: {
-//                DispatchQueue.main.async { [self] in
-//                    viewModel.insertData(
-//                        VeteranNewComer(
-//                            serialNum: getCurrentMonth(),
-//                            name: nameField.textField.text ?? "",
-//                            birthDate: birthDateField.textField.text ?? "",
-//                            sin: sinNumField.textField.text ?? "",
-//                            registrationNum: registrationNumField.textField.text ?? "",
-//                            postAddress: postAddressField.textField.text ?? "",
-//                            roadAddress: roadAddressField.textField.text ?? "",
-//                            administrativeAddress: " ",
-//                            phoneNum: phoneNumField.textField.text ?? "",
-//                            accountOwner: accountOwnerField.textField.text ?? "",
-//                            bankName: bankNameField.textField.text ?? "",
-//                            account: accountField.textField.text ?? "",
-//                            moveInDate: moveInField.textField.text ?? "",
-//                            applicationDate: convertCurrentDate(),
-//                            applicationReason: "",
-//                            note: ""
-//                        )
-//                    )
-//                }
+                DispatchQueue.main.async { [self] in
+                    viewModel.insertData(
+                        VeteranNewComer(
+                            serialNum: getCurrentMonth(),
+                            name: nameField.textField.text ?? "",
+                            birthDate: birthDateField.textField.text ?? "",
+                            sin: sinNumField.textField.text ?? "",
+                            registrationNum: registrationNumField.textField.text ?? "",
+                            postAddress: postAddressField.textField.text ?? "",
+                            roadAddress: roadAddressField.textField.text ?? "",
+                            administrativeAddress: viewModel.readDistrict(postAddressField.textField.text ?? ""),
+                            phoneNum: phoneNumField.textField.text ?? "",
+                            accountOwner: accountOwnerField.textField.text ?? "",
+                            bankName: bankNameField.textField.text ?? "",
+                            account: accountField.textField.text ?? "",
+                            moveInDate: moveInField.textField.text ?? "",
+                            applicationDate: convertCurrentDate(),
+                            applicationReason: "",
+                            note: ""
+                        )
+                    )
+                }
             }).disposed(by: disposeBag)
     }
     override func addView() {
@@ -157,7 +158,18 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
     }
     override func configureVC() {
         self.hideKeyboardWhenTappedAround()
-        viewModel.readDistrict()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
@@ -287,4 +299,23 @@ extension VeteranApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNa
         }
         webView.removeFromSuperview()
     }
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+        }
+        let contentInset = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: keyboardFrame.size.height + 20,
+            right: 0.0)
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+    @objc private func keyboardWillHide() {
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
 }
+// swiftlint: enable type_body_length

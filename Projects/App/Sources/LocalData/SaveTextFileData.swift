@@ -31,7 +31,7 @@ func readTextFile() -> Any {
                 .split(separator: "|")
 
             if str[19] != " "{
-                var realmData = AdministrativeDistrict(postCode: String(str[0]), zone: districtName["\(str[19])"] ?? "")
+                let realmData = AdministrativeDistrict(postCode: String(str[0]), zone: districtName["\(str[19])"] ?? "")
                 try! realm.write {
                     realm.add(realmData, update: .modified)
                 }

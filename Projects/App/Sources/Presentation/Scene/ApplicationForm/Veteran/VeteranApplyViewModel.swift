@@ -23,13 +23,13 @@ class VeteranApplyViewModel: BaseVM, Stepper {
         return Output()
     }
 
-    func readDistrict(_ postCode: String) {
+    func readDistrict(_ postCode: String) -> String {
         do {
             let realm = try Realm()
-            let data = realm.objects(AdministrativeDistrict.self).filter("postCode == \(postCode)")
-            print(data)
+            let data = realm.objects(AdministrativeDistrict.self).filter("postCode == '\(postCode)'")
+            return Array(data).last?.zone ?? "행정동이 산출되지 않았습니다."
         } catch {
-            print(error.localizedDescription)
+            return error.localizedDescription
         }
     }
 
