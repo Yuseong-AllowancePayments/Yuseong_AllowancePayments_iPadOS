@@ -80,6 +80,7 @@ class PaymentTargetTableViewCell: UITableViewCell {
     // swiftlint:enable function_parameter_count
 }
 
+// swiftlint:disable function_body_length
 private extension PaymentTargetTableViewCell {
     func setupLayout() {
         [
@@ -163,3 +164,4 @@ private extension PaymentTargetTableViewCell {
         }
     }
 }
+// swiftlint:enable function_body_length

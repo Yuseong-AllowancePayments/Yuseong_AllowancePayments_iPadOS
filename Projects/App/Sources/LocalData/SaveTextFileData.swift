@@ -1,6 +1,7 @@
 import Foundation
+import RealmSwift
 
-var administrativeDistrict: [String: String] = [
+var districtName: [String: String] = [
     "진잠동": "01-진잠동",
     "학하동": "02-학하동",
     "원신흥동": "03-원신흥동",
@@ -16,20 +17,30 @@ var administrativeDistrict: [String: String] = [
     "관평동": "13-관평동"
 ]
 
+// swiftlint:disable force_try
 func readTextFile() -> Any {
     guard let paths = Bundle.main.path(forResource: "대전광역시.txt", ofType: nil) else { return "" }
-    let dbHelper = DBHelper()
+    let realm = try! Realm()
+
     do {
         let data = try String(contentsOfFile: paths, encoding: .utf8).components(separatedBy: .newlines)
+
         data.forEach { line in
             let str = line.replacingOccurrences(of: "|||", with: "| | |")
                 .replacingOccurrences(of: "||", with: "| |")
                 .split(separator: "|")
-            print(str, str[19])
-            dbHelper.insertIntoAdministration(String(str[0]), administrativeDistrict["\(str[19])"] ?? "")
+
+            if str[19] != " "{
+                var realmData = AdministrativeDistrict(postCode: String(str[0]), zone: districtName["\(str[19])"] ?? "")
+                try! realm.write {
+                    realm.add(realmData, update: .modified)
+                }
+            }
         }
+
         return "Successfully Inserted"
     } catch {
         return "Error: file read failed - \(error.localizedDescription)"
     }
 }
+// swiftlint:enable force_try

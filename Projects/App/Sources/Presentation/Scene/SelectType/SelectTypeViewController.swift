@@ -86,7 +86,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     }
     override func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(view.snp.centerY).offset(-273)
+            $0.top.equalTo(view.snp.centerY).offset(UIScreen.main.bounds.height * (-0.215))
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(50)
         }
@@ -96,7 +96,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
             $0.height.equalTo(26)
         }
         managerSignInButton.snp.makeConstraints {
-            $0.top.equalTo(view.snp.centerY).offset(-273)
+            $0.top.equalTo(view.snp.centerY).offset(UIScreen.main.bounds.height * (-0.215))
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.width.equalTo(119)
             $0.height.equalTo(40)

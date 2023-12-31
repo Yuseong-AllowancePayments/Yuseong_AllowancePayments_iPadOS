@@ -49,6 +49,7 @@ class StoppageHeaderFooterView: UITableViewHeaderFooterView {
     private let moveInAddressLabel = PaddingLabel().then {
         $0.setCategoryCellLabel(text: "전입지 주소", isRightRound: true)
     }
+    // swiftlint:disable function_body_length
     override func layoutSubviews() {
         [
             serialNumLabel,
@@ -137,4 +138,5 @@ class StoppageHeaderFooterView: UITableViewHeaderFooterView {
             $0.width.equalTo(199)
         }
     }
+    // swiftlint:enable function_body_length
 }

@@ -6,6 +6,7 @@ import RxSwift
 import RxCocoa
 import DesignSystem
 
+// swiftlint:disable type_body_length
 class ManageViewController: BaseVC<ManageViewModel> {
     private let roadData = PublishRelay<(BottomButtonType, TopButtonType)>()
     var bottomButtonType: BottomButtonType = .honor {
@@ -279,7 +280,7 @@ class ManageViewController: BaseVC<ManageViewModel> {
             buttonCollectionView
         ].forEach { self.view.addSubview($0) }
     }
-
+    // swiftlint:disable function_body_length
     override func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(64)
@@ -338,4 +339,6 @@ class ManageViewController: BaseVC<ManageViewModel> {
             $0.height.equalTo(100)
         }
     }
+    // swiftlint:enable function_body_length
 }
+// swiftlint:enable type_body_length

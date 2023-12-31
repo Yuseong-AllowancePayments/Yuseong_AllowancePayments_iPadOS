@@ -108,7 +108,7 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
             .subscribe(onNext: { [self] in
                 createdWebView()
             }).disposed(by: disposeBag)
-        finishButton.rx.tap 
+        finishButton.rx.tap
             .subscribe(onNext: {
 //                DispatchQueue.main.async { [self] in
 //                    viewModel.insertData(
@@ -157,6 +157,7 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
     }
     override func configureVC() {
         self.hideKeyboardWhenTappedAround()
+        viewModel.readDistrict()
     }
     // swiftlint:disable function_body_length
     override func setLayout() {

@@ -351,3 +351,14 @@ class CourtesyStoppageTab: Object {
         )
     }
 }
+
+public class AdministrativeDistrict: Object {
+    @Persisted(primaryKey: true) var postCode: String
+    @Persisted var zone: String
+
+    convenience init(postCode: String, zone: String) {
+        self.init()
+        self.postCode = postCode
+        self.zone = zone
+    }
+}

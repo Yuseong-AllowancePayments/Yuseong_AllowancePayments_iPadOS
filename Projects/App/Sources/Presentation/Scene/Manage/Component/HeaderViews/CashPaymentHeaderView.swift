@@ -37,6 +37,7 @@ class CashPaymentHeaderFooterView: UITableViewHeaderFooterView {
     private let noteLabel = PaddingLabel().then {
         $0.setCategoryCellLabel(text: "비고", isRightRound: true)
     }
+    // swiftlint:disable function_body_length
     override func layoutSubviews() {
         [
             serialNumLabel,
@@ -101,4 +102,5 @@ class CashPaymentHeaderFooterView: UITableViewHeaderFooterView {
             $0.width.equalTo(149)
         }
     }
+    // swiftlint:enable function_body_length
 }

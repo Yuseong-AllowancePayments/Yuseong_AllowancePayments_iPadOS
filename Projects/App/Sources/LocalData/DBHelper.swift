@@ -2,11 +2,6 @@ import Foundation
 import SQLite3
 
 // swiftlint:disable identifier_name
-struct AdministrativeDistrict: Codable {
-    var postCode: String
-    var zone: String
-}
-
 class DBHelper {
     static let shared = DBHelper()
 
@@ -101,7 +96,5 @@ class DBHelper {
             print("drop table prepare fail")
         }
     }
-
-    
 }
 // swiftlint:enable identifier_name

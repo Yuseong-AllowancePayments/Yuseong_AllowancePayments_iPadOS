@@ -23,10 +23,23 @@ class VeteranApplyViewModel: BaseVM, Stepper {
         return Output()
     }
 
-    func insertData(_ data: VeteranNewComer){
+    func readDistrict(_ postCode: String) {
         do {
             let realm = try Realm()
-            guard let newValue = realm.object(ofType: VeteranNewcomerTab.self, forPrimaryKey: data.registrationNum) else { return }
+            let data = realm.objects(AdministrativeDistrict.self).filter("postCode == \(postCode)")
+            print(data)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
+    func insertData(_ data: VeteranNewComer) {
+        do {
+            let realm = try Realm()
+            guard let newValue = realm.object(
+                ofType: VeteranNewcomerTab.self,
+                forPrimaryKey: data.registrationNum
+            ) else { return }
             try realm.write {
                 newValue.serialNum = data.serialNum
                 newValue.name = data.name

@@ -38,7 +38,18 @@ class CashPaymentTableViewCell: UITableViewCell {
         $0.setDataCell()
     }
     // swiftlint:disable function_parameter_count
-    func setUpView(serialNum: String, administrativeAddress: String, affairsNum: String, sin: String, name: String, address: String, depositType: String, sibi: String, gubi: String, note: String) {
+    func setUpView(
+        serialNum: String,
+        administrativeAddress: String,
+        affairsNum: String,
+        sin: String,
+        name: String,
+        address: String,
+        depositType: String,
+        sibi: String,
+        gubi: String,
+        note: String
+    ) {
         setupLayout()
         self.serialNumLabel.text = serialNum
         self.administrativeAddressLabel.text = administrativeAddress
@@ -53,6 +64,7 @@ class CashPaymentTableViewCell: UITableViewCell {
     }
     // swiftlint:enable function_parameter_count
 }
+// swiftlint:disable function_body_length
 extension CashPaymentTableViewCell {
     func setupLayout() {
         [
@@ -119,3 +131,4 @@ extension CashPaymentTableViewCell {
         }
     }
 }
+// swiftlint:enable function_body_length

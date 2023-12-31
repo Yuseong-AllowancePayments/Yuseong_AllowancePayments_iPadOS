@@ -12,7 +12,18 @@ class CashPaymentTab {
     var gubi: String
     var note: String
 
-    init(serialNum: String, administrativeAddress: String, affairsNum: String, sin: String, name: String, address: String, depositType: String, sibi: String, gubi: String, note: String) {
+    init(
+        serialNum: String,
+        administrativeAddress: String,
+        affairsNum: String,
+        sin: String,
+        name: String,
+        address: String,
+        depositType: String,
+        sibi: String,
+        gubi: String,
+        note: String
+    ) {
         self.serialNum = serialNum
         self.administrativeAddress = administrativeAddress
         self.affairsNum = affairsNum

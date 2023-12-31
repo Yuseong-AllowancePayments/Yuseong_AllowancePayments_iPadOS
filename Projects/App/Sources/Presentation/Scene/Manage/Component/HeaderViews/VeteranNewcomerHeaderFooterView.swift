@@ -52,6 +52,7 @@ class VeteranNewcomerHeaderFooterView: UITableViewHeaderFooterView {
     private let noteLabel = PaddingLabel().then {
         $0.setCategoryCellLabel(text: "비고", isRightRound: true)
     }
+    // swiftlint:disable function_body_length
     override func layoutSubviews() {
         [
             numberLabel,
@@ -145,4 +146,5 @@ class VeteranNewcomerHeaderFooterView: UITableViewHeaderFooterView {
             $0.width.equalTo(148)
         }
     }
+    // swiftlint:enable function_body_length
 }

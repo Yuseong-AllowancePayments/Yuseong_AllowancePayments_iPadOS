@@ -85,6 +85,7 @@ class StoppageTableViewCell: UITableViewCell {
     // swiftlint:enable function_parameter_count
 }
 
+// swiftlint:disable function_body_length
 private extension StoppageTableViewCell {
     func setupLayout() {
         [
@@ -175,3 +176,4 @@ private extension StoppageTableViewCell {
         }
     }
 }
+// swiftlint:enable function_body_length
