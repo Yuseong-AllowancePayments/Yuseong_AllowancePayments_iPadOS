@@ -102,7 +102,8 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
     private var webView: WKWebView!
     override func bind() {
         let input = VeteranApplyViewModel.Input(
-            backButtonDidTap: backButton.rx.tap.asSignal()
+            backButtonDidTap: backButton.rx.tap.asSignal(),
+            finishButtonDidTap: finishButton.rx.tap.asDriver()
         )
         _ = viewModel.transform(input)
         findAddressButton.rx.tap
@@ -110,10 +111,11 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
                 createdWebView()
             }).disposed(by: disposeBag)
         finishButton.rx.tap
+            .throttle(.never, scheduler: MainScheduler.instance)
             .subscribe(onNext: {
                 DispatchQueue.main.async { [self] in
                     viewModel.insertData(
-                        VeteranNewComer(
+                        NewVeteranData(
                             serialNum: getCurrentMonth(),
                             name: nameField.textField.text ?? "",
                             birthDate: birthDateField.textField.text ?? "",
@@ -121,14 +123,14 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
                             registrationNum: registrationNumField.textField.text ?? "",
                             postAddress: postAddressField.textField.text ?? "",
                             roadAddress: roadAddressField.textField.text ?? "",
-                            administrativeAddress: viewModel.readDistrict(postAddressField.textField.text ?? ""),
+                            administrativeAddress: "",
                             phoneNum: phoneNumField.textField.text ?? "",
-                            accountOwner: accountOwnerField.textField.text ?? "",
                             bankName: bankNameField.textField.text ?? "",
+                            accountOwner: accountOwnerField.textField.text ?? "",
                             account: accountField.textField.text ?? "",
-                            moveInDate: moveInField.textField.text ?? "",
                             applicationDate: convertCurrentDate(),
                             applicationReason: "",
+                            moveInDate: moveInField.textField.text ?? "",
                             note: ""
                         )
                     )

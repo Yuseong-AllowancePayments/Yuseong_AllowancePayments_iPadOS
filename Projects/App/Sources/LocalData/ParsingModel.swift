@@ -74,13 +74,14 @@ struct VeteranNewcomer: Codable {
     let name: String
     let sin: String
     let address: String
+    let phoneNum: String
     let depositType: String
     let bankName: String
     let accountOwner: String
     let account: String
-    let moveInDate: String
     let applicationDate: String
     let applicationReason: String
+    let moveInDate: String
     let note: String
 }
 
@@ -89,7 +90,6 @@ struct SpouseNewcomer: Codable {
     let administrativeAddress: String
     let applicantName: String
     let applicantSin: String
-    let applicantPhoneNum: String
     let veteranName: String
     let veteranSin: String
     let affairsNum: String

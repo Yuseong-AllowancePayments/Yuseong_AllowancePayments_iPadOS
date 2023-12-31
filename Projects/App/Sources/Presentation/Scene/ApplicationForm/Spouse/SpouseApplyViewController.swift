@@ -111,12 +111,41 @@ class SpouseApplyViewController: BaseVC<SpouseApplyViewModel> {
     private var webView: WKWebView!
     override func bind() {
         let input = SpouseApplyViewModel.Input(
-            backButtonDidTap: backButton.rx.tap.asSignal()
+            backButtonDidTap: backButton.rx.tap.asSignal(),
+            finishButtonDidTap: finishButton.rx.tap.asDriver()
         )
         _ = viewModel.transform(input)
         findAddressButton.rx.tap
             .subscribe(onNext: { [self] in
                 createdWebView()
+            }).disposed(by: disposeBag)
+        finishButton.rx.tap
+            .throttle(.never, scheduler: MainScheduler.instance)
+            .subscribe(onNext: {
+                DispatchQueue.main.async { [self] in
+                    viewModel.insertData(
+                        NewSpouseData(
+                            serialNum: getCurrentMonth(),
+                            applicantName: applicantNameField.textField.text ?? "",
+                            applicantSin: applicantSinField.textField.text ?? "",
+                            applicantPostAddress: postAddressField.textField.text ?? "",
+                            applicantRoadAddress: roadAddressField.textField.text ?? "",
+                            administrativeAddress: "",
+                            veteranName: veteranNameField.textField.text ?? "",
+                            warName: warNameField.textField.text ?? "",
+                            veteranSin: veteranSinField.textField.text ?? "",
+                            affairsNum: affairsNumField.textField.text ?? "",
+                            deathDate: deathDateField.textField.text ?? "",
+                            bankName: bankNameField.textField.text ?? "",
+                            accountOwner: accountOwnerField.textField.text ?? "",
+                            account: accountField.textField.text ?? "",
+                            applicationDate: convertCurrentDate(),
+                            applicationReason: "",
+                            moveInDate: moveInField.textField.text ?? "",
+                            note: ""
+                        )
+                    )
+                }
             }).disposed(by: disposeBag)
     }
     override func addView() {

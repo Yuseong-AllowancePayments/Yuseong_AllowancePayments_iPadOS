@@ -113,26 +113,26 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
             }).disposed(by: disposeBag)
         signInButton.rx.tap
             .subscribe(onNext: {
-                var request = URLRequest(url: URL(string: "http://3.34.137.58:8080/auth/token")!)
-                request.httpMethod = "POST"
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-                let parameter = [
-                    "pin": String(describing: self.pinTextField.text!)
-                ] as Dictionary
-
-                do {
-                    try request.httpBody = JSONSerialization.data(withJSONObject: parameter, options: [])
-                } catch {
-                    print("http Body Error")
-                }
-
-                URLSession.shared.dataTask(with: request) { [self] (_, response, _) in
-                    guard let response = response as? HTTPURLResponse else { return }
-                    if response.statusCode == 201 {
+//                var request = URLRequest(url: URL(string: "http://3.34.137.58:8080/auth/token")!)
+//                request.httpMethod = "POST"
+//                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//                let parameter = [
+//                    "pin": String(describing: self.pinTextField.text!)
+//                ] as Dictionary
+//
+//                do {
+//                    try request.httpBody = JSONSerialization.data(withJSONObject: parameter, options: [])
+//                } catch {
+//                    print("http Body Error")
+//                }
+//
+//                URLSession.shared.dataTask(with: request) { [self] (_, response, _) in
+//                    guard let response = response as? HTTPURLResponse else { return }
+//                    if response.statusCode == 201 {
                         self.verificationResult.accept(true)
-                    }
-                }.resume()
+//                    }
+//                }.resume()
             }).disposed(by: disposeBag)
 
         let input = ManagerSignInViewModel.Input(isSucceedVerification: verificationResult)

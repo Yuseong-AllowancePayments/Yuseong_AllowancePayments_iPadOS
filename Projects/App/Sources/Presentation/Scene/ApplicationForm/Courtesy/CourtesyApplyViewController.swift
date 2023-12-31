@@ -124,11 +124,44 @@ class CourtesyApplyViewController: BaseVC<CourtesyApplyViewModel> {
     }
     private var webView: WKWebView!
     override func bind() {
-        let input = CourtesyApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
+        let input = CourtesyApplyViewModel.Input(
+            backButtonDidTap: backButton.rx.tap.asSignal(),
+            finishButtonDidTap: finishButton.rx.tap.asDriver()
+        )
         _ = viewModel.transform(input)
         findAddressButton.rx.tap
             .subscribe(onNext: { [self] in
                 createdWebView()
+            }).disposed(by: disposeBag)
+        finishButton.rx.tap
+            .throttle(.never, scheduler: MainScheduler.instance)
+            .subscribe(onNext: {
+                DispatchQueue.main.async { [self] in
+                    viewModel.insertData(
+                        NewCourtesyData(
+                            serialNum: getCurrentMonth(),
+                            veteranType: veteranTypeField.textField.text ?? "",
+                            affairsNum: affairsNumField.textField.text ?? "",
+                            postAddress: postAddressField.textField.text ?? "",
+                            roadAddress: roadAddressField.textField.text ?? "",
+                            administrativeAddress: "",
+                            applicantName: applicantNameField.textField.text ?? "",
+                            birthDate: applicantBirthDateField.textField.text ?? "",
+                            applicantSin: applicantSinField.textField.text ?? "",
+                            gender: applicantGenderField.textField.text ?? "",
+                            phoneNum: phoneNumField.textField.text ?? "",
+                            bankName: bankNameField.textField.text ?? "",
+                            accountOwner: accountOwnerField.textField.text ?? "",
+                            account: accountField.textField.text ?? "",
+                            moveInDate: moveInField.textField.text ?? "",
+                            relation: relationField.textField.text ?? "",
+                            priority: priorityField.textField.text ?? "",
+                            applicationDate: convertCurrentDate(),
+                            applicationReason: "",
+                            note: ""
+                        )
+                    )
+                }
             }).disposed(by: disposeBag)
     }
     override func addView() {

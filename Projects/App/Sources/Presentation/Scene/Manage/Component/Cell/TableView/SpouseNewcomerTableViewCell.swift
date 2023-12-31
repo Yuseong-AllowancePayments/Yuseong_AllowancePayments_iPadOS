@@ -19,9 +19,6 @@ class SpouseNewcomerTableViewCell: UITableViewCell {
     private let applicantResidentRegistrationNumberLabel = UITextField().then {
         $0.setDataCell()
     }
-    private let applicantPhoneNumberLabel = UITextField().then {
-        $0.setDataCell()
-    }
     private let applicantPostNumberLabel = UITextField().then {
         $0.setDataCell()
     }
@@ -70,7 +67,6 @@ class SpouseNewcomerTableViewCell: UITableViewCell {
         veteransAffairsNumber: String,
         applicantName: String,
         applicantResidentRegistrationNumber: String,
-        applicantPhoneNumber: String,
         applicantPostNumber: String,
         applicantAddress: String,
         administrativeBuilding: String,
@@ -91,7 +87,6 @@ class SpouseNewcomerTableViewCell: UITableViewCell {
         veteransAffairsNumberLabel.text = veteransAffairsNumber
         applicantNameLabel.text = applicantName
         applicantResidentRegistrationNumberLabel.text = applicantResidentRegistrationNumber
-        applicantPhoneNumberLabel.text = applicantPhoneNumber
         applicantPostNumberLabel.text = applicantPostNumber
         applicantAddressLabel.text = applicantAddress
         administrativeBuildingLabel.text = administrativeBuilding
@@ -118,7 +113,6 @@ private extension SpouseNewcomerTableViewCell {
             veteransAffairsNumberLabel,
             applicantNameLabel,
             applicantResidentRegistrationNumberLabel,
-            applicantPhoneNumberLabel,
             applicantPostNumberLabel,
             applicantAddressLabel,
             administrativeBuildingLabel,
@@ -153,13 +147,8 @@ private extension SpouseNewcomerTableViewCell {
             $0.top.bottom.equalToSuperview()
             $0.width.equalTo(200)
         }
-        applicantPhoneNumberLabel.snp.makeConstraints {
-            $0.leading.equalTo(applicantResidentRegistrationNumberLabel.snp.trailing)
-            $0.top.bottom.equalToSuperview()
-            $0.width.equalTo(150)
-        }
         applicantPostNumberLabel.snp.makeConstraints {
-            $0.leading.equalTo(applicantPhoneNumberLabel.snp.trailing)
+            $0.leading.equalTo(applicantResidentRegistrationNumberLabel.snp.trailing)
             $0.top.bottom.equalToSuperview()
             $0.width.equalTo(150)
         }
