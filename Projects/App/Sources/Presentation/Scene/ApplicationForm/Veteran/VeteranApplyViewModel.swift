@@ -33,7 +33,7 @@ class VeteranApplyViewModel: BaseVM, Stepper {
         }
     }
 
-    func insertData(_ data: VeteranNewComer) {
+    func insertData(_ data: NewVeteranData) {
         do {
             let realm = try Realm()
             guard let newValue = realm.object(
@@ -71,7 +71,7 @@ class VeteranApplyViewModel: BaseVM, Stepper {
     }
 }
 
-public struct VeteranNewComer {
+struct NewVeteranData {
     var serialNum: String = ""
     var name: String = ""
     var birthDate: String = ""

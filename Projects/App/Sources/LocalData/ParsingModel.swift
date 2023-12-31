@@ -3,7 +3,7 @@ import Foundation
 struct VeteranParseModel: Codable {
     let paymentTargetTab: [PaymentTarget]
     let cashPaymentTab: [CashPayment]
-    let newComerTab: [VeteranNewComer]
+    let newComerTab: [VeteranNewcomer]
     let stoppageTab: [Stoppage]
 }
 
