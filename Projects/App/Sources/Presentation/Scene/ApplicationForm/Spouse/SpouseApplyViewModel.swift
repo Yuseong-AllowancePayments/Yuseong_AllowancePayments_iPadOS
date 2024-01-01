@@ -67,6 +67,7 @@ struct NewSpouseData {
     var serialNum: String = ""
     var applicantName: String = ""
     var applicantSin: String = ""
+    var applicantPhoneNum: String = ""
     var applicantPostAddress: String = ""
     var applicantRoadAddress: String = ""
     var administrativeAddress: String = ""

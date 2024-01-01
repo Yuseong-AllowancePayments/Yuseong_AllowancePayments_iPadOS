@@ -182,6 +182,7 @@ class SpouseNewcomerTab: Object {
     @Persisted var serialNum: String = ""
     @Persisted var applicantName: String = ""
     @Persisted var applicantSin: String = ""
+    @Persisted var applicantPhoneNum: String = ""
     @Persisted var applicantPostAddress: String = ""
     @Persisted var applicantRoadAddress: String = ""
     @Persisted var administrativeAddress: String = ""

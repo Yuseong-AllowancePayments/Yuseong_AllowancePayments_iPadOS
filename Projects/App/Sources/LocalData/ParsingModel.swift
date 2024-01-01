@@ -90,6 +90,7 @@ struct SpouseNewcomer: Codable {
     let administrativeAddress: String
     let applicantName: String
     let applicantSin: String
+    let applicantPhoneNum: String
     let veteranName: String
     let veteranSin: String
     let affairsNum: String

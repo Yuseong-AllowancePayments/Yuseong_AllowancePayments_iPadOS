@@ -221,6 +221,7 @@ class ManageViewController: BaseVC<ManageViewModel> {
                     veteransAffairsNumber: item.affairsNum,
                     applicantName: item.applicantName,
                     applicantResidentRegistrationNumber: item.applicantSin,
+                    applicantPhoneNumber: item.applicantPhoneNum,
                     applicantPostNumber: item.applicantPostAddress,
                     applicantAddress: item.applicantRoadAddress,
                     administrativeBuilding: item.administrativeAddress,

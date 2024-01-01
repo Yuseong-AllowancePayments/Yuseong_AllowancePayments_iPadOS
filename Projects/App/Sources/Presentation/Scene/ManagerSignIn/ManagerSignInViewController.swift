@@ -53,10 +53,10 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
         $0.keyboardType = .numberPad
         $0.tintColor = .clear
     }
-    private let signInButton = UIButton().then {
-        $0.setTitle("로그인", for: .normal)
+    private let signInButton = UIButton(type: .system).then {
+        $0.setTitle("인증하기", for: .normal)
         $0.titleLabel?.font = .pretendard(.context)
-        $0.titleLabel?.textColor = .white
+        $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }

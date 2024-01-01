@@ -115,8 +115,9 @@ class CourtesyApplyViewController: BaseVC<CourtesyApplyViewModel> {
         placeholder: "선순위 유족 여부를 입력해주세요.  예) 예",
         image: ""
     )
-    private let finishButton = UIButton().then {
+    private let finishButton = UIButton(type: .system).then {
         $0.setTitle("작성 완료", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .pretendard(.context)
         $0.titleLabel?.textColor = .white
         $0.backgroundColor = .color(.primary(.primary))

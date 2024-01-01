@@ -25,7 +25,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     private let honorButton = SelectTypeButton(title: "참전유공자 명예 수당")
     private let partnerButton = SelectTypeButton(title: "참전유공자 배우자 수당")
     private let respectButton = SelectTypeButton(title: "보훈 예우 수당")
-    private let nextButton = UIButton().then {
+    private let nextButton = UIButton(type: .system).then {
         $0.titleLabel?.font = .pretendard(.context)
         $0.setTitle("선택", for: .normal)
         $0.setTitleColor(.white, for: .normal)

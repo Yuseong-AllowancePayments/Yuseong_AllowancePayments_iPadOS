@@ -91,12 +91,12 @@ class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
         placeholder: "전입일과 지역을 입력해주세요.  예) 2023-01-01(대전 서구)",
         image: ""
     )
-    private let finishButton = UIButton().then {
+    private let finishButton = UIButton(type: .system).then {
         $0.setTitle("작성 완료", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .pretendard(.context)
         $0.titleLabel?.textColor = .white
         $0.backgroundColor = .color(.primary(.primary))
-        $0.titleLabel?.font = .pretendard(.p2)
         $0.layer.cornerRadius = 8
     }
     private var webView: WKWebView!
