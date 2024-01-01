@@ -53,10 +53,10 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
         $0.keyboardType = .numberPad
         $0.tintColor = .clear
     }
-    private let signInButton = UIButton().then {
-        $0.setTitle("로그인", for: .normal)
+    private let signInButton = UIButton(type: .system).then {
+        $0.setTitle("인증하기", for: .normal)
         $0.titleLabel?.font = .pretendard(.context)
-        $0.titleLabel?.textColor = .white
+        $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }
@@ -113,26 +113,26 @@ class ManagerSignInViewController: BaseVC<ManagerSignInViewModel> {
             }).disposed(by: disposeBag)
         signInButton.rx.tap
             .subscribe(onNext: {
-                var request = URLRequest(url: URL(string: "http://3.34.137.58:8080/auth/token")!)
-                request.httpMethod = "POST"
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-                let parameter = [
-                    "pin": String(describing: self.pinTextField.text!)
-                ] as Dictionary
-
-                do {
-                    try request.httpBody = JSONSerialization.data(withJSONObject: parameter, options: [])
-                } catch {
-                    print("http Body Error")
-                }
-
-                URLSession.shared.dataTask(with: request) { [self] (_, response, _) in
-                    guard let response = response as? HTTPURLResponse else { return }
-                    if response.statusCode == 201 {
+//                var request = URLRequest(url: URL(string: "http://3.34.137.58:8080/auth/token")!)
+//                request.httpMethod = "POST"
+//                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//                let parameter = [
+//                    "pin": String(describing: self.pinTextField.text!)
+//                ] as Dictionary
+//
+//                do {
+//                    try request.httpBody = JSONSerialization.data(withJSONObject: parameter, options: [])
+//                } catch {
+//                    print("http Body Error")
+//                }
+//
+//                URLSession.shared.dataTask(with: request) { [self] (_, response, _) in
+//                    guard let response = response as? HTTPURLResponse else { return }
+//                    if response.statusCode == 201 {
                         self.verificationResult.accept(true)
-                    }
-                }.resume()
+//                    }
+//                }.resume()
             }).disposed(by: disposeBag)
 
         let input = ManagerSignInViewModel.Input(isSucceedVerification: verificationResult)

@@ -17,10 +17,13 @@ class BaseVC<ViewModel>: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addView()
-        setLayout()
+        self.view.backgroundColor = .white
         configureVC()
         bind()
+        addView()
+        setLayout()
+    }
+    override func viewWillLayoutSubviews() {
     }
 
     func configureVC() {}

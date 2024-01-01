@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 import SnapKit
 import Then
 import DesignSystem
@@ -6,7 +7,8 @@ import RxFlow
 import RxCocoa
 import RxSwift
 
-class SpouseApplyViewController: BaseVC<ApplyViewModel> {
+// swiftlint: disable type_body_length
+class SpouseApplyViewController: BaseVC<SpouseApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -98,16 +100,53 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "전입일과 지역을 입력해주세요.  예) 2023-01-01(대전 서구)",
         image: ""
     )
-    private let finishButton = UIButton().then {
+    private let finishButton = UIButton(type: .system).then {
         $0.setTitle("작성 완료", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .pretendard(.context)
         $0.titleLabel?.textColor = .white
         $0.backgroundColor = .color(.primary(.primary))
         $0.layer.cornerRadius = 8
     }
+    private var webView: WKWebView!
     override func bind() {
-        let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
+        let input = SpouseApplyViewModel.Input(
+            backButtonDidTap: backButton.rx.tap.asSignal(),
+            finishButtonDidTap: finishButton.rx.tap.asDriver()
+        )
         _ = viewModel.transform(input)
+        findAddressButton.rx.tap
+            .subscribe(onNext: { [self] in
+                createdWebView()
+            }).disposed(by: disposeBag)
+        finishButton.rx.tap
+            .throttle(.never, scheduler: MainScheduler.instance)
+            .subscribe(onNext: {
+                DispatchQueue.main.async { [self] in
+                    viewModel.insertData(
+                        NewSpouseData(
+                            serialNum: getCurrentMonth(),
+                            applicantName: applicantNameField.textField.text ?? "",
+                            applicantSin: applicantSinField.textField.text ?? "",
+                            applicantPostAddress: postAddressField.textField.text ?? "",
+                            applicantRoadAddress: roadAddressField.textField.text ?? "",
+                            administrativeAddress: "",
+                            veteranName: veteranNameField.textField.text ?? "",
+                            warName: warNameField.textField.text ?? "",
+                            veteranSin: veteranSinField.textField.text ?? "",
+                            affairsNum: affairsNumField.textField.text ?? "",
+                            deathDate: deathDateField.textField.text ?? "",
+                            bankName: bankNameField.textField.text ?? "",
+                            accountOwner: accountOwnerField.textField.text ?? "",
+                            account: accountField.textField.text ?? "",
+                            applicationDate: convertCurrentDate(),
+                            applicationReason: "",
+                            moveInDate: moveInField.textField.text ?? "",
+                            note: ""
+                        )
+                    )
+                }
+            }).disposed(by: disposeBag)
     }
     override func addView() {
         view.addSubview(scrollView)
@@ -134,6 +173,18 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
     }
     override func configureVC() {
         self.hideKeyboardWhenTappedAround()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
@@ -245,3 +296,53 @@ class SpouseApplyViewController: BaseVC<ApplyViewModel> {
     }
     // swiftlint:enable function_body_length
 }
+
+extension SpouseApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
+    func createdWebView() {
+        let contentController = WKUserContentController()
+        contentController.add(self, name: "callBackHandler")
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = contentController
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        self.webView.navigationDelegate = self
+        backView.addSubview(webView)
+        webView.layer.borderColor = UIColor.color(.grayScale(.g70)).cgColor
+        webView.layer.borderWidth = 1
+        webView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(200)
+            $0.left.right.equalToSuperview().inset(150)
+        }
+        guard let url = URL(string: "http://daum-address-webview.vercel.app/"),
+              let webView = webView
+        else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let data = message.body as? [String: Any] {
+            postAddressField.textField.text = data["zonecode"] as? String ?? ""
+            roadAddressField.textField.text = "\(data["roadAddress"] as? String ?? "")" +
+            " (\(data["buildingName"] as? String ?? ""))"
+        }
+        webView.removeFromSuperview()
+    }
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+        }
+        let contentInset = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: keyboardFrame.size.height + 20,
+            right: 0.0)
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+    @objc private func keyboardWillHide() {
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+}
+// swiftlint: enable type_body_length

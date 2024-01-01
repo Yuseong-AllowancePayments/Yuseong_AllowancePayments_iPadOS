@@ -35,25 +35,11 @@ class DBHelper {
         return nil
     }
 
-    func createVeteranTable() {
+    func createAdministrationTable() {
         let query = """
-               CREATE TABLE IF NOT EXISTS veteranTable(
-                    serial_num TEXT,
-                    name TEXT NOT NULL,
-                    birth_date TEXT NOT NULL,
-                    sin TEXT NOT NULL,
-                    registration_num TEXT PRIMARY KEY,
-                    post_address TEXT NOT NULL,
-                    road_address TEXT NOT NULL,
-                    administrative_address TEXT,
-                    phone_num TEXT NOT NULL,
-                    account_owner TEXT NOT NULL,
-                    bank_name TEXT NOT NULL,
-                    account TEXT NOT NULL,
-                    move_in_date TEXT NOT NULL,
-                    application_date TEXT NOT NULL,
-                    application_reason TEXT,
-                    note TEXT
+               CREATE TABLE IF NOT EXISTS administration(
+                    우편번호 TEXT PRIMARY KEY,
+                    행정동명 TEXT
                );
                """
         var statement: OpaquePointer?
@@ -73,105 +59,28 @@ class DBHelper {
         sqlite3_finalize(statement)
     }
 
-    func createSpouseTable() {
-        let query = """
-               CREATE TABLE IF NOT EXISTS spouseTable(
-                    serial_num TEXT,
-                    applicant_name TEXT NOT NULL,
-                    applicant_sin TEXT NOT NULL,
-                    applicant_phone_num TEXT NOT NULL,
-                    applicant_post_address TEXT NOT NULL,
-                    applicant_road_address TEXT NOT NULL,
-                    administrative_address TEXT,
-                    veteran_name TEXT NOT NULL,
-                    war_name TEXT NOT NULL,
-                    veteran_sin TEXT NOT NULL,
-                    affairs_num TEXT PRIMARY KEY,
-                    death_date TEXT NOT NULL,
-                    bank_name TEXT NOT NULL,
-                    account_owner TEXT NOT NULL,
-                    account TEXT NOT NULL,
-                    move_in_date TEXT NOT NULL,
-                    application_date TEXT NOT NULL,
-                    application_reason TEXT,
-                    note TEXT
-               );
-               """
+    func insertIntoAdministration(
+        _ 우편번호: String,
+        _ 행정동: String
+    ) {
+        let query = "INSERT INTO administration (우편번호, 행정동명) VALUES (?, ?)"
         var statement: OpaquePointer?
 
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-            if sqlite3_step(statement) == SQLITE_DONE {
-                print("Creating table has been succesfully done. db: \(String(describing: self.db))")
-            } else {
-                let errorMessage = String(cString: sqlite3_errmsg(db))
-                print("\nsqlte3_step failure while creating table: \(errorMessage)")
-            }
-        } else {
-            let errorMessage = String(cString: sqlite3_errmsg(self.db))
-            print("\nsqlite3_prepare failure while creating table: \(errorMessage)")
-        }
+            sqlite3_bind_text(statement, 1, 우편번호, -1, nil)
+            sqlite3_bind_text(statement, 2, 행정동, -1, nil)
 
+            if sqlite3_step(statement) == SQLITE_DONE {
+                print("insert data success")
+            } else {
+                print("insert data sqlite3 step fail")
+            }
+
+        } else {
+            print("insert Data prepare fail")
+        }
         sqlite3_finalize(statement)
     }
-
-    func createCourtesyTable() {
-        let query = """
-               CREATE TABLE IF NOT EXISTS courtesyTable(
-                    serial_num TEXT,
-                    veteran_type TEXT NOT NULL,
-                    affairs_num TEXT PRIMARY KEY,
-                    post_address TEXT NOT NULL,
-                    road_address TEXT NOT NULL,
-                    administrative_address TEXT,
-                    applicant_name TEXT NOT NULL,
-                    birth_date TEXT NOT NULL,
-                    applicant_sin TEXT NOT NULL,
-                    gender TEXT NOT NULL,
-                    phone_num TEXT NOT NULL,
-                    bank_name TEXT NOT NULL,
-                    account_owner TEXT NOT NULL,
-                    account TEXT NOT NULL,
-                    move_in_date TEXT NOT NULL,
-                    relation TEXT,
-                    priority TEXT,
-                    application_date TEXT NOT NULL,
-                    application_reason TEXT,
-                    note TEXT
-               );
-               """
-        var statement: OpaquePointer?
-
-        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-            if sqlite3_step(statement) == SQLITE_DONE {
-                print("Creating table has been succesfully done. db: \(String(describing: self.db))")
-            } else {
-                let errorMessage = String(cString: sqlite3_errmsg(db))
-                print("\nsqlte3_step failure while creating table: \(errorMessage)")
-            }
-        } else {
-            let errorMessage = String(cString: sqlite3_errmsg(self.db))
-            print("\nsqlite3_prepare failure while creating table: \(errorMessage)")
-        }
-
-        sqlite3_finalize(statement)
-    }
-
-//    func insertIntoVeteran(
-//        _ registrationNum: String,
-//        _ name: String,
-//        _ birthDate: String,
-//        _ postAddress: String,
-//        _ roadAddress: String,
-//        _ administrativeAddress: String,
-//        _ phoneNum: String,
-//        _ bankName: String,
-//        _ account: String,
-//        _ accountType: String,
-//        _ accountOwner: String,
-//        _ applicationDate: String
-//    ) {
-//        let query = "INSERT INTO veteranTable VALUES()"
-//    }
 
     func dropTable(_ tableName: String) {
         let query = "DROP TABLE \(tableName)"

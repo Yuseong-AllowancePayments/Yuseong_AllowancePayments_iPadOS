@@ -1,4 +1,5 @@
 import UIKit
+import RealmSwift
 import SnapKit
 import Then
 import DesignSystem
@@ -7,7 +8,8 @@ import RxCocoa
 import RxSwift
 import WebKit
 
-class VeteranApplyViewController: BaseVC<ApplyViewModel> {
+// swiftlint: disable type_body_length
+class VeteranApplyViewController: BaseVC<VeteranApplyViewModel> {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -89,21 +91,50 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
         placeholder: "전입일과 지역을 입력해주세요.  예) 2023-01-01(대전 서구)",
         image: ""
     )
-    private let finishButton = UIButton().then {
+    private let finishButton = UIButton(type: .system).then {
         $0.setTitle("작성 완료", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .pretendard(.context)
         $0.titleLabel?.textColor = .white
         $0.backgroundColor = .color(.primary(.primary))
-        $0.titleLabel?.font = .pretendard(.p2)
         $0.layer.cornerRadius = 8
     }
     private var webView: WKWebView!
     override func bind() {
-        let input = ApplyViewModel.Input(backButtonDidTap: backButton.rx.tap.asSignal())
+        let input = VeteranApplyViewModel.Input(
+            backButtonDidTap: backButton.rx.tap.asSignal(),
+            finishButtonDidTap: finishButton.rx.tap.asDriver()
+        )
         _ = viewModel.transform(input)
         findAddressButton.rx.tap
             .subscribe(onNext: { [self] in
                 createdWebView()
+            }).disposed(by: disposeBag)
+        finishButton.rx.tap
+            .throttle(.never, scheduler: MainScheduler.instance)
+            .subscribe(onNext: {
+                DispatchQueue.main.async { [self] in
+                    viewModel.insertData(
+                        NewVeteranData(
+                            serialNum: getCurrentMonth(),
+                            name: nameField.textField.text ?? "",
+                            birthDate: birthDateField.textField.text ?? "",
+                            sin: sinNumField.textField.text ?? "",
+                            registrationNum: registrationNumField.textField.text ?? "",
+                            postAddress: postAddressField.textField.text ?? "",
+                            roadAddress: roadAddressField.textField.text ?? "",
+                            administrativeAddress: "",
+                            phoneNum: phoneNumField.textField.text ?? "",
+                            bankName: bankNameField.textField.text ?? "",
+                            accountOwner: accountOwnerField.textField.text ?? "",
+                            account: accountField.textField.text ?? "",
+                            applicationDate: convertCurrentDate(),
+                            applicationReason: "",
+                            moveInDate: moveInField.textField.text ?? "",
+                            note: ""
+                        )
+                    )
+                }
             }).disposed(by: disposeBag)
     }
     override func addView() {
@@ -129,6 +160,18 @@ class VeteranApplyViewController: BaseVC<ApplyViewModel> {
     }
     override func configureVC() {
         self.hideKeyboardWhenTappedAround()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     // swiftlint:disable function_body_length
     override func setLayout() {
@@ -233,13 +276,13 @@ extension VeteranApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNa
     func createdWebView() {
         let contentController = WKUserContentController()
         contentController.add(self, name: "callBackHandler")
-
         let configuration = WKWebViewConfiguration()
         configuration.userContentController = contentController
-
         webView = WKWebView(frame: .zero, configuration: configuration)
         self.webView.navigationDelegate = self
         backView.addSubview(webView)
+        webView.layer.borderColor = UIColor.color(.grayScale(.g70)).cgColor
+        webView.layer.borderWidth = 1
         webView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(200)
             $0.left.right.equalToSuperview().inset(150)
@@ -249,12 +292,32 @@ extension VeteranApplyViewController: WKScriptMessageHandler, WKUIDelegate, WKNa
         else { return }
         let request = URLRequest(url: url)
         webView.load(request)
-
     }
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if let data = message.body as? [String: Any] {
             postAddressField.textField.text = data["zonecode"] as? String ?? ""
+            roadAddressField.textField.text = "\(data["roadAddress"] as? String ?? "")" +
+            " (\(data["buildingName"] as? String ?? ""))"
         }
-        webView.isHidden = true
+        webView.removeFromSuperview()
+    }
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+        }
+        let contentInset = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: keyboardFrame.size.height + 20,
+            right: 0.0)
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+    }
+    @objc private func keyboardWillHide() {
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
     }
 }
+// swiftlint: enable type_body_length

@@ -1,5 +1,6 @@
 import UIKit
 import Swinject
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,7 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        print(readTextFile())
+//        do {
+//            let realm = try Realm()
+//        } catch {
+//            print("Error initialising new realm, \(error)")
+//        }
         return true
     }
 

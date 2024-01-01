@@ -9,8 +9,14 @@ extension Container {
     }
 
     private func registerViewModel() {
-        self.register(ApplyViewModel.self) { _ in
-            return ApplyViewModel()
+        self.register(SpouseApplyViewModel.self) { _ in
+            return SpouseApplyViewModel()
+        }
+        self.register(VeteranApplyViewModel.self) { _ in
+            return VeteranApplyViewModel()
+        }
+        self.register(CourtesyApplyViewModel.self) { _ in
+            return CourtesyApplyViewModel()
         }
         self.register(ManageViewModel.self) { _ in
             return ManageViewModel()
@@ -28,13 +34,13 @@ extension Container {
             return LaunchScreenViewController()
         }
         self.register(VeteranApplyViewController.self) { resolver in
-            return VeteranApplyViewController(viewModel: resolver.resolve(ApplyViewModel.self)!)
+            return VeteranApplyViewController(viewModel: resolver.resolve(VeteranApplyViewModel.self)!)
         }
         self.register(SpouseApplyViewController.self) { resolver in
-            return SpouseApplyViewController(viewModel: resolver.resolve(ApplyViewModel.self)!)
+            return SpouseApplyViewController(viewModel: resolver.resolve(SpouseApplyViewModel.self)!)
         }
         self.register(CourtesyApplyViewController.self) { resolver in
-            return CourtesyApplyViewController(viewModel: resolver.resolve(ApplyViewModel.self)!)
+            return CourtesyApplyViewController(viewModel: resolver.resolve(CourtesyApplyViewModel.self)!)
         }
         self.register(ManageViewController.self) { resolver in
             return ManageViewController(viewModel: resolver.resolve(ManageViewModel.self)!)

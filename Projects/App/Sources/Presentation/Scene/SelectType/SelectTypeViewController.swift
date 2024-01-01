@@ -25,7 +25,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     private let honorButton = SelectTypeButton(title: "참전유공자 명예 수당")
     private let partnerButton = SelectTypeButton(title: "참전유공자 배우자 수당")
     private let respectButton = SelectTypeButton(title: "보훈 예우 수당")
-    private let nextButton = UIButton().then {
+    private let nextButton = UIButton(type: .system).then {
         $0.titleLabel?.font = .pretendard(.context)
         $0.setTitle("선택", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -86,7 +86,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
     }
     override func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(view.snp.centerY).offset(-273)
+            $0.top.equalTo(view.snp.centerY).offset(UIScreen.main.bounds.height * (-0.215))
             $0.left.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.height.equalTo(50)
         }
@@ -96,7 +96,7 @@ class SelectTypeViewController: BaseVC<SelectTypeViewModel> {
             $0.height.equalTo(26)
         }
         managerSignInButton.snp.makeConstraints {
-            $0.top.equalTo(view.snp.centerY).offset(-273)
+            $0.top.equalTo(view.snp.centerY).offset(UIScreen.main.bounds.height * (-0.215))
             $0.right.equalToSuperview().inset(UIScreen.main.bounds.width * 0.062)
             $0.width.equalTo(119)
             $0.height.equalTo(40)

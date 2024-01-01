@@ -21,7 +21,7 @@
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum DesignSystemAsset {
   public enum GrayScale {
-  public static let gray100 = DesignSystemColors(name: "Gray100")
+    public static let gray100 = DesignSystemColors(name: "Gray100")
     public static let gray200 = DesignSystemColors(name: "Gray200")
     public static let gray300 = DesignSystemColors(name: "Gray300")
     public static let gray400 = DesignSystemColors(name: "Gray400")
@@ -33,19 +33,20 @@ public enum DesignSystemAsset {
     public static let gray900 = DesignSystemColors(name: "Gray900")
   }
   public enum ImageAssets {
-  public static let calendar = DesignSystemImages(name: "calendar")
+    public static let calendar = DesignSystemImages(name: "calendar")
     public static let invisible = DesignSystemImages(name: "invisible")
     public static let logo = DesignSystemImages(name: "logo")
+    public static let mapPin = DesignSystemImages(name: "mapPin")
     public static let textLogo = DesignSystemImages(name: "textLogo")
   }
   public enum PrimaryColor {
-  public static let accentColor = DesignSystemColors(name: "AccentColor")
+    public static let accentColor = DesignSystemColors(name: "AccentColor")
     public static let primary = DesignSystemColors(name: "Primary")
     public static let primaryBackground = DesignSystemColors(name: "Primary_background")
     public static let primaryHover = DesignSystemColors(name: "Primary_hover")
   }
   public enum SystemColor {
-  public static let green = DesignSystemColors(name: "green")
+    public static let green = DesignSystemColors(name: "green")
     public static let red = DesignSystemColors(name: "red")
     public static let white = DesignSystemColors(name: "white")
   }
